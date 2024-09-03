@@ -28,6 +28,8 @@ class SignUpView(APIView):
     def post(self, request):
         provider = str(request.data.get('accountType')).lower()
         password = request.data.get('password', None)
+        if not password:
+            return Response({"success": False, "error":"password required","status":404},status=status.HTTP_400_BAD_REQUEST) 
         serializer = UserSerializer(data=request.data)
         try:
             serializer.is_valid(raise_exception=True)

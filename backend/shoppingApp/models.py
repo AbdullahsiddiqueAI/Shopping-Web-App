@@ -54,7 +54,7 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    total = models.DecimalField(max_digits=10, decimal_places=2)
+    # total = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
         return f"OrderItem {self.order_item_id}"

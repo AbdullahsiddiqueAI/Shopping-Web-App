@@ -59,7 +59,13 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = self.context['request'].user  # Get the current authenticated user
+        order_items = OrderItem.objects.filter(user_id=user.id,order__isnull=True)
+        if not order_items:
+            raise serializers.ValidationError("OrderItems is Empty")
         order = Order.objects.create(user=user, **validated_data)
+        for order_item in order_items:
+             order_item.order = order
+             order_item.save()
         return order
 
     # def update(self, instance, validated_data):
@@ -74,15 +80,18 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderItem
-        fields = ['order_item_id', 'order', 'product', 'quantity', 'price', 'total']
-
+        fields = ['order_item_id', 'order', 'product', 'quantity', 'price', 'user']
     def create(self, validated_data):
-        user = self.context['request'].user  # Get the current authenticated user
-        product_data = self.initial_data.get('product')
-        product = Product.objects.get(product_id=product_data['product_id'])
+        request = self.context.get('request')
+        user = request.user  # Get the current authenticated user
+
+        # Assuming 'product' is passed as a product_id string
+        product_id = self.initial_data.get('product')
+        product = Product.objects.get(product_id=product_id)
+
+        # You might need to fetch the order similarly if it's passed as an ID
         order_data = self.initial_data.get('order')
-        order = Order.objects.get(order_id=order_data['order_id'])
-        order_item = OrderItem.objects.create(user=user, product=product, order=order, **validated_data)
+        order_item = OrderItem.objects.create(user=user, product=product, **validated_data)
         return order_item
 
     def update(self, instance, validated_data):
