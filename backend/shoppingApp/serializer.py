@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Product, Order, OrderItem, Payment
+from .models import *
 from core.models import UserCustomModel as User
 from core.serializer import UserSerializer
 
@@ -101,21 +101,25 @@ class OrderItemSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-class PaymentSerializer(serializers.ModelSerializer):
-    order = OrderSerializer(read_only=True)  # Order is read-only
 
-    class Meta:
-        model = Payment
-        fields = ['payment_id', 'order', 'payment_date', 'amount', 'status', 'created_at', 'updated_at']
 
-    def create(self, validated_data):
-        order_data = self.initial_data.get('order')
-        order = Order.objects.get(order_id=order_data['order_id'])
-        payment = Payment.objects.create(order=order, **validated_data)
-        return payment
 
-    def update(self, instance, validated_data):
-        instance.amount = validated_data.get('amount', instance.amount)
-        instance.status = validated_data.get('status', instance.status)
-        instance.save()
-        return instance
+
+# class PaymentSerializer(serializers.ModelSerializer):
+#     order = OrderSerializer(read_only=True)  # Order is read-only
+
+#     class Meta:
+#         model = Payment
+#         fields = ['payment_id', 'order', 'payment_date', 'amount', 'status', 'created_at', 'updated_at']
+
+#     def create(self, validated_data):
+#         order_data = self.initial_data.get('order')
+#         order = Order.objects.get(order_id=order_data['order_id'])
+#         payment = Payment.objects.create(order=order, **validated_data)
+#         return payment
+
+#     def update(self, instance, validated_data):
+#         instance.amount = validated_data.get('amount', instance.amount)
+#         instance.status = validated_data.get('status', instance.status)
+#         instance.save()
+#         return instance

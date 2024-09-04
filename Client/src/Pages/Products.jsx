@@ -41,7 +41,7 @@ function Products() {
     <NavBar/>
     <div className="productsPage_container">
         <div className="productsPage_content">
-      <aside className="productsPage_sidebar">
+      {/* <aside className="productsPage_sidebar">
         <div className="productsPage_categories">
           <h3>CATEGORIES</h3>
           <ul>
@@ -56,9 +56,11 @@ function Products() {
           <h3>PRICE</h3>
           <input type="range" min="0" max="4500" />
         </div>
-      </aside>
+      </aside> */}
       <div className="productPage_main_content">
        <div className="productPage_filter">
+        
+
         <div className="productPage_filter_content" >
             <span>Items per page</span>
             <select style={{width:'5rem'}}>
@@ -77,6 +79,7 @@ function Products() {
               <option value="oldest">Oldest</option>
             </select>
         </div>
+       
         </div> 
       <main className="productsPage_product-list">
       {

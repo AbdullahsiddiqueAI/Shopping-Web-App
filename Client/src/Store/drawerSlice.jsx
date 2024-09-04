@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const drawerSlice = createSlice({
   name: 'drawer',
   initialState: {
-    isOpen: true,
+    isOpen: false,
   },
   reducers: {
     toggleDrawer: state => {

@@ -22,9 +22,10 @@ from .seeder import *
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('seed-data/', SeedDataAPIView.as_view(), name='seed-data'),
+    # path('seed-data/', SeedDataAPIView.as_view(), name='seed-data'),
     path("",include('core.urls')),
-    path("",include('shoppingApp.urls'))
+    path("",include('shoppingApp.urls')),
+    path("",include('payments.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

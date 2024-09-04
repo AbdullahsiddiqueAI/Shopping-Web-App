@@ -14,6 +14,6 @@ urlpatterns = [
     path('order-items/', OrderItemListCreateAPIView.as_view(), name='order-item-list-create'),
     path('order-items/<uuid:pk>/', OrderItemDetailAPIView.as_view(), name='order-item-detail'),
 
-    path('payments/', PaymentListCreateAPIView.as_view(), name='payment-list-create'),
-    path('payments/<uuid:pk>/', PaymentDetailAPIView.as_view(), name='payment-detail'),
+#     path('payments/', PaymentListCreateAPIView.as_view(), name='payment-list-create'),
+#     path('payments/<uuid:pk>/', PaymentDetailAPIView.as_view(), name='payment-detail'),
 ]

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Rating from '../Common/Rating'; // Assuming you have a Rating component
+import { Link } from 'react-router-dom';
 
 const ProductListItem = ({ product }) => {
   return (
@@ -14,7 +15,7 @@ const ProductListItem = ({ product }) => {
         <Rating value={product.rating} count={product.reviewCount} />
       </div>
       <div className="Product_list-Add_cart">
-        <div className="Product_list-Add_cart-text">Add to Cart</div>
+        <Link to={`/ProductPage/${1}`} className="Product_list-Add_cart-text">Add to Cart</Link>
       </div>
     </div>
   );
