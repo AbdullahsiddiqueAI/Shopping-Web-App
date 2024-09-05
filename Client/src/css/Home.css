@@ -1015,6 +1015,10 @@ p {
   nav {
     & .nav-bottom {
       & ul {
+        overflow-x: scroll;
+        scroll-behavior: smooth;
+        -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;     /* Firefox */
         & li {
           padding: 0;
 
@@ -1028,6 +1032,9 @@ p {
           bottom: -0.93rem;
         }
       }
+      ul::-webkit-scrollbar { 
+        display: none;  
+    }
     }
   }
   .Product_cotegory-text {
@@ -1042,6 +1049,10 @@ p {
 
     height: 2.6rem !important;
   }
+  /* .Myaccount-main .Myaccount-container{ 
+    width:98% !important;
+    padding-right: 0.5rem;
+  } */
 }
 @media (max-width: 444px) {
   /***************** Footer *******************/
@@ -1099,6 +1110,7 @@ p {
   .Login-Container {
     .Login-Right-Part {
       form {
+        width: 100% !important;
         input[type="email"],
         input[type="password"],
         input[type="text"] {

@@ -5,11 +5,17 @@ body {
   }
   
   .not-found-container {
-    text-align: center;
-    margin-top: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    gap: 2rem;
+    padding: 1rem; /* Add padding for mobile responsiveness */
   }
   
   .not-found-breadcrumb {
+    align-self: flex-start;
     font-size: 0.9rem;
     color: #7d8184;
     margin-bottom: 2rem;
@@ -19,6 +25,7 @@ body {
     font-size: 4rem;
     font-weight: 700;
     color: #333;
+    margin-bottom: 1rem;
   }
   
   .not-found-message {
@@ -29,15 +36,47 @@ body {
   
   .not-found-button {
     padding: 1rem 2rem;
-    background-color: #e74c3c;
+    background-color: var(--main-color);
     color: white;
     text-decoration: none;
     font-size: 1rem;
     border-radius: 5px;
     transition: background-color 0.3s ease;
+    display: inline-block;
   }
   
   .not-found-button:hover {
-    background-color: #c0392b;
+    background-color: var(--btn-hover);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .not-found-title {
+      font-size: 3rem;
+    }
+  
+    .not-found-message {
+      font-size: 1rem;
+    }
+  
+    .not-found-button {
+      padding: 0.8rem 1.5rem;
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .not-found-title {
+      font-size: 2.5rem;
+    }
+  
+    .not-found-message {
+      font-size: 0.9rem;
+    }
+  
+    .not-found-button {
+      padding: 0.7rem 1.3rem;
+      font-size: 0.85rem;
+    }
   }
   

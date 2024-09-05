@@ -6,7 +6,7 @@ import MyAccount from './Pages/MyAccount'
 import Myprofile from './Components/Myaccount/Myprofile'
 import Mypaymentoptions from './Components/Myaccount/Mypaymentoptions'
 import Myaddress from './Components/Myaccount/Myaddress'
-import Myorders from './Components/Myaccount/Myorders'
+// import Myorders from './Components/Myaccount/OrderTable'
 import Mycancellation from './Components/Myaccount/Mycancellation'
 import Footer from './Components/Footer'
 import Products from './Pages/Products'
@@ -14,6 +14,8 @@ import PaymentForm from './Pages/PaymentForm'
 import ProductPage from './Pages/ProductPage'
 import Cart from './Pages/Cart'
 import NotFound from './Pages/NotFound'
+import Contact from './Pages/Contact'
+import OrderTable from './Components/Myaccount/OrderTable'
 function App() {
 
   return (
@@ -30,10 +32,11 @@ function App() {
           <Route path="" element={<Myprofile />} />
           <Route path="Mypayment" element={<Mypaymentoptions />} />
           <Route path="Myaddress" element={<Myaddress />} />
-          <Route path="Myorders" element={<Myorders />} />
+          <Route path="Myorders" element={<OrderTable />} />
           <Route path="Mycancellations" element={<Mycancellation />} />
         </Route>
         <Route path="*" element={<NotFound />} />
+        <Route path="/Contact" element={<Contact />} />
 
       </Routes>
     

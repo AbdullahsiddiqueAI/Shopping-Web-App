@@ -10,12 +10,15 @@ const NotFound = () => {
     <NavBar/>
     <div className="not-found-container">
       <div className="not-found-breadcrumb">
-        Home / 404 Error
+       <Link to="/" style={{color:'black'}}>Home</Link>  / 404 Error
       </div>
+    
+    <div>    
       <h1 className="not-found-title">404 Not Found</h1>
       <p className="not-found-message">
         Your visited page not found. You may go home page.
       </p>
+      </div>
       <Link to="/" className="not-found-button">
         Back to home page
       </Link>

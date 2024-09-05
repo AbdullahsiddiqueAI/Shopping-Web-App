@@ -85,10 +85,12 @@ const NavBar = () => {
             <div className="nav-bottom">
                 <ul>
                     <li><NavLink to="/">Home</NavLink> </li>
-                    <li><NavLink to="/Abouts">Abouts</NavLink> </li>
+                    {/* <li><NavLink to="/Abouts">Abouts</NavLink> </li> */}
                     <li><NavLink to="/Login">Login</NavLink> </li>
                     <li><NavLink to="/Signup">Signup</NavLink></li>
                     <li><NavLink to="/Products">Products</NavLink></li>
+                    <li><NavLink to="/Contact">Contact</NavLink></li>
+                    <li><NavLink to="/dsfdsf">Not Found</NavLink></li>
                 </ul>
             </div>
         </nav>
