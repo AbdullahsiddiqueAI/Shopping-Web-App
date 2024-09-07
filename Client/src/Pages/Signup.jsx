@@ -4,10 +4,17 @@ import '../css/Signup.css';
 import { Link } from 'react-router-dom';
 import Footer from '../Components/Footer';
 import { FaUserCircle } from 'react-icons/fa'; // Icon for the avatar
+import { useMutation } from '@tanstack/react-query';
+import { useDispatch } from 'react-redux'; // Redux hook to dispatch actions
+import { loginInUser } from '../Store/authSlice'; // Import the loginUser action from authSlice
+import { signupUser } from '../util/queries'; // API function to handle signup
+import { toast } from 'react-toastify'; // Import react-toastify
+import { FaSpinner } from 'react-icons/fa'; // Import loader icon from react-icons
 
 const Signup = () => {
   const [FormData, SetFormData] = useState({
-    Name: "",
+    Fname: "",
+    Lname: "",
     Email: "",
     Password: "",
     Address: "", // New Address field
@@ -20,6 +27,22 @@ const Signup = () => {
   });
 
   const [PreviewImage, SetPreviewImage] = useState(null); // For displaying the uploaded image preview
+  const dispatch = useDispatch(); // Redux dispatch
+
+  // Handle form submission using mutation
+  const { mutate, data, isLoading, error: Error, isError, isSuccess } = useMutation({
+    mutationFn: signupUser,
+    onSuccess: (response) => {
+      toast.success('Signup successful!');
+      dispatch(loginInUser({ 'user': response.data.user, 'tokens': response.data.tokens }));
+      // Show success toast and dispatch login
+    },
+    onError: (error) => {
+      console.error("Error during signup:", error);
+      toast.error(`Signup failed: ${error.response?.data?.error || 'Something went wrong'}`);
+      // Show error toast
+    },
+  });
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -77,8 +100,8 @@ const Signup = () => {
       return;
     }
 
-    // Handle form submission (including uploaded picture and address)
-    console.log("Form submitted", FormData);
+    // Trigger mutation to submit form data
+    mutate(FormData);
   };
 
   const handleAvatarClick = () => {
@@ -114,7 +137,11 @@ const Signup = () => {
                 style={{ display: 'none' }} // Hide the file input
               />
             </div>
-            <input type="text" name="Name" onChange={FormDataHandler} placeholder='Full Name' required />
+            <div style={{display:'flex',width:'100%',gap:'0.6rem'}}>
+
+            <input type="text" name="Fname" onChange={FormDataHandler} placeholder='First Name' required />
+            <input type="text" name="Lname" onChange={FormDataHandler} placeholder='Last Name' required />
+            </div>
             <input type="email" name="Email" onChange={FormDataHandler} placeholder='Email' required />
             {Errors.EmailError && <div className="error">{Errors.EmailError}</div>}
             <input type="password" name="Password" onChange={FormDataHandler} placeholder='Password' required />
@@ -123,8 +150,19 @@ const Signup = () => {
             {/* New Address input */}
             <input type="text" name="Address" onChange={FormDataHandler} placeholder='Address' required />
 
-            <input type="submit" value="Signup" />
+            {/* Submit button with loader and disabled during API call */}
+            <button type="submit" disabled={isLoading} className="signup-button">
+              {isLoading ? (
+                <>
+                  <FaSpinner className="spinner" /> Signing up...
+                </>
+              ) : (
+                "Signup"
+              )}
+            </button>
           </form>
+          {/* {isLoading && <div>Loading...</div>} */}
+          {isError && <div className="error">{Error.response?.data?.error || "Signup failed."}</div>}
           <div className="Signup-Right-Bottom">
             <div>Already have an Account? <Link to="/Login">Login</Link></div>
           </div>
@@ -133,6 +171,6 @@ const Signup = () => {
       <Footer />
     </>
   );
-}
+};
 
 export default Signup;

@@ -88,6 +88,9 @@ nav {
     align-items: center;
     height: 5rem;
     width: 100%;
+    .logout-icon{
+      display: none !important;
+    }
 
     .hamburger-menu {
       display: none;
@@ -189,6 +192,7 @@ nav {
         justify-content: center;
         align-items: center;
         cursor: pointer;
+        gap:1rem;
 
         .account-icon {
           background: url(img/icons8-account-96.png) no-repeat;
@@ -784,6 +788,11 @@ p {
   .account-text {
     display: none !important;
   }
+  .nav-top{
+    .nav-top-left{
+      .nav-account{
+        gap:0rem !important;
+      }}}
 
   /**************** Website Info ****************/
   .Website_info-content-wrapper {
@@ -848,6 +857,7 @@ p {
 
   .MyAccount-content {
     min-height: 63vh !important;
+    /* overflow-y: scroll; */
   }
 
   /***************My Profile***************/
@@ -881,6 +891,20 @@ p {
   .hamburger-menu {
     display: flex !important;
     margin-left: 1rem;
+  }
+ .nav-top{
+   .nav-top-left{
+     .nav-account{
+       gap:0rem;
+     }
+     
+    .logout-icon{
+      display: initial !important;
+    }
+  }
+ }
+  .logout-button{
+    display: none !important;
   }
 
   .nav-search {

@@ -11,7 +11,7 @@ const Home = () => {
     <>
     <Header/>
     <Product_cotegory/>
-    <ProductList/>
+    {/* <ProductList/> */}
     <Website_info/>
     <Footer/>
     </>

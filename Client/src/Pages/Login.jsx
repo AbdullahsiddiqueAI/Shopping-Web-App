@@ -1,21 +1,28 @@
-import React, { useState } from 'react';
-import NavBar from '../Components/NavBar';
-import '../css/Login.css';
-import { useSelector } from 'react-redux';
-import Footer from '../Components/Footer';
+import React, { useState } from "react";
+import NavBar from "../Components/NavBar";
+import "../css/Login.css";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { loginInUser } from "../Store/authSlice";
+import { loginUser } from "../util/queries"; // API function to handle login
+import Footer from "../Components/Footer";
+import { FaSpinner } from "react-icons/fa"; // Import loader icon from react-icons
+import { Link } from "react-router-dom";
 
 const Login = () => {
-  const {value}=useSelector((state)=> state.counter)
-  console.log("counter value",value)
   const [FormData, SetFormData] = useState({
     Email: "",
-    Password: ""
+    Password: "",
   });
 
   const [Errors, SetErrors] = useState({
     EmailError: "",
-    PasswordError: ""
+    PasswordError: "",
   });
+
+  const [loading, setLoading] = useState(false); // Manage loading state manually
+
+  const dispatch = useDispatch(); // Redux dispatch
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -44,29 +51,39 @@ const Login = () => {
   const FormDataHandler = (e) => {
     SetFormData({ ...FormData, [e.target.name]: e.target.value });
 
-    if (e.target.name === 'Password') {
-      SetErrors({ ...Errors, PasswordError: '' });
+    if (e.target.name === "Password") {
+      SetErrors({ ...Errors, PasswordError: "" });
     }
-    if (e.target.name === 'Email') {
-      SetErrors({ ...Errors, EmailError: '' });
+    if (e.target.name === "Email") {
+      SetErrors({ ...Errors, EmailError: "" });
     }
   };
 
-  const FormSubmit = (e) => {
+  const FormSubmit = async (e) => {
     e.preventDefault();
+
     const emailValid = validateEmail(FormData.Email);
     const passwordError = validatePassword(FormData.Password);
 
     if (!emailValid || passwordError) {
       SetErrors({
         EmailError: emailValid ? "" : "Please enter a valid email.",
-        PasswordError: passwordError
+        PasswordError: passwordError,
       });
       return;
     }
 
-    // Handle form submission
-    console.log("Form submitted", FormData);
+    setLoading(true); // Start loading
+
+    try {
+      const response = await loginUser(FormData);
+      dispatch(loginInUser({ ...response.data }));
+      toast.success("Login successful!");
+    } catch (error) {
+      toast.error(`Login failed: ${error.message}`);
+    } finally {
+      setLoading(false); // Stop loading after login process completes
+    }
   };
 
   return (
@@ -89,7 +106,9 @@ const Login = () => {
               placeholder="Email"
               required
             />
-            {Errors.EmailError && <div className="error">{Errors.EmailError}</div>}
+            {Errors.EmailError && (
+              <div className="error">{Errors.EmailError}</div>
+            )}
             <input
               type="password"
               name="Password"
@@ -97,12 +116,30 @@ const Login = () => {
               placeholder="Password"
               required
             />
-            {Errors.PasswordError && <div className="error">{Errors.PasswordError}</div>}
-            <input type="submit" value="Login" />
+            {Errors.PasswordError && (
+              <div className="error">{Errors.PasswordError}</div>
+            )}
+
+            {/* Submit button with loader and disabled during API call */}
+            <button type="submit" disabled={loading} className="login-button">
+              {loading ? (
+                <>
+                  <FaSpinner className="spinner" /> Logging in...
+                </>
+              ) : (
+                "Login"
+              )}
+            </button>
           </form>
+
+          <div className="Signup-Right-Bottom">
+            <div>
+              Don't have an account? <Link to="/">Sign up here</Link>.
+            </div>
+          </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 };

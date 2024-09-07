@@ -12,7 +12,7 @@ class UserCustomModel(AbstractUser):
     phoneNumber=models.CharField(max_length=11,blank=True,null=True)
     address=models.TextField(blank=True, null=True)
     password = models.CharField(max_length=255,null=False,blank=False,default='null')
-    proficPhoto=models.ImageField(blank=True, null=True,upload_to='profilePhotos/')
+    profilePhoto=models.ImageField(blank=True, null=True,upload_to='profilePhotos/')
     username = None
     REQUIRED_FIELDS = []
     USERNAME_FIELD = 'email'

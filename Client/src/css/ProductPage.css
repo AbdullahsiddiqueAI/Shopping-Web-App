@@ -74,7 +74,9 @@ body {
   }
   
   .main-product-rating {
+    display: flex;
     margin-top: 0.625rem;
+    gap: 0.4rem;
   }
   
   .main-product-price {

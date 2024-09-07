@@ -24,14 +24,23 @@
   border-radius: 6px;
   /* text-align: center; */
   cursor: pointer;
+  /* justify-content: center;
+  align-items: center; */
 }
 /* .Product_list-items:hover{
     transform: scale(1.02);
     } */
+  .Product_list-items-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
+    }
 .Product_list-items-img img {
-  max-width: 100%;
-  height: auto;
+  max-width: 18rem;
+  max-height: 13rem;
+  /* max-width: 100%;
+  height: auto; */
   transition: all 0.3s;
 }
 .Product_list-items-img img:hover {
@@ -123,4 +132,37 @@ input[type="tel"] {
   width: 100%;
   height: 2.5rem;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Adjust the values as needed */
+}
+
+.logout-button{
+  padding: 0.8rem 1.5rem;
+  background-color: var(--main-color);
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 20px;
+}
+.avatar-preview {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  /* border: 1px solid rgb(86, 85, 85); */
+}
+.avatar-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* margin-bottom: 20px; */
+  cursor: pointer; /* Allows clicking on avatar */
+}
+
+
+
+.default-avatar {
+  color: var(--main-color);
+  cursor: pointer; /* Allows clicking on avatar */
+  width: 150px;
+  height: 150px;
 }

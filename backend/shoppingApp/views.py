@@ -7,6 +7,7 @@ from core.models import UserCustomModel as User
 from core.serializer import UserSerializer 
 import json
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.pagination import PageNumberPagination
 # Category API Views
 class CategoryListCreateAPIView(APIView):
     def get(self, request):
@@ -56,8 +57,15 @@ class CategoryDetailAPIView(APIView):
         category.delete()
         return Response({"success":True,"data":"Delete Category Successfully","status":204},status=status.HTTP_204_NO_CONTENT)
 
+
+class CustomPagination(PageNumberPagination):
+    page_size = 10  # Default items per page if not provided by the client
+    page_size_query_param = 'page_size'  # Allow client to specify the page size via query param
+    max_page_size = 100  # Set a maximum limit to avoid performance issues
+
 # Product API Views
 class ProductListCreateAPIView(APIView):
+    pagination_class = CustomPagination
     def get_permissions(self):
         # Check if the request method is POST
         if self.request.method == 'POST':
@@ -66,9 +74,47 @@ class ProductListCreateAPIView(APIView):
         # No permissions are required for GET requests
         return []
     def get(self, request):
+        # Get query parameters for sorting, search, and category filtering
+        sort_by = request.query_params.get('sort_by', None)
+        search_query = request.query_params.get('search', None)
+        category_id = request.query_params.get('category', None)
+        
+        # Fetch all products initially
         products = Product.objects.all()
-        serializer = ProductSerializer(products, many=True)
-        return Response({"success":True,"data":serializer.data,"status":200})
+
+        # Filter by category if provided
+        if category_id:
+            products = products.filter(category__category_id=category_id)
+
+        # Apply search functionality (search by product name or description)
+        if search_query:
+            products = products.filter(
+                Q(name__icontains=search_query) | Q(description__icontains=search_query)
+            )
+
+        # Apply sorting
+        if sort_by == 'high-to-low':
+            products = products.order_by('-price')  # Sort price descending
+        elif sort_by == 'low-to-high':
+            products = products.order_by('price')  # Sort price ascending
+        elif sort_by == 'newest':
+            products = products.order_by('-created_at')  # Sort by newest
+        elif sort_by == 'oldest':
+            products = products.order_by('created_at')  # Sort by oldest
+
+        # Paginate the products based on client-provided page_size
+        paginator = self.pagination_class()
+        paginated_products = paginator.paginate_queryset(products, request)
+
+        # Serialize the products
+        serializer = ProductSerializer(paginated_products, many=True)
+
+        # Return paginated response
+        return paginator.get_paginated_response({
+            "success": True,
+            "data": serializer.data,
+            "status": 200
+        })
 
     def post(self, request):
         category_data = request.data.get("category")

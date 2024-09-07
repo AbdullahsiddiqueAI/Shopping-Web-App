@@ -3,6 +3,7 @@ import '../css/Contact.css'; // Assuming the CSS is stored here
 import { FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
 import NavBar from '../Components/NavBar';
 import Footer from '../Components/Footer';
+import { Link } from 'react-router-dom';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -31,7 +32,7 @@ const Contact = () => {
  <NavBar/>
     <div className="contact-container">
       <div className="contact-breadcrumb">
-        Home / Contact
+        <Link to='/' style={{color:'black'}}>Home</Link> / Contact
       </div>
 
       <div className="contact-content">

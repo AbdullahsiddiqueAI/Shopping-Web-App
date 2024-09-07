@@ -66,7 +66,7 @@ input[type='email'], input[type='password'], input[type='text'] {
     border: none;
     border-bottom: 2px solid #e5e5e5;
     font-size: 1rem;
-    width: 90% !important;
+    /* width: 90% !important; */
 }
 
 input[type='email']:hover, input[type='password']:hover, input[type='text']:hover {
@@ -80,8 +80,8 @@ input[type='email']:focus-visible, input[type='password']:focus, input[type='tex
     outline: none;
 }
 
-input[type="submit"] {
-    width: 90%;
+button[type="submit"] {
+    width: 100%;
     height: 3rem;
     font-size: 1rem;
     color: var(--main-color) !important;
@@ -91,7 +91,7 @@ input[type="submit"] {
     cursor: pointer;
 }
 
-input[type="submit"]:hover {
+button[type="submit"]:hover {
     background-color: var(--main-color);
     color: white !important;
 }
@@ -103,29 +103,7 @@ input[type="submit"]:hover {
 
 /* Avatar upload section */
 /* Add cursor pointer to avatar-upload */
-.avatar-upload {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* margin-bottom: 20px; */
-    cursor: pointer; /* Allows clicking on avatar */
-}
 
-.avatar-preview {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-    /* border: 1px solid rgb(86, 85, 85); */
-}
-
-.default-avatar {
-    color: var(--main-color);
-    cursor: pointer; /* Allows clicking on avatar */
-    width: 150px;
-    height: 150px;
-}
 
 /* Bottom part of the signup form */
 .Signup-Right-Bottom {
@@ -139,3 +117,13 @@ input[type="submit"]:hover {
     text-decoration: underline;
     margin-left: 0.4rem;
 }
+.spinner {
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  

@@ -37,7 +37,7 @@ class StripePaymentView(APIView):
                 
                 
             )
-            user=UserCustomModel.objects.filter(pk="f5a61daa2b7d49f3af20db6f42aa06de").first()
+            user=UserCustomModel.objects.filter(pk=request.user.id).first()
             # Save payment details in the database
             payment = Payment.objects.create(
                 user=user,

@@ -40,9 +40,9 @@ class SignUpView(APIView):
                 "status": 201
             }, status=status.HTTP_201_CREATED)
         except Exception as e:
-            
+            # print()
             return Response({
-                'error': str(e),
+                'error': str(list(e)[0]),
                 'status': 400
             }, status=status.HTTP_400_BAD_REQUEST)
 class LoginView(APIView):
