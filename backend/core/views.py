@@ -5,7 +5,7 @@ from rest_framework import status
 from .serializer import UserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import UserCustomModel
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny,IsAuthenticated
 import json
 import requests
 
@@ -65,3 +65,40 @@ class LoginView(APIView):
             "tokens": get_tokens_for_user(user),
             "status": "200"
         }, status=status.HTTP_200_OK)
+
+
+
+
+class UserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        current_password = request.data.get('currentPassword', None)
+
+        # Check if current password is provided
+        if current_password:
+            # Check if the current password is correct
+            if not user.check_password(current_password):
+                return Response({"success": False, "error": "Current password is wrong", "status": "400"}, 
+                                status=status.HTTP_400_BAD_REQUEST)
+            else:
+                new_password = request.data.get('password', None)
+                if not new_password:
+                    return Response({"success": False, "error": "New password is required", "status": "400"}, 
+                                status=status.HTTP_400_BAD_REQUEST)
+                user.set_password(new_password)
+                user.save()
+            
+        data=request.data.copy()
+        data.pop('password', None)
+        # Deserialize user data
+        serializer = UserSerializer(user, data=data, partial=True)  # partial=True allows partial updates
+
+        # Validate and save serializer
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"success": True, "data": serializer.data}, status=status.HTTP_200_OK)
+        else:
+            return Response({"success": False, "errors": serializer.errors, "status": "400"}, 
+                            status=status.HTTP_400_BAD_REQUEST)

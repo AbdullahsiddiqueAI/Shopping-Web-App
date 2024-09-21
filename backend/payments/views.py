@@ -42,7 +42,7 @@ class StripePaymentView(APIView):
             payment = Payment.objects.create(
                 user=user,
                 order=order,
-                amount=amount / 100,  # Convert cents to dollars
+                amount=amount, 
                 status='Completed' if charge.status == 'succeeded' else 'Failed',
             )
 

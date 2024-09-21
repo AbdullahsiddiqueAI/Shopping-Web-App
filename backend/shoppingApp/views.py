@@ -8,6 +8,8 @@ from core.serializer import UserSerializer
 import json
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
+from django.db.models import Q
+
 # Category API Views
 class CategoryListCreateAPIView(APIView):
     def get(self, request):
@@ -78,6 +80,8 @@ class ProductListCreateAPIView(APIView):
         sort_by = request.query_params.get('sort_by', None)
         search_query = request.query_params.get('search', None)
         category_id = request.query_params.get('category', None)
+        if str(category_id) == 'all':
+            category_id = None
         
         # Fetch all products initially
         products = Product.objects.all()
@@ -255,7 +259,7 @@ class OrderItemDetailAPIView(APIView):
     permission_classes=[IsAuthenticated]
     def get(self, request, pk):
         try:
-            order_item = OrderItem.objects.get(pk=pk)
+            order_item = OrderItem.objects.filter(pk=pk).first()
         except OrderItem.DoesNotExist:
             return Response({"success":False,"error":"Not Found","status":404},status=status.HTTP_404_NOT_FOUND)
         serializer = OrderItemSerializer(order_item)
@@ -274,7 +278,8 @@ class OrderItemDetailAPIView(APIView):
 
     def delete(self, request, pk):
         try:
-            order_item = OrderItem.objects.get(pk=pk)
+            # print("PK",pk)
+            order_item = OrderItem.objects.get(product_id=pk,user_id=request.user.id)
         except OrderItem.DoesNotExist:
             return Response({"success":False,"error":"Not Found","status":404},status=status.HTTP_404_NOT_FOUND)
         order_item.delete()
