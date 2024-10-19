@@ -24,6 +24,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getCartData } from './util/queries';
 import { setCartData } from './Store/cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import PayementPage from './Pages/PayementPage';
 
 function App() {
   const dispatch = useDispatch(); 
@@ -63,6 +64,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<PrivateRoute component={Cart} />} />
+        <Route path="/payment" element={<PrivateRoute component={PayementPage} />} />
         <Route path="/ProductPage/:id" element={<ProductPage />} />
         <Route path="/Signup" element={<AuthRoute component={Signup} />} />
         <Route path="/Login" element={<AuthRoute component={Login} />} />

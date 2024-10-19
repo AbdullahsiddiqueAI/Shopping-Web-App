@@ -166,3 +166,43 @@ input[type="tel"] {
   width: 150px;
   height: 150px;
 }
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* height: 100vh; Full screen height for central alignment */
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: var(--main-color); /* Green color for the spinner */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+p {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.small-spinner {
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-left-color: var(--main-color); /* Green color */
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem;
+  background-color: white;
+  animation: spin 1s linear infinite;
+}
+
+

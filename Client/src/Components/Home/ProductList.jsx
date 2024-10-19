@@ -46,6 +46,7 @@ function ProductList() {
       </div>
       </div>
       <div className="Product_list-content">
+      {/* {isLoading && <Loader/>} */}
        {
         products.map((product,index)=> (<ProductListItem product={product} key={index}/>))
         }

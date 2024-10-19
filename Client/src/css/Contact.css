@@ -106,6 +106,7 @@ body {
   .contact-submit-button {
     background-color: var(--main-color);
     color: white;
+    height: initial !important;
     padding: 1rem 2rem;
     font-size: 1rem;
     border: none;

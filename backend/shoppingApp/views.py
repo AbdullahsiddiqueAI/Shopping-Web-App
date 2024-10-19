@@ -9,6 +9,7 @@ import json
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
 from django.db.models import Q
+from rest_framework.decorators import api_view
 
 # Category API Views
 class CategoryListCreateAPIView(APIView):
@@ -223,6 +224,12 @@ class OrderDetailAPIView(APIView):
         order.delete()
         return Response({"success":True,"data":"Order Deleted Successfully","status":204},status=status.HTTP_204_NO_CONTENT)
 
+
+
+
+
+
+
 # OrderItem API Views
 class OrderItemListCreateAPIView(APIView):
     permission_classes=[IsAuthenticated]
@@ -293,6 +300,14 @@ class OrderItemDetailAPIView(APIView):
         order_item.delete()
         return Response({"success":True,"data":"Order Item Deleted Successfully","status":204},status=status.HTTP_204_NO_CONTENT)
 
+
+@api_view(['POST'])
+def submit_contact_form(request):
+    serializer = ContactSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 # # Payment API Views
 # class PaymentListCreateAPIView(APIView):
 #     def get(self, request):

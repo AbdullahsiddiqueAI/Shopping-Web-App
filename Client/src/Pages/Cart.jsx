@@ -9,6 +9,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'; /
 import { deleteCartItem, getCartData } from '../util/queries'; // Import the API function to fetch cart data
 import { setCartData, updateCart, removeFromCart } from '../Store/cartSlice'; // Redux actions
 import { toast } from 'react-toastify';
+import { openDrawer } from '../Store/drawerSlice';
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -132,8 +133,13 @@ const Cart = () => {
         </table>
 
         <div className="cart-actions">
+          <Link to="/products">
           <button className="cart-return-button">Return To Shop</button>
-          <button className="cart-update-button">Update Cart</button>
+          </Link>
+          
+          
+          <button className="cart-update-button" onClick={()=>dispatch(openDrawer())}>Update Cart</button>
+          
         </div>
 
         <div className="cart-summary">
@@ -150,7 +156,10 @@ const Cart = () => {
             <span>Total:</span>
             <span>${totalPrice}</span>
           </div>
+         <Link to='/payment'> 
+         
           <button className="cart-checkout-button">Proceed to checkout</button>
+         </Link>
         </div>
       </div>
       <Footer />

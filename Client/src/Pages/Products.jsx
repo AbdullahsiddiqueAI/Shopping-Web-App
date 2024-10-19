@@ -10,6 +10,8 @@ import { useLocation } from "react-router";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useSearchParams } from "react-router-dom"; // Import useSearchParams
+import Loader from "../Components/Common/Loader";
+import SmallLoader from "../Components/Common/SmallLoader";
 
 function Products() {
   const [searchParams] = useSearchParams(); // Get the query params
@@ -96,7 +98,7 @@ function Products() {
     }
   };
 
-  if (isLoading && page === 1) return <div>Loading products...</div>;
+  // if (isLoading && page === 1) return <div>Loading products...</div>;
   if (error) return <div>Error loading products: {error.message}</div>;
 
   return (
@@ -164,7 +166,8 @@ function Products() {
             </div>
 
             <main className="productsPage_product-list">
-              {products.length == 0 && (
+              {isLoading && <Loader/> && page==1}
+              {(!isLoading && products.length==0) && (
                 <div className="Product-not-Found">
                   Product Not Found
                 </div>
@@ -178,10 +181,12 @@ function Products() {
               <button
                 onClick={loadMoreProducts}
                 disabled={isFetching}
+                style={{backgroundColor:isFetching ?"initial":"#3c3c3c"}}
                 className="productPage_see-more"
               >
-                {isFetching ? "Loading more..." : "See More"}
+                {isFetching ? <div style={{display:'grid',placeItems:"center",width:"100%",height:"100%"}}><SmallLoader/></div> : "See More"}
               </button>
+              
             )}
           </div>
         </div>

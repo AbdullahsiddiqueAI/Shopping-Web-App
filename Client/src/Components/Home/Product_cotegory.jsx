@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getCategory } from '../../util/queries';
 import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
+import Loader from '../Common/Loader';
 
 const Product_cotegory = () => {
   const [count, setCount] = useState(0);
@@ -28,7 +29,7 @@ const Product_cotegory = () => {
     setCount(newCount);
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  // if (!isLoading) return <Loader/>;
   if (isError) return <div>Error fetching categories</div>;
 
   const handleCategoryClick = (category) => {
@@ -47,6 +48,7 @@ const Product_cotegory = () => {
           </div>
         </div>
         <div className="Product_cotegory-content">
+          {isLoading && <Loader/>}
           <div className="Product_cotegory-all-items">
             {categories?.map((category) => (
               <div 

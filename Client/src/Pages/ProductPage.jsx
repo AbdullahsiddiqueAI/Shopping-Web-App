@@ -9,6 +9,7 @@ import { getProduct, addCartItem } from '../util/queries'; // Import the API fun
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../Store/cartSlice'; // Redux action for adding to cart
 import { toast } from 'react-toastify';
+import Loader from '../Components/Common/Loader';
 
 const ProductPage = () => {
   const { id } = useParams(); // Get the product ID from the URL
@@ -55,11 +56,11 @@ const ProductPage = () => {
   };
 
   // Handle loading and error states
-  if (productLoading) return <div>Loading...</div>;
+  // if (productLoading) return <div>Loading...</div>;
   if (productError) return <div>Error loading product: {productError.message}</div>;
 
   // Fallback if product not found
-  if (!product) return <div>Product not found</div>;
+  // if (!product) return <div>Product not found</div>;
 
   // Function to handle quantity increase
   const handleIncrease = () => {
@@ -78,17 +79,24 @@ const ProductPage = () => {
       <NavBar />
       <div className="main-product-page">
         <div className="main-product-breadcrumb">
-          <Link to="/" style={{ color: 'black' }}>Home</Link> / {product.name}
+          <Link to="/" style={{ color: 'black' }}>Home</Link> / {product?.name}
         </div>
-
+        {productLoading && <Loader/>}
+        {!productLoading && !product && (
+                <div className="Product-not-Found">
+                  Product Not Found
+                </div>
+              ) }
+        {!productLoading && 
         <div className="main-product-container">
           <div className="main-product-images">
             {/* Display product image or fallback to a default image */}
             <img
-              src={product.productPic ? `http://127.0.0.1:8000/${product.productPic}` : 'default-image.jpg'}
-              alt={product.name}
+              src={product?.productPic ? `http://127.0.0.1:8000/${product?.productPic}` : 'default-image.jpg'}
+              alt={product?.name}
             />
-          </div>
+          </div> 
+          
 
           <div className="main-product-info">
             <h1 className="main-product-title">{product.name}</h1>
@@ -125,7 +133,7 @@ const ProductPage = () => {
             </div>
           </div>
         </div>
-
+}
         <div className="main-product-related-items">
           <h1>Related Items</h1>
           <div className="main-product-related-products">

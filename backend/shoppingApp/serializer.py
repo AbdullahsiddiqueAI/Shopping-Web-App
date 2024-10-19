@@ -60,6 +60,7 @@ class OrderSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = self.context['request'].user  # Get the current authenticated user
         order_items = OrderItem.objects.filter(user_id=user.id,order__isnull=True)
+        print("order_items",order_items)
         if not order_items:
             raise serializers.ValidationError("OrderItems is Empty")
         order = Order.objects.create(user=user, **validated_data)
@@ -102,7 +103,10 @@ class OrderItemSerializer(serializers.ModelSerializer):
         return instance
 
 
-
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = '__all__'
 
 
 # class PaymentSerializer(serializers.ModelSerializer):
