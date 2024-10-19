@@ -181,7 +181,7 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Media files (Uploaded by users)
-MEDIA_URL = '/media/'
+MEDIA_URL = 'api/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
 
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')

@@ -6,6 +6,7 @@ from core.models import UserCustomModel as User
 
 class Category(models.Model):
     category_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    Categoryicon=models.ImageField(null=True, blank=True,upload_to='category')
     name = models.CharField(max_length=255)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)

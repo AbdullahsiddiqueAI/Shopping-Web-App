@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'; // Import R
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../Store/cartSlice'; // Redux action for adding to cart
 import { addCartItem } from '../../util/queries'; // API function for adding product to cart
+import { toast } from 'react-toastify';
 
 const ProductListItem = ({ product }) => {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const ProductListItem = ({ product }) => {
         price: product.price,
         quantity: 1 // Adding 1 unit to the cart (or more if needed)
       }));
+      toast.success(`${product.name}(s) added to cart!`);
       queryClient.invalidateQueries('cartData');
     },
     onError: (error) => {
@@ -36,9 +38,11 @@ const ProductListItem = ({ product }) => {
 
   return (
     <div className="Product_list-items">
+      
+      <Link to={`/ProductPage/${product.product_id}`}>
       <div className="Product_list-items-img">
         {/* Display product image or fallback to a default image */}
-        <img src={`http://127.0.0.1:8000/${product.productPic}` || 'default-image.jpg'} alt={product.name} />
+        <img src={`${import.meta.env.VITE_BACKEND_END_POINT_image}${product.productPic}` || 'default-image.jpg'} alt={product.name} />
       </div>
       <div className="Product_list-items-text">{product.name}</div>
       <div>
@@ -47,6 +51,7 @@ const ProductListItem = ({ product }) => {
         {/* Assuming you have a Rating component that accepts rating and review count */}
         <Rating value={product?.rating || 4.0} count={product?.reviewCount || 64} />
       </div>
+      </Link>
       <div className="Product_list-Add_cart">
         <button onClick={handleAddToCart} className="Product_list-Add_cart-text" disabled={mutation.isLoading}>
           {mutation.isLoading ? 'Adding...' : 'Add to Cart'}

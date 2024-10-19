@@ -580,6 +580,7 @@ nav {
           height: 4rem;
           background-size: cover;
           background-position: center;
+          
         }
       }
 
@@ -589,7 +590,7 @@ nav {
         transition: all 0.3s;
       }
 
-      .Product_cotegory-items:nth-child(1) {
+      /* .Product_cotegory-items:nth-child(1) {
         .Product_cotegory-items-img {
           background: url("img/Product_cotegory/Category-CellPhone.png")
             no-repeat;
@@ -627,7 +628,7 @@ nav {
         .Product_cotegory-items-img {
           background: url("img/Product_cotegory/Category-Gamepad.png") no-repeat;
         }
-      }
+      } */
     }
   }
 }

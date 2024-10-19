@@ -233,13 +233,21 @@ class OrderItemListCreateAPIView(APIView):
 
     def post(self, request):
         product_id = request.data.get('product')
+        quantity = request.data.get('quantity')
+        print("quantity: ",quantity)  
 
         # Filter for an existing OrderItem with the same user and product
         order_item = OrderItem.objects.filter(user_id=request.user.id,product_id=product_id,order__isnull=True).first()
 
         if order_item:
             # If the order item exists, increment the quantity
-            order_item.quantity += 1
+            if quantity:
+                order_item.quantity+=int(quantity)
+            else:
+                order_item.quantity += 1
+                
+                
+            
             order_item.save()
 
             # Serialize the updated order item

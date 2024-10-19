@@ -6,7 +6,7 @@ from core.serializer import UserSerializer
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['category_id', 'name', 'description', 'created_at', 'updated_at']
+        fields = ['category_id', 'name', 'description','Categoryicon', 'created_at', 'updated_at']
 
 class ProductSerializer(serializers.ModelSerializer):
     # This ensures that the category data is included in GET requests

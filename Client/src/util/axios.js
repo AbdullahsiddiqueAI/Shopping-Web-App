@@ -1,5 +1,5 @@
 import axios from "axios";
-export const API_URL = import.meta.env.VITE_BACKEND_END_POINT;
+export const API_URL = import.meta.env.VITE_BACKEND_END_POINT+'/';
 
 const instance = axios.create({
   baseURL: API_URL,
