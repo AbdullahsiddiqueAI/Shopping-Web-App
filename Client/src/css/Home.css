@@ -815,6 +815,7 @@ p {
 }
 
 @media (max-width: 1050px) {
+  
   /****************** Nav Bar ******************/
   .nav-top-left {
     gap: 0rem !important;
@@ -832,6 +833,7 @@ p {
 }
 
 @media (max-width: 869px) {
+
   /*************** Footer ****************/
   .Footer-top {
     gap: 0.2rem !important;
@@ -886,6 +888,7 @@ p {
 }
 
 @media (max-width: 768px) {
+  
   /***************** Footer *******************/
   .Footer-main {
     padding-top: 2rem !important;
@@ -1089,6 +1092,7 @@ p {
 }
 }
 @media (max-width: 554px) {
+  
   nav {
     & .nav-bottom {
       & ul {

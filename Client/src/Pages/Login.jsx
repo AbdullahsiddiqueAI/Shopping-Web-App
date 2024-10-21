@@ -8,6 +8,7 @@ import { loginUser } from "../util/queries"; // API function to handle login
 import Footer from "../Components/Footer";
 import { FaSpinner } from "react-icons/fa"; // Import loader icon from react-icons
 import { Link } from "react-router-dom";
+import SmallLoader from "../Components/Common/SmallLoader";
 
 const Login = () => {
   const [FormData, SetFormData] = useState({
@@ -121,11 +122,23 @@ const Login = () => {
             )}
 
             {/* Submit button with loader and disabled during API call */}
-            <button type="submit" disabled={loading} className="login-button">
+            <button
+              type="submit"
+              disabled={loading}
+              // style={{ backgroundColor: loading ? "initial" : "#3c3c3c" }}
+              className="login-button"
+            >
               {loading ? (
-                <>
-                  <FaSpinner className="spinner" /> Logging in...
-                </>
+                <div
+                  style={{
+                    display: "grid",
+                    placeItems: "center",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <SmallLoader />
+                </div>
               ) : (
                 "Login"
               )}

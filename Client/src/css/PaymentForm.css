@@ -1,0 +1,132 @@
+/* Previous CSS */
+.payementPage-container{
+display: flex;
+width: 100vw;
+
+}
+.payementPage-left{
+    width: 30vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cart-summary{
+    width: 20vw !important;
+}
+.outercontainer {
+    background-color: #6C95FF;
+    width: 70vw;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    /* margin-left: 20%; */
+}
+
+.outercontainer img {
+    width: 100%; /* Keep it 100% width for responsiveness */
+    max-width: 400px; /* Ensure the card image doesn’t get too large */
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 20px;
+}
+
+.form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+/* .inputContainer {
+    margin-bottom: 20px;
+} */
+
+.button {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #6772e5;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.errorMessage {
+    color: red;
+    margin-bottom: 10px;
+}
+
+.successMessage {
+    color: green;
+    margin-bottom: 10px;
+}
+
+/* Stripe CardElement styling */
+.cardElement {
+    font-size: 16px;
+    color: #32325d;
+}
+
+.cardElement::placeholder {
+    color: #aab7c4;
+}
+
+/* New CSS for displaying card details dynamically on the image */
+.card-display {
+    position: relative; /* Makes the card details absolutely positioned relative to the card */
+    width: 100%; /* Ensure the container width matches the image width */
+    max-width: 400px; /* Same as the card image max width for proper alignment */
+    margin-bottom: 20px; /* Add space between the card and the form */
+}
+
+.card-details {
+    position: absolute;
+    top: 120px; /* Adjust to align text on the card */
+    left: 40px; /* Slight padding from the left side of the card */
+    color: white !important;
+    font-size: 18px;
+    font-weight: 500;
+    display: flex;
+    /* gap: 0.6rem; */
+    flex-direction: column;
+    
+    width: calc(100% - 40px); /* Ensures the text stays within the card boundary */
+}
+
+.card-number {
+    /* margin-bottom: 1rem; */
+    color: white !important;
+    letter-spacing: 2px; /* Space out the card number to mimic real card formatting */
+    display: flex;
+    flex-direction: column;
+}
+
+.expiry-date {
+    font-size: 1rem;
+    color: white !important;
+    /* margin-bottom: 0.5rem; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cvc-code {
+    font-size: 1rem;
+    color: white !important;
+    /* text-align: right; Align the CVC to the right, as it’s typically found on the back */
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    /* left: -2rem; */
+}
+.expiry-date-text{
+    font-size: 0.8rem;
+    font-weight: 400;
+}

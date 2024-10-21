@@ -1,0 +1,127 @@
+.Dashboard-container{
+    display: flex;
+    flex-direction: column;
+
+}
+.Dashboard-nav{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    /* padding: 1rem; */
+    border-bottom: 1px solid #ccc;
+
+}
+.dashboard-content{
+display: flex;
+
+}
+.dasboard-leftnav{
+
+    flex-basis: 20%;
+    background-color: #f3f3f3;
+    /* padding: 1rem; */
+    border-right: 1px solid #ccc;
+    min-height: calc(100vh - 2rem) ;
+}
+.dashboard-maincontent{
+    flex-basis: 80%;
+    padding: 1rem;
+    min-height: calc(100vh - 2rem);
+
+}
+.website-img {
+    display: inline-block;
+    background: url(../img/SuperStore.png) no-repeat;
+    background-size: cover;
+    width: 15rem;
+    height: 7rem;
+    background-position: 50% 50%;
+    line-height: 20px;
+
+    /* img{
+            
+              height: 6rem;
+          } */
+  }
+.DashboardNav-container{
+    display: flex;
+    justify-content: space-between;
+    width: 100vw;
+    align-items: center;
+    gap: 1rem;
+}
+.DashboardNav-GotoShop-btn{
+    margin-right: 3rem !important;
+    padding: 0.8rem 1.5rem;
+    background-color: var(--main-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    width: 8rem;
+    height: 3rem;
+    position: relative;
+    transition: all 0.2s linear;
+    span{
+        display: none;
+        position: relative;
+        top: 0px;
+        
+    }
+    &:hover{
+        /* width: 9rem; */
+        height:3.2rem;
+        span{
+            display: block;
+        }
+
+    }
+}
+
+
+
+
+/* ******************************* Left Nav ******************************* */
+.dashboard-leftnav-container {
+    /* padding: 1rem; */
+  }
+  
+  .dashboard-leftnav-list {
+    list-style: none;
+    padding-top: 1rem;
+    width: 100%;
+  }
+  
+  .dashboard-leftnav-list li .nav-icon {
+    margin-left: 2.5rem;
+
+  }
+  .dashboard-leftnav-list li {
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    
+    padding: 1rem 0;
+    font-size: 1.2rem;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .dashboard-leftnav-list li:hover {
+    background-color: #e5e5e5; /* Add hover effect */
+  }
+  
+  .nav-icon {
+    margin-right: 1rem;
+    font-size: 1.5rem; /* Adjust the size of the icons */
+  }
+  .dashboard-leftnav-list li.active {
+    background-color: var(--main-color); /* Set active background color */
+    color: white; /* Change text color to white when active */
+  }
+  
+  .dashboard-leftnav-list li.active .nav-icon {
+    color: white; /* Change icon color when active */
+  }
+  

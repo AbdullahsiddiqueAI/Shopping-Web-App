@@ -97,6 +97,83 @@ export const getProduct = async (id) => {
       // throw new Error(JSON.stringify(error.response.data.error));
     }
   };
+
+
+  export const createProduct = async ({formData}) => {
+    try {
+    // Create a new FormData object to handle form data
+    // const formData = new FormData();
+  
+    // // Append fields to FormData
+    // formData.append('name', product.name);
+    // formData.append('category', product.category.category_id);
+    // formData.append('product_id', product.product_id);
+    // formData.append('price', product.price);
+    // formData.append('stock', product.stock);
+  
+    // // Append image if it exists
+    // if (product.productPic) {
+    //   formData.append('productPic', product.productPic);
+    // }
+  
+    // Make API call using Axios instance
+    const { data } = await instance.post('/products/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  
+    return data;
+  } catch (error) {
+    console.log('error', error);
+    throw new Error(error.response.data.error);
+  }
+  };
+  
+  // Edit product
+  export const updateProduct = async ({formData,product_id}) => {
+    try {
+    // const formData = new FormData();
+  
+    // // Append each field to the form data
+    // formData.append('name', product.name);
+    // formData.append('category', product.category.category_id);
+    // formData.append('product_id', product.product_id);
+    // formData.append('price', product.price);
+    // formData.append('stock', product.stock);
+  
+    // // If there's an image file, append it to the FormData
+    // console.log("product",product);
+    
+    // if (product.productPic) {
+    //   formData.append('productPic', product.productPic);
+    // }
+  
+    // Make API call using the Axios instance
+    const { data } = await instance.patch(`/products/${product_id}/`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  
+    return data;
+  } catch (error) {
+    console.log('error', error);
+    throw new Error(error.response.data.error);
+  }
+  };
+  
+  // Delete product
+  export const deleteProduct = async (id) => {
+try{
+    const { data } = await instance.delete(`products/${id}/`);
+    return data;
+  } catch (error) {
+    console.log('error', error);
+    throw new Error(error.response.data.error);
+  }
+  };
+
   export const getCartData = async () => {
     try {
       const response = await instance.get('order-items/');

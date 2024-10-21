@@ -11,7 +11,7 @@ import { setCartData, updateCart, removeFromCart } from '../Store/cartSlice'; //
 import { toast } from 'react-toastify';
 import { openDrawer } from '../Store/drawerSlice';
 
-const Cart = () => {
+const Cart = ({nav=true,footer=true}) => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient(); // To manually invalidate queries
   const cartItems = useSelector((state) => state.cart.items);
@@ -71,9 +71,7 @@ const Cart = () => {
     deleteItem(id);
   };
 
-  const handleCouponApply = () => {
-    console.log('Coupon applied:', couponCode);
-  };
+
 
   const getTotal = () => {
     return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -84,7 +82,7 @@ const Cart = () => {
 
   return (
     <>
-      <NavBar />
+      {nav && <NavBar />}
       <div className="cart-container">
         <div className="cart-breadcrumb">
           <Link to="/" style={{ color: 'black' }}>Home</Link> / Cart
@@ -162,7 +160,7 @@ const Cart = () => {
          </Link>
         </div>
       </div>
-      <Footer />
+      {footer && <Footer />}
     </>
   );
 };

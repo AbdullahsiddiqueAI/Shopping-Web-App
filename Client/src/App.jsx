@@ -25,6 +25,12 @@ import { getCartData } from './util/queries';
 import { setCartData } from './Store/cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import PayementPage from './Pages/PayementPage';
+import Dashboard from './Dashboard/Dashboard';
+import DashboardPage from './Dashboard/DasboardPage';
+import ProductsPage from './Dashboard/ProductsPage';
+import OrdersPage from './Dashboard/OrdersPage';
+import PaymentsPage from './Dashboard/PaymentsPage';
+import CategoryPage from './Dashboard/CaotegoryPage';
 
 function App() {
   const dispatch = useDispatch(); 
@@ -69,6 +75,7 @@ function App() {
         <Route path="/Signup" element={<AuthRoute component={Signup} />} />
         <Route path="/Login" element={<AuthRoute component={Login} />} />
         <Route path="/Products" element={<Products />} />
+        
         {/* <Route path="/Products/:search" element={<Products />} /> */}
 
         {/* Protect MyAccount and its sub-routes */}
@@ -82,6 +89,16 @@ function App() {
 
         <Route path="*" element={<NotFound />} />
         <Route path="/Contact" element={<Contact />} />
+
+        <Route path="/Dashboard" element={<PrivateRoute component={Dashboard} />}>
+        <Route path="" element={<PrivateRoute component={DashboardPage}  />} />
+          <Route path="products" element={<PrivateRoute component={ProductsPage} />} />
+           <Route path="category" element={<PrivateRoute component={CategoryPage}  />} />
+          <Route path="orders" element={<PrivateRoute component={OrdersPage}/>} />
+          <Route path="payments" element={<PrivateRoute component={PaymentsPage} />} />
+        </Route>
+
+
       </Routes>
       <ToastContainer />
     </>

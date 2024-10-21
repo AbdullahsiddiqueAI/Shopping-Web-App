@@ -175,7 +175,9 @@ class ProductDetailAPIView(APIView):
         except Product.DoesNotExist:
             return Response({"success":False,"error":"Not Found","status":404},status=status.HTTP_404_NOT_FOUND)
         product.delete()
-        return Response({"success":True,"data":"Delete Product Successfully","status":204},status=status.HTTP_204_NO_CONTENT)
+        return Response({"success":True,"data":{
+            "product_id":pk
+            },"status":204},status=status.HTTP_200_OK)
 
 # Order API Views
 class OrderListCreateAPIView(APIView):
@@ -293,12 +295,13 @@ class OrderItemDetailAPIView(APIView):
 
     def delete(self, request, pk):
         try:
-            # print("PK",pk)
-            order_item = OrderItem.objects.get(product_id=pk,user_id=request.user.id)
+            # Look for the OrderItem with the given product_id and user_id, and where order_id is NULL
+            order_item = OrderItem.objects.get(product_id=pk, user_id=request.user.id, order_id__isnull=True)
         except OrderItem.DoesNotExist:
-            return Response({"success":False,"error":"Not Found","status":404},status=status.HTTP_404_NOT_FOUND)
+            return Response({"success": False, "error": "Not Found", "status": 404}, status=status.HTTP_404_NOT_FOUND)
+        
         order_item.delete()
-        return Response({"success":True,"data":"Order Item Deleted Successfully","status":204},status=status.HTTP_204_NO_CONTENT)
+        return Response({"success": True, "data": "Order Item Deleted Successfully", "status": 204}, status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['POST'])
