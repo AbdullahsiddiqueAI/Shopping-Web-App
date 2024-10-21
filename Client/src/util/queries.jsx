@@ -216,17 +216,7 @@ try{
       throw new Error(error.response?.data?.error || 'Error adding item to cart');
     }
   };
-  export const getCategory = async () => {
-    try {
-      // console.log("item",item)
-      const response = await instance.get(`categories/`);
-      return response.data.data;
-    } catch (error) {
-      console.log('Error adding to cart:', error);
-      throw new Error(error.response?.data?.error || 'Error adding item to cart');
-    }
-  };
-
+  
   export const userDataUpdate= async (formData)=>{
     try{
       const response= await instance.post('user/',formData);
@@ -245,3 +235,59 @@ try{
     
 
   }
+
+
+  export const getCategory = async () => {
+    try {
+      const response = await instance.get('categories/');
+      return response.data.data; // Adjust based on your API response structure
+    } catch (error) {
+      console.log('Error fetching categories:', error);
+      throw new Error(error.response?.data?.error || 'Error fetching categories');
+    }
+  };
+  
+  export const createCategory = async (formData) => {
+    try {
+      const response = await instance.post('categories/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data.data;
+    } catch (error) {
+      console.log('Error creating category:', error);
+      throw new Error(error.response?.data?.error || 'Error creating category');
+    }
+  };
+  
+  export const updateCategory = async ({ category_id, formData }) => {
+    try {
+      // for (let [key, value] of formData.entries()) {
+      //   console.log(key, value);
+      // }
+      console.log("formData",formData)
+      const response = await instance.patch(`categories/${category_id}/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data.data;
+    } catch (error) {
+      console.log('Error updating category:', error);
+      throw new Error(error.response?.data?.error || 'Error updating category');
+    }
+  };
+  
+  
+  export const deleteCategory = async (categoryId) => {
+    try {
+      const response = await instance.delete(`categories/${categoryId}/`);
+      console.log("response.data",response.data)
+      return response.data; // Adjust based on your API response structure
+    } catch (error) {
+      console.log('Error deleting category:', error);
+      throw new Error(error.response?.data?.error || 'Error deleting category');
+    }
+  };
+  

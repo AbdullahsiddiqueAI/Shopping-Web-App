@@ -16,7 +16,18 @@ h1 {
   border-radius: 4px;
   cursor: pointer;
   margin-right: 0.5rem;
+
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+
 }
+.FaPlus-icon{
+  width: 1rem;
+  height: 1rem;
+  font-weight: 700;
+}
+
 
 .btn.edit-btn {
   background-color: #ffc107;

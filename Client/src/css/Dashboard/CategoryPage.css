@@ -1,0 +1,109 @@
+.category-page {
+    padding: 2rem;
+  }
+  
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .btn {
+    padding: 0.5rem 1rem;
+    background-color: #3f51b5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 0.5rem;
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+
+  }
+  .FaPlus-icon{
+    width: 1rem;
+    height: 1rem;
+    font-weight: 700;
+  }
+  
+  .btn.edit-btn {
+    background-color: #ffc107;
+  }
+  
+  .btn.delete-btn {
+    background-color: #f44336;
+  }
+  
+  /* Table Styling */
+  .categories-list table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .categories-list th,
+  .categories-list td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .categories-list th {
+    background-color: #f3f3f3;
+  }
+  
+  /* Category Icon Styling */
+  .category-icon {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  /* Modal Styling */
+  .modal {
+    background-color: white;
+    padding: 2rem;
+    width: 400px;
+    margin: auto;
+    border-radius: 8px;
+    position: relative;
+  }
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .modal input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  /* Close Button Styling */
+  .close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #f44336;
+  }
+  

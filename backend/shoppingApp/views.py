@@ -46,6 +46,7 @@ class CategoryDetailAPIView(APIView):
             category = Category.objects.get(pk=pk)
         except Category.DoesNotExist:
             return Response({"success":False,"error":"Not Found","status":404},status=status.HTTP_404_NOT_FOUND)
+        print("Category",request.data.keys())
         serializer = CategorySerializer(category, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -58,7 +59,9 @@ class CategoryDetailAPIView(APIView):
         except Category.DoesNotExist:
             return Response({"success":False,"error":"Not Found","status":404},status=status.HTTP_404_NOT_FOUND)
         category.delete()
-        return Response({"success":True,"data":"Delete Category Successfully","status":204},status=status.HTTP_204_NO_CONTENT)
+        return Response({"success":True,"data":{
+            "category_id":pk
+            },"status":204},status=status.HTTP_200_OK)  
 
 
 class CustomPagination(PageNumberPagination):
