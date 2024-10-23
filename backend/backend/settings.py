@@ -30,12 +30,15 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'your_default_secret_key')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
+# ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
+    'channels',
     'corsheaders',
     "django.contrib.admin",
     "django.contrib.auth",
@@ -50,8 +53,9 @@ INSTALLED_APPS = [
     'payments',
 ]
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://localhost:5173"  # Vite dev server
+    # "http://localhost:3000",
+    # "http://localhost:5173",
+    "http://*"# Vite dev server
    
 ]
 CORS_ALLOW_ALL_ORIGINS = True
@@ -85,8 +89,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "backend.wsgi.application"
-
+# WSGI_APPLICATION = "backend.wsgi.application"
+ASGI_APPLICATION = 'backend.asgi.application' 
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -186,3 +190,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
 STRIPE_PUBLISHABLE_KEY =  os.getenv("STRIPE_PUBLISHABLE_KEY")
+
+
+
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',  # or 'channels_redis.core.RedisChannelLayer' for Redis
+    }
+}
+ASGI_APPLICATION = 'backend.asgi.application'

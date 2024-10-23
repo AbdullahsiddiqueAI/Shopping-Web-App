@@ -54,7 +54,7 @@ const Drawer = () => {
             <div className="cart-items">
               {cartItems.map(item => (
                 <div key={item.id} className="cart-item">
-                  <img src={`http://127.0.0.1:8000/${item.productPic}`} alt={item.name} className="cart-item-image" />
+                  <img src={`${import.meta.env.VITE_BACKEND_END_POINT_image}${item.productPic}`} alt={item.name} className="cart-item-image" />
                   <div className="cart-item-details">
                     <h4>{item.name}</h4>
                     <p>Price: ${item.price}</p>

@@ -113,7 +113,16 @@ const handleSubmit = (e) => {
   
   // Append the image file if it exists
   if (newCategory.Categoryicon) {
-    formData.append('Categoryicon', newCategory.Categoryicon);
+    if (isEditing) {
+
+      if(currentCategory.Categoryicon !=newCategory.Categoryicon){
+  
+        formData.append('Categoryicon', newCategory.Categoryicon);
+      }
+    }else{
+      
+      formData.append('Categoryicon', newCategory.Categoryicon);
+    }
   }
 
   if (isEditing) {

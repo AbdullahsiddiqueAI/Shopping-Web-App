@@ -60,8 +60,10 @@ const ProductListItem = ({ product }) => {
         </div>
       </Link>
       <div className="Product_list-Add_cart">
-      <button onClick={handleAddToCart} style={{backgroundColor:loading ?"initial":"#3c3c3c"}} className="Product_list-Add_cart-text" disabled={loading}>
-          {loading ? <div style={{display:'grid',placeItems:"center",width:"100%",height:"100%"}}><SmallLoader/></div> : 'Add to Cart'}
+      <button onClick={handleAddToCart} style={{backgroundColor:loading ?"initial":"#3c3c3c",cursor:loading || product.stock == 0 ? 'initial':'pointer'}} className="Product_list-Add_cart-text" disabled={loading || product.stock == 0}>
+         {
+           product.stock != 0 ?(loading ? <div style={{display:'grid',placeItems:"center",width:"100%",height:"100%"}}><SmallLoader/></div> : 'Add to Cart')
+          : "Out of Stock"}
         </button>
       </div>
     </div>

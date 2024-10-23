@@ -103,7 +103,7 @@ const Cart = ({nav=true,footer=true}) => {
               cartItems.map((item) => (
                 <tr key={item.id}>
                   <td className="cart-product-info">
-                    <img src={`http://127.0.0.1:8000/${item.productPic}`} alt={item.name} className="cart-product-image" />
+                    <img src={`${import.meta.env.VITE_BACKEND_END_POINT_image}${item.productPic}`} alt={item.name} className="cart-product-image" />
                     <span>{item.name}</span>
                   </td>
                   <td>${item.price}</td>

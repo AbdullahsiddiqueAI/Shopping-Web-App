@@ -888,6 +888,23 @@ p {
 }
 
 @media (max-width: 768px) {
+  /***************** Payement Page *******************/
+  .payementPage-container{
+    flex-direction: column;
+    width: 100%;
+
+  }
+  .payementPage-left{
+    width: 100% !important;
+    min-height: 50vh !important;
+  }
+  .payementPage-right{
+    width: 100%;
+  }
+  .outercontainer{
+    width: 100% !important;
+    border-radius: 0% !important;
+  }
   
   /***************** Footer *******************/
   .Footer-main {
@@ -1028,6 +1045,7 @@ p {
       width: 100% !important;
     }
   }
+
 }
 
 @media (max-width: 640px) {
@@ -1221,6 +1239,12 @@ p {
 }
 
 @media (max-width: 345px) {
+  /***************** Payement Page *******************/
+  .card-details{
+    top: 79px !important;
+    left: 32px !important;
+   
+  }
   /****************** Nav Bar******************/
   nav .nav-bottom ul {
     gap: 0rem !important;

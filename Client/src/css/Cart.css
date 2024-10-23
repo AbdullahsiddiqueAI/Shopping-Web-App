@@ -185,8 +185,8 @@ body {
     }
   
     .cart-summary {
-      width: 100%;
-      float: none;
+      width: 100% !important;
+      /* float: none; */
     }
    .cart-return-button,.cart-update-button{
     margin-top: 1rem;

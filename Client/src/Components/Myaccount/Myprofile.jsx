@@ -29,7 +29,7 @@ const MyProfile = () => {
 
   // Handle image preview
   const [previewImage, setPreviewImage] = useState(
-    userInfo.profilePhoto ? `http://127.0.0.1:8000${userInfo.profilePhoto}` : null
+    userInfo.profilePhoto ? `${import.meta.env.VITE_BACKEND_END_POINT_image}${userInfo.profilePhoto}` : null
   );
 
   const { mutate: updateUser } = useMutation({

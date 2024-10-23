@@ -12,10 +12,10 @@ import { toast } from 'react-toastify';
 import Loader from '../Components/Common/Loader';
 
 const ProductPage = () => {
-  const { id } = useParams(); // Get the product ID from the URL
-  const [quantity, setQuantity] = useState(1); // State to manage quantity count
-  const dispatch = useDispatch(); // Redux dispatch
-  const queryClient = useQueryClient(); // React Query's cache management
+  const { id } = useParams(); 
+  const [quantity, setQuantity] = useState(1); 
+  const dispatch = useDispatch(); 
+  const queryClient = useQueryClient(); 
 
   // Fetch the main product details using React Query
   const { data: product, isLoading: productLoading, error: productError } = useQuery({
@@ -92,7 +92,7 @@ const ProductPage = () => {
           <div className="main-product-images">
             {/* Display product image or fallback to a default image */}
             <img
-              src={product?.productPic ? `http://127.0.0.1:8000/${product?.productPic}` : 'default-image.jpg'}
+              src={product?.productPic ? `${import.meta.env.VITE_BACKEND_END_POINT_image}${product?.productPic}` : 'default-image.jpg'}
               alt={product?.name}
             />
           </div> 
@@ -124,7 +124,7 @@ const ProductPage = () => {
               onClick={handleAddToCart}
               disabled={mutation.isLoading || product.stock === 0}
             >
-              {mutation.isLoading ? 'Adding...' : `Add ${quantity} to cart`}
+              {product.stock != 0 ?(mutation.isLoading ? 'Adding...' : `Add ${quantity} to cart`): 'Out of Stock'}
             </button>
 
             <div className="main-product-delivery-options">

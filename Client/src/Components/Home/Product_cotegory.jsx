@@ -61,6 +61,7 @@ const Product_cotegory = () => {
                     <img 
                       src={import.meta.env.VITE_BACKEND_END_POINT_image + category.Categoryicon} 
                       alt={category.name} 
+                      className='Product_cotegory-items-img'
                     />
                   ) : (
                     <div>No Image</div>

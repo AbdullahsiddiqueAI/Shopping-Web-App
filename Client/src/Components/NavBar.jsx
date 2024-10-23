@@ -58,16 +58,16 @@ const NavBar = () => {
             <div className="Myaccount-top">
               <div className="Myaccount-text-head">Manage My Account</div>
               <ul>
-                <li><Link to="/Myaccount/">My Profile</Link></li>
-                <li><Link to="/Myaccount/Myaddress">My Address</Link></li>
-                <li><Link to="/Myaccount/Mypayment">My Payment Options</Link></li>
+                <li><Link to="/Myaccount/" onClick={toggle}>My Profile</Link></li>
+                <li><Link to="/Myaccount/Myaddress" onClick={toggle}>My Address</Link></li>
+                <li><Link to="/Myaccount/Mypayment" onClick={toggle}>My Payment Options</Link></li>
               </ul>
             </div>
             <div className="Myaccount-bottom">
               <div className="Myaccount-text-head">Orders</div>
               <ul>
-                <li><Link to="/Myaccount/Myorders">My Orders</Link></li>
-                <li><Link to="/Myaccount/Mycancellations">My Cancellations</Link></li>
+                <li><Link to="/Myaccount/Myorders" onClick={toggle}>My Orders</Link></li>
+                <li><Link to="/Myaccount/Mycancellations" onClick={toggle}>My Cancellations</Link></li>
               </ul>
             </div>
           </div>
@@ -111,7 +111,7 @@ const NavBar = () => {
                 <Link to="/Myaccount">
                   {user?.profilePhoto ? (
                     <img
-                      src={`http://127.0.0.1:8000${user.profilePhoto}`}
+                      src={`${import.meta.env.VITE_BACKEND_END_POINT_image}${user.profilePhoto}`}
                       alt="User Profile"
                       className="avatar-preview"
                       style={{ width: '40px', height: '40px', marginBottom: '0px', marginLeft: '5px' }}

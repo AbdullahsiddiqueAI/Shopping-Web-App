@@ -42,12 +42,18 @@
     display: flex;
     justify-content: space-between;
     padding: 1rem;
+    /* overflow-x:scroll; */
+    gap:2rem;
   }
   
   .productPage_filter_content {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    span{
+      /* width: fit-content; */
+      min-width: 2rem;
+    }
   }
   
   .filter-icon {
@@ -57,6 +63,7 @@
   
   .category-filter-container {
     position: relative;
+    
   }
   
   .category-dropdown {

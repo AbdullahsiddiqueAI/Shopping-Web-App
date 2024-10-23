@@ -18,3 +18,4 @@ urlpatterns = [
 #     path('payments/', PaymentListCreateAPIView.as_view(), name='payment-list-create'),
 #     path('payments/<uuid:pk>/', PaymentDetailAPIView.as_view(), name='payment-detail'),
 ]
+

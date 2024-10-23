@@ -14,6 +14,7 @@ import {
 import Loader from "../Components/Common/Loader";
 import SmallLoader from "../Components/Common/SmallLoader";
 import { toast } from "react-toastify";
+import { AiOutlineFilter } from "react-icons/ai";
 
 Modal.setAppElement("#root"); // Required for accessibility
 
@@ -43,7 +44,7 @@ const ProductsPage = () => {
   } = useQuery({
     queryKey: [
       "products",
-      { page, page_size: pageSize, category: selectedCategory },
+      { page, page_size: pageSize, category: selectedCategory,sort_by: 'newest', },
     ],
     queryFn: getProducts,
     keepPreviousData: true, // Keep old data while fetching new data
@@ -81,7 +82,7 @@ const ProductsPage = () => {
   const createProductMutation = useMutation({
     mutationFn: createProduct,
     onSuccess: () => {
-      queryClient.invalidateQueries(); // Invalidate all cached data
+      queryClient.invalidateQueries(); 
       setPage(1);
       closeModal();
       toast.success("Product added successfully!");
@@ -91,11 +92,11 @@ const ProductsPage = () => {
     },
   });
 
-  // Mutation for updating a product
+  
   const updateProductMutation = useMutation({
     mutationFn: updateProduct,
     onSuccess: () => {
-      queryClient.invalidateQueries(); // Invalidate all cached data
+      queryClient.invalidateQueries();
       closeModal();
       toast.success("Product updated successfully!");
     },
@@ -104,26 +105,27 @@ const ProductsPage = () => {
     },
   });
 
-  // Mutation for deleting a product
+  
   const deleteProductMutation = useMutation({
     mutationFn: deleteProduct,
     onSuccess: (deletedProductId) => {
-      // Remove the deleted product from local state
+     
       setProducts((prevProducts) =>
         prevProducts.filter(
           (product) => product.product_id !== deletedProductId.data.product_id
         )
       );
       toast.success("Product deleted successfully!");
-      // queryClient.invalidateQueries(); // Invalidate all cached data
+      
     },
     onError: () => {
       toast.error("Failed to delete product.");
     },
   });
 
-  // Open the modal for adding or editing
+  
   const openModal = (product = null) => {
+    
     setIsEditing(!!product);
     setCurrentProduct(product);
     setNewProduct(
@@ -137,35 +139,35 @@ const ProductsPage = () => {
       }
     );
     setPreviewImage(
-      `${import.meta.env.VITE_BACKEND_END_POINT_image}${product.productPic}` ||
-        null
-    ); // Set the image for preview
+      (product?.productPic ?`${import.meta.env.VITE_BACKEND_END_POINT_image}${product?.productPic}`: 
+        null)
+    ); 
     setModalIsOpen(true);
   };
 
-  // Close the modal
+
   const closeModal = () => {
     setModalIsOpen(false);
     setCurrentProduct(null);
     setPreviewImage(null);
   };
 
-  // Handle input changes
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewProduct({ ...newProduct, [name]: value });
   };
 
-  // Handle image upload
+  
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setNewProduct({ ...newProduct, productPic: file }); // Store the file in newProduct
-      setPreviewImage(URL.createObjectURL(file)); // Show a preview of the image
+      setNewProduct({ ...newProduct, productPic: file }); 
+      setPreviewImage(URL.createObjectURL(file)); 
     }
   };
 
-  // Handle category selection
+
   const handleCategoryChange = (e) => {
     const selectedCategory = categories.find(
       (cat) => cat.category_id === e.target.value
@@ -173,36 +175,35 @@ const ProductsPage = () => {
     setNewProduct({ ...newProduct, category: selectedCategory });
   };
 
-  // Toggle category dropdown visibility
+
   const toggleCategoryDropdown = () => {
     setShowCategoryDropdown(!showCategoryDropdown);
   };
 
-  // Handle category selection for filtering products
+  
   const handleCategorySelect = (categoryId) => {
-    setSelectedCategory(categoryId);
-    setPage(1); // Reset page
-    setProducts([]); // Clear products
+    if(selectedCategory != categoryId){
+
+      setSelectedCategory(categoryId);
+      setPage(1); 
+      setProducts([]);
+    } 
     setShowCategoryDropdown(false);
   };
 
-  // Load more products (pagination)
+ 
   const loadMoreProducts = () => {
-    setPage((prevPage) => prevPage + 1); // Increment the page number to fetch the next page
+    setPage((prevPage) => prevPage + 1); 
   };
 
   // Add or Edit Product
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Create a FormData object to handle form submission (for both create and update)
+    
     const formData = new FormData();
 
-    // Add the product ID to formData (required for updating)
-
-    // formData.append('product_id', currentProduct.product_id);
-
-    // Add the rest of the fields (only changed fields for editing)
+ 
     for (const key in newProduct) {
       if (isEditing) {
         // Add only the fields that have changed
@@ -218,7 +219,15 @@ const ProductsPage = () => {
         if (key == "category") {
           formData.append(key, newProduct[key].category_id);
         } else {
-          formData.append(key, newProduct[key]);
+          if(key == "productPic"){
+            if(newProduct[key]){
+              formData.append(key, newProduct[key]);
+            }
+            }
+            else{
+
+              formData.append(key, newProduct[key]);
+            }
         }
       }
     }
@@ -253,7 +262,10 @@ const ProductsPage = () => {
     deleteProductMutation.mutate(id);
   };
 
-  if (isLoadingProducts || isCategoriesLoading) return <Loader />;
+  if (isLoadingProducts || isCategoriesLoading) {return <div style={{width:"100vw",height:"100vh",display:"flex",justifyContent:"center",alignItems:"center"}}>
+    
+    <Loader />;
+    </div>} 
   if (productsError || categoriesError) return <div>Error loading data</div>;
 
   return (
@@ -264,22 +276,27 @@ const ProductsPage = () => {
       </button>
 
       {/* Product Filter */}
-      <div className="productPage_filter">
-        <div className="category-filter-container">
-          <span className="filter-label">Filter by Category</span>
-          <button onClick={toggleCategoryDropdown} className="filter-dropdown">
-            {selectedCategory === "all"
+      {/* <div className="productPage_filter"> */}
+        <div style={{display:"flex",position:"relative"}}>
+          <span className="filter-label">Filter by Category:</span>
+          <button onClick={toggleCategoryDropdown} className="Dashboard-filter-dropdown">
+          <AiOutlineFilter
+                  className="filter-icon"
+                  // onClick={toggleCategoryDropdown}
+                /> 
+
+                {selectedCategory === "all"
               ? "All Categories"
-              : categories?.find((cat) => cat.category_id === selectedCategory)
-                  ?.name || "Select Category"}
+              : categories?.find((cat) => cat.category_id === selectedCategory)?.name || "Select Category"}
           </button>
           {showCategoryDropdown && (
-            <div className="category-dropdown">
+            <div className="category-dropdown" style={{left:'90px'}}>
               <div
                 key="all"
                 className="category-item"
                 onClick={() => handleCategorySelect("all")}
               >
+                
                 All Categories
               </div>
               {categories.map((category) => (
@@ -294,10 +311,15 @@ const ProductsPage = () => {
             </div>
           )}
         </div>
-      </div>
+      {/* </div> */}
 
       {/* Products List */}
-      <div className="products-list">
+      {(!isLoadingProducts && products.length==0) && (
+                <div className="Product-not-Found" style={{width: "100%",height:"100%"}}>
+                  Product Not Found
+                </div>
+              )}
+      {(products.length>0) &&<div className="products-list">
         <table>
           <thead>
             <tr>
@@ -332,7 +354,7 @@ const ProductsPage = () => {
                 <td>{product.category.name}</td>
                 <td>${product.price}</td>
                 <td>{product.stock}</td>
-                <td>{product.description}</td>
+                <td>{product.description.length > 20 ? product.description.slice(0,50) + "...": product.description.slice(0,20)}</td>
                 <td>
                   <button
                     className="btn edit-btn"
@@ -352,7 +374,7 @@ const ProductsPage = () => {
           </tbody>
         </table>
       </div>
-
+}
       {/* See More Button for Pagination */}
       {hasMore && (
         <button

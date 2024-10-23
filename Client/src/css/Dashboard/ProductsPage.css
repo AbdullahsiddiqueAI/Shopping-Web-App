@@ -141,3 +141,17 @@ h1 {
   cursor: pointer;
   color: #f44336;
 }
+.Dashboard-filter-dropdown{
+  min-width: 7rem;
+  height: 2rem;
+  background-color: transparent;
+  border: none;
+ font-size: 1rem;
+ margin-left: 10px;
+ display: flex;
+ align-items: center;
+ position: relative;
+ /* left: 30px; */
+ padding-right: 10px;
+ background: url('data:image/svg+xml;utf8,<svg fill="gray" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right -7px center;
+}
