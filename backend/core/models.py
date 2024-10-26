@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from .managers import UserModelManager
 import uuid
+from django.db.models import Sum, Count
+from django.utils import timezone
+from datetime import timedelta
 
 
 
@@ -16,7 +19,13 @@ class UserCustomModel(AbstractUser):
     username = None
     REQUIRED_FIELDS = []
     USERNAME_FIELD = 'email'
+    created_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
     objects = UserModelManager()
+    @classmethod
+    def new_users(cls):
+        # Assuming you want users created in the last 30 days
+        thirty_days_ago = timezone.now() - timedelta(days=30)
+        return cls.objects.filter(created_at__gte=thirty_days_ago).count()
 
 
     def __str__(self):

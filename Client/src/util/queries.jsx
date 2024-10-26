@@ -263,9 +263,7 @@ try{
   
   export const updateCategory = async ({ category_id, formData }) => {
     try {
-      // for (let [key, value] of formData.entries()) {
-      //   console.log(key, value);
-      // }
+
       console.log("formData",formData)
       const response = await instance.patch(`categories/${category_id}/`, formData, {
         headers: {

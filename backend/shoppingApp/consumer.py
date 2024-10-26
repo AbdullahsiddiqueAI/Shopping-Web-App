@@ -1,56 +1,32 @@
-# myapp/consumers.py
-import json
+# shoppingApp/consumers.py
+
 from channels.generic.websocket import AsyncWebsocketConsumer
+from backend.utils import get_dashboard_stats
+import json
 
-class MyConsumer(AsyncWebsocketConsumer):
-    connected_users = set()  # Track connected users
-
+class DashboardStatsConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        self.user = self.scope.get('user')
+
+        # If user is not authenticated, reject the connection
+        if self.user is None:
+            print("Not Authenticated")
+            await self.close()
+            return
+
         # Accept the connection
         await self.accept()
-        
-        # Add user to connected users
-        self.connected_users.add(self.channel_name)
-        await self.send(text_data=json.dumps({
-            'message': 'You are connected!',
-            'users': list(self.connected_users)
-        }))
+        self.group_name = "dashboard_group"
+        await self.channel_layer.group_add(self.group_name, self.channel_name)
+        await self.send_dashboard_stats()
 
     async def disconnect(self, close_code):
-        # Remove user from connected users
-        self.connected_users.remove(self.channel_name)
+        await self.channel_layer.group_discard(self.group_name, self.channel_name)
 
-    async def receive(self, text_data):
-        try:
-            data = json.loads(text_data)
-            message_type = data.get('type')
-            
-            if message_type == 'chat_message':
-                await self.handle_chat_message(data)
-            else:
-                await self.send(text_data=json.dumps({'error': 'Unknown message type'}))
-                
-        except json.JSONDecodeError:
-            await self.send(text_data=json.dumps({'error': 'Invalid JSON'}))
+    async def send_dashboard_stats(self):
+        stats = await get_dashboard_stats()
+        await self.send(text_data=json.dumps(stats))
 
-    async def handle_chat_message(self, data):
-        message = data.get('message')
-        
-        # Broadcast the message to all connected users
-        await self.channel_layer.group_send(
-            'chat_group',
-            {
-                'type': 'chat_message',
-                'message': message,
-                'user': self.channel_name
-            }
-        )
-
-    async def chat_message(self, event):
-        message = event['message']
-        user = event['user']
-        
-        await self.send(text_data=json.dumps({
-            'message': message,
-            'user': user
-        }))
+    async def update_stats(self, event):
+        # Optionally, handle the event data if needed
+        await self.send_dashboard_stats()

@@ -1,6 +1,9 @@
 import uuid
 from django.db import models
 from core.models import UserCustomModel as User
+from django.db.models import Sum, Count
+from django.utils import timezone
+from datetime import timedelta
 
 # Create your models here.
 
@@ -25,6 +28,9 @@ class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    @classmethod
+    def total_products(cls):
+        return cls.objects.count()
 
     def __str__(self):
         return self.name
@@ -45,6 +51,15 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    @classmethod
+    def total_sales(cls):
+        return str(cls.objects.aggregate(total=Sum('total_amount'))['total'] or 0.00)
+
+    @classmethod
+    def total_orders(cls):
+        return cls.objects.count()
+    
+    
     def __str__(self):
         return f"Order {self.order_id}"
 
