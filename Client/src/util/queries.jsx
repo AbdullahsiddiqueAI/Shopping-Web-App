@@ -235,6 +235,24 @@ try{
     
 
   }
+  export const getUserData= async (formData)=>{
+    try{
+      const response= await instance.get('user/');
+      return response.data;
+    }
+    catch(error){
+      console.log('Error in user API', error.response?.data?.error);
+      if(error.response?.data?.errors?.non_field_errors[0]){
+
+        throw new Error(error.response?.data?.errors?.non_field_errors[0]);
+      }
+      else{
+        throw new Error(error.response?.data?.error); 
+      }
+    }
+    
+
+  }
 
 
   export const getCategory = async () => {
@@ -288,4 +306,43 @@ try{
       throw new Error(error.response?.data?.error || 'Error deleting category');
     }
   };
+
+
+  export const getOrderHistory = async () => {
+    try {
+      const response = await instance.get('orders/');
+      return response.data.data; // Adjust based on your API response structure
+    } catch (error) {
+      console.log('Error fetching categories:', error);
+      throw new Error(error.response?.data?.error || 'Error fetching categories');
+    }
+  };
+  export const orderCancel = async (id) => {
+    try {
+      const response = await instance.post(`orders/cancel/${id}/`);
+      return response.data.data; // Adjust based on your API response structure
+    } catch (error) {
+      console.log('Error fetching categories:', error);
+      throw new Error(error.response?.data?.error || 'Error fetching categories');
+    }
+  };
   
+  
+      export const getAdminOrderHistory = async () => {
+        try {
+          const response = await instance.get('orders/admin/');
+          return response.data.data; // Adjust based on your API response structure
+        } catch (error) {
+          console.log('Error fetching categories:', error);
+          throw new Error(error.response?.data?.error || 'Error fetching categories');
+        }
+      };
+  export const updateOrderStatus = async (id,status) => {
+    try {
+      const response = await instance.patch(`orders/${id}/`,status);
+      return response.data.data; // Adjust based on your API response structure
+    } catch (error) {
+      console.log('Error fetching categories:', error);
+      throw new Error(error.response?.data?.error || 'Error fetching categories');
+    }
+  };

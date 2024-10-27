@@ -71,6 +71,12 @@ class LoginView(APIView):
 
 class UserView(APIView):
     permission_classes = [IsAuthenticated]
+    def get(self,request):
+        user=request.user
+        serializer = UserSerializer(user)
+        return Response({"success": True, "user": serializer.data, "status": "200"}, 
+                                status=status.HTTP_200_OK)
+        
 
     def post(self, request):
         user = request.user

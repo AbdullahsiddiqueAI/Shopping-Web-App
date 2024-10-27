@@ -1,7 +1,7 @@
 # shoppingApp/routing.py
-from django.urls import re_path
+from django.urls import path
 from .consumer import DashboardStatsConsumer
 
 websocket_urlpatterns = [
-    re_path(r'ws/DashboardStats/$', DashboardStatsConsumer.as_asgi()),  # Adjust the URL as needed
+    path('ws/DashboardStats/', DashboardStatsConsumer.as_asgi()),  # Adjust the URL as needed
 ]

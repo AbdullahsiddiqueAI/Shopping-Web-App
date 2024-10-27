@@ -41,6 +41,7 @@ class Order(models.Model):
         ('Processing', 'Processing'),
         ('Shipped', 'Shipped'),
         ('Delivered', 'Delivered'),
+        ('Canceled', 'Canceled'),
     ]
 
     order_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -53,7 +54,7 @@ class Order(models.Model):
 
     @classmethod
     def total_sales(cls):
-        return str(cls.objects.aggregate(total=Sum('total_amount'))['total'] or 0.00)
+        return str(cls.objects.exclude(status='cancel').aggregate(total=Sum('total_amount'))['total'] or 0.00)
 
     @classmethod
     def total_orders(cls):

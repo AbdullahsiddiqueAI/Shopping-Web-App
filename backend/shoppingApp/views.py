@@ -6,7 +6,7 @@ from .serializer import *
 from core.models import UserCustomModel as User
 from core.serializer import UserSerializer 
 import json
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from rest_framework.pagination import PageNumberPagination
 from django.db.models import Q
 from rest_framework.decorators import api_view
@@ -30,7 +30,7 @@ class CategoryDetailAPIView(APIView):
         # Check if the request method is POST
         if self.request.method == 'PATCH' or self.request.method == 'DELETE':
             # Apply the desired permission class for POST requests
-            return [IsAuthenticated()]
+            return [IsAdminUser()]
         # No permissions are required for GET requests
         return []
     def get(self, request, pk):
@@ -72,6 +72,13 @@ class CustomPagination(PageNumberPagination):
 # Product API Views
 class ProductListCreateAPIView(APIView):
     pagination_class = CustomPagination
+    def get_permissions(self):
+        # Check if the request method is POST
+        if self.request.method == 'POST':
+            # Apply the desired permission class for POST requests
+            return [IsAdminUser()]
+        # No permissions are required for GET requests
+        return []
     def get_permissions(self):
         # Check if the request method is POST
         if self.request.method == 'POST':
@@ -146,11 +153,12 @@ class ProductListCreateAPIView(APIView):
         return Response({"success": False, "error": serializer.errors, "status": 400}, status=status.HTTP_400_BAD_REQUEST)
 
 class ProductDetailAPIView(APIView):
+
     def get_permissions(self):
         # Check if the request method is POST
         if self.request.method == 'PATCH' or self.request.method == 'DELETE':
             # Apply the desired permission class for POST requests
-            return [IsAuthenticated()]
+            return [IsAdminUser()]
         # No permissions are required for GET requests
         return []
     def get(self, request, pk):
@@ -202,6 +210,13 @@ class OrderListCreateAPIView(APIView):
 
 class OrderDetailAPIView(APIView):
     # permission_classes=[IsAuthenticated]
+    def get_permissions(self):
+        # Check if the request method is POST
+        if self.request.method == 'PATCH' or self.request.method == 'DELETE':
+            # Apply the desired permission class for POST requests
+            return [IsAdminUser()]
+        # No permissions are required for GET requests
+        return [IsAuthenticated()]
     def get(self, request, pk):
         try:
             order = Order.objects.get(pk=pk)
@@ -230,8 +245,32 @@ class OrderDetailAPIView(APIView):
         return Response({"success":True,"data":"Order Deleted Successfully","status":204},status=status.HTTP_204_NO_CONTENT)
 
 
+class OrderCancelAPIView(APIView):
+    permission_classes=[IsAuthenticated]
+    def post(self, request, pk):
+        order = Order.objects.filter(pk=pk,user_id=request.user.id).first()
+        if not order:  # Check if the order exists
+            return Response({"success":False,"error":"Not Found","status":404},status=status.HTTP_404_NOT_FOUND)
+        if order.status == "Canceled":
+            return Response({"success":False,"error":"Order is already canceled","status":400},status=status.HTTP_400_BAD_REQUEST)
+        order.status = "Canceled"
+        order.save()
+        return Response({"success":True,"data":"Order Canceled Successfully","status":200},status=status.HTTP_200_OK)
 
 
+
+class AdminOrderGetAPIView(APIView):
+    permission_classes=[IsAdminUser]
+  
+    def get(self, request):
+        try:
+            order = Order.objects.all().order_by('-order_date')
+        except Order.DoesNotExist:
+            return Response({"success":False,"error":"Not Found","status":404},status=status.HTTP_404_NOT_FOUND)
+        serializer = OrderSerializer(order,many=True)
+        return Response({"success": True, "data": serializer.data, "status": 200})
+
+        
 
 
 

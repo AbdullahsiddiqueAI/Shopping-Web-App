@@ -16,63 +16,26 @@ const Login = () => {
     Password: "",
   });
 
-  const [Errors, SetErrors] = useState({
-    EmailError: "",
-    PasswordError: "",
-  });
 
   const [loading, setLoading] = useState(false); // Manage loading state manually
 
   const dispatch = useDispatch(); // Redux dispatch
 
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+ 
 
-  const validatePassword = (password) => {
-    if (password.length < 8) {
-      return "Password must be at least 8 characters long.";
-    }
-    if (!/[a-z]/.test(password)) {
-      return "Password must contain at least one lowercase letter.";
-    }
-    if (!/[A-Z]/.test(password)) {
-      return "Password must contain at least one uppercase letter.";
-    }
-    if (!/\d/.test(password)) {
-      return "Password must contain at least one number.";
-    }
-    if (!/[@$!%*?&]/.test(password)) {
-      return "Password must contain at least one special character.";
-    }
-    return "";
-  };
+
 
   const FormDataHandler = (e) => {
     SetFormData({ ...FormData, [e.target.name]: e.target.value });
 
-    if (e.target.name === "Password") {
-      SetErrors({ ...Errors, PasswordError: "" });
-    }
-    if (e.target.name === "Email") {
-      SetErrors({ ...Errors, EmailError: "" });
-    }
+  
   };
 
   const FormSubmit = async (e) => {
     e.preventDefault();
 
-    const emailValid = validateEmail(FormData.Email);
-    const passwordError = validatePassword(FormData.Password);
-
-    if (!emailValid || passwordError) {
-      SetErrors({
-        EmailError: emailValid ? "" : "Please enter a valid email.",
-        PasswordError: passwordError,
-      });
-      return;
-    }
+   
+    
 
     setLoading(true); // Start loading
 
@@ -107,9 +70,7 @@ const Login = () => {
               placeholder="Email"
               required
             />
-            {Errors.EmailError && (
-              <div className="error">{Errors.EmailError}</div>
-            )}
+          
             <input
               type="password"
               name="Password"
@@ -117,9 +78,7 @@ const Login = () => {
               placeholder="Password"
               required
             />
-            {Errors.PasswordError && (
-              <div className="error">{Errors.PasswordError}</div>
-            )}
+         
 
             {/* Submit button with loader and disabled during API call */}
             <button
@@ -147,7 +106,7 @@ const Login = () => {
 
           <div className="Signup-Right-Bottom">
             <div>
-              Don't have an account? <Link to="/">Sign up here</Link>.
+              Don't have an account? <Link to="/signup">Sign up here</Link>.
             </div>
           </div>
         </div>

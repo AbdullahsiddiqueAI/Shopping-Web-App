@@ -21,7 +21,7 @@ import OrderTable from './Components/Myaccount/OrderTable';
 import PrivateRoute from './Components/PrivateRoute';
 import AuthRoute from './Components/AuthRoute';
 import { useQuery } from '@tanstack/react-query';
-import { getCartData } from './util/queries';
+import { getCartData, getUserData } from './util/queries';
 import { setCartData } from './Store/cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import PayementPage from './Pages/PayementPage';
@@ -31,22 +31,35 @@ import ProductsPage from './Dashboard/ProductsPage';
 import OrdersPage from './Dashboard/OrdersPage';
 import PaymentsPage from './Dashboard/PaymentsPage';
 import CategoryPage from './Dashboard/CaotegoryPage';
+import { loginInUser } from './Store/authSlice';
+import AuthAdmin from './Components/AdminRoute';
 
 function App() {
   const dispatch = useDispatch(); 
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated,isAdmin } = useSelector((state) => state.auth);
   
-  // Fetch cart data when the user is authenticated
+  
   const { data: cartData, isLoading, error, isSuccess } = useQuery({
     queryKey: ['cartData'],
     queryFn: getCartData,
-    enabled: isAuthenticated, // Only fetch cart data when authenticated
+    enabled: isAuthenticated, 
     onSuccess: (data) => {
       console.log("Cart Data Loaded", data);
-    }
+    },
+  });
+  const { data: userData, isLoading:userDataLoading, error:userDataError, isSuccess:userDataSuccess } = useQuery({
+    queryKey: ['userData'],
+    queryFn: getUserData,
+    enabled: isAuthenticated,
+    onSuccess: (data) => {
+      console.log("'user Data Loaded", data);
+    },
+    refetchOnMount: true, 
+    refetchOnWindowFocus: true, 
+    cacheTime: 0,
   });
 
-  // Dispatch cart data to Redux store on successful fetch
+ 
   useEffect(() => {
     if (isSuccess && cartData) {
       const formattedCartData = cartData.map(item => ({
@@ -62,6 +75,14 @@ function App() {
       dispatch(setCartData(formattedCartData));
     }
   }, [isSuccess, cartData, dispatch]);
+  useEffect(() => {
+    if (userDataSuccess && userData) {
+      // Dispatch the formatted cart data to the Redux store
+      dispatch(loginInUser(userData));
+      
+    }
+  }, [userData,userDataSuccess]);
+  console.log("Admin or user",isAdmin)
 
 
 
@@ -90,12 +111,12 @@ function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/Contact" element={<Contact />} />
 
-        <Route path="/Dashboard" element={<PrivateRoute component={Dashboard} />}>
-        <Route path="" element={<PrivateRoute component={DashboardPage}  />} />
-          <Route path="products" element={<PrivateRoute component={ProductsPage} />} />
-           <Route path="category" element={<PrivateRoute component={CategoryPage}  />} />
-          <Route path="orders" element={<PrivateRoute component={OrdersPage}/>} />
-          <Route path="payments" element={<PrivateRoute component={PaymentsPage} />} />
+        <Route path="/Dashboard" element={<AuthAdmin component={Dashboard} />}>
+        <Route path="" element={<AuthAdmin component={DashboardPage}  />} />
+          <Route path="products" element={<AuthAdmin component={ProductsPage} />} />
+           <Route path="category" element={<AuthAdmin component={CategoryPage}  />} />
+          <Route path="orders" element={<AuthAdmin component={OrdersPage}/>} />
+          <Route path="payments" element={<AuthAdmin component={PaymentsPage} />} />
         </Route>
 
 

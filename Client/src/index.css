@@ -206,3 +206,36 @@ p {
 }
 
 
+/* Status Color Styling */
+.status-placed {
+  color: #e67e22; /* Orange */
+}
+
+.status-processing {
+  color: #f39c12; /* Yellow */
+}
+
+.status-shipped {
+  color: #3498db; /* Blue */
+}
+
+.status-delivered {
+  color: #2ecc71; /* Green */
+}
+
+.status-canceled {
+  color: #e74c3c; /* Green */
+}
+
+.cancel-btn{
+  border-color: #e74c3c;
+  background-color: white;
+  color: #e74c3c;
+}
+button:disabled {
+  background-color: #cccccc; 
+  color: #666666 ;            
+  cursor: not-allowed;       
+  opacity: 0.6;              
+  border: 1px solid #b3b3b3 ; 
+}

@@ -294,12 +294,14 @@ nav {
   flex: 1 0 100%;
   display: flex;
   scroll-snap-align: start;
-  max-height: 30rem;
+  max-height: 37rem;
   /* Adjust as needed */
   width: 100%;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  /* aspect-ratio: 1/2; */
+
 }
 
 .slider-btn {
@@ -814,6 +816,11 @@ p {
   background-color: var(--btn-hover);
 }
 
+@media (max-width: 1250px) {
+  .slides img{
+    height: 30rem !important;
+  }
+}
 @media (max-width: 1050px) {
   
   /****************** Nav Bar ******************/

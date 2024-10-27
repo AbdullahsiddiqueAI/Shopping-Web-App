@@ -1,71 +1,72 @@
-import React from 'react';
-import { Line, Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import React, { useEffect, useState } from 'react';
 import '../css/Dashboard/DashboardPage.css';
-
-// Register the necessary chart components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const DashboardPage = () => {
-  // Data for the line chart (Sales Trend)
-  const lineChartData = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-    datasets: [
-      {
-        label: 'Sales ($)',
-        data: [12000, 15000, 10000, 22000, 18000, 24000],
-        backgroundColor: 'rgba(63, 81, 181, 0.2)',
-        borderColor: '#3f51b5',
-        borderWidth: 2,
-        fill: true,
-      },
-    ],
-  };
+  const { token } = useSelector((state) => state.auth);
+  const toastId = 'dashboardToast';
+  // State for stats and recent orders
+  const [totalSales, setTotalSales] = useState('0');
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [newUsers, setNewUsers] = useState(0);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [recentOrders, setRecentOrders] = useState([]);
 
-  // Data for the bar chart (Orders Trend)
-  const barChartData = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-    datasets: [
-      {
-        label: 'Orders',
-        data: [45, 60, 40, 80, 70, 90],
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        borderColor: 'rgba(255, 99, 132, 1)',
-        borderWidth: 1,
-      },
-    ],
-  };
+  // Establish socket connection and handle incoming data
+  useEffect(() => {
+    const socket = new WebSocket(`ws://localhost:8000/ws/DashboardStats/?token=${token}`);
 
+    // Notify on WebSocket connection
+    socket.onopen = () => {
+      toast.dismiss()
+      toast.success('Connected to server!');
+    };
+
+    // Notify on WebSocket disconnection
+    socket.onclose = () => {
+      // toast.error('Disconnected from server.');
+    };
+
+    // Handle incoming data and notify on data update
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      setTotalSales(data.total_sales);
+      setTotalOrders(data.total_orders);
+      setNewUsers(data.new_users);
+      setTotalProducts(data.total_products);
+      setRecentOrders(data.recent_orders);
+      toast.dismiss()
+      toast.info('Dashboard data updated.');
+    };
+
+    return () => {
+      socket.close(); // Cleanup on component unmount
+    };
+  }, [token]);
   return (
     <div className="dashboard-page">
+     
       <h1>Dashboard</h1>
 
       {/* Statistics Cards */}
       <div className="dashboard-stats">
         <div className="stats-card">
           <h3>Total Sales</h3>
-          <p>$25,000</p>
+          <p>${totalSales}</p>
         </div>
         <div className="stats-card">
           <h3>Total Orders</h3>
-          <p>350</p>
+          <p>{totalOrders}</p>
         </div>
         <div className="stats-card">
           <h3>New Users</h3>
-          <p>45</p>
+          <p>{newUsers}</p>
         </div>
         <div className="stats-card">
           <h3>Total Products</h3>
-          <p>1,200</p>
+          <p>{totalProducts}</p>
         </div>
       </div>
 
@@ -83,38 +84,17 @@ const DashboardPage = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>#12345</td>
-              <td>John Doe</td>
-              <td>$150</td>
-              <td>Shipped</td>
-              <td>Oct 12, 2024</td>
-            </tr>
-            <tr>
-              <td>#12346</td>
-              <td>Jane Smith</td>
-              <td>$200</td>
-              <td>Processing</td>
-              <td>Oct 13, 2024</td>
-            </tr>
-            <tr>
-              <td>#12347</td>
-              <td>Mike Johnson</td>
-              <td>$75</td>
-              <td>Delivered</td>
-              <td>Oct 13, 2024</td>
-            </tr>
+            {recentOrders.map((order) => (
+              <tr key={order.order_id}>
+                <td>{"#"+String(order.order_id).slice(0,5)}</td>
+                <td>{order.user_id}</td>
+                <td>${order.total_amount}</td>
+                <td className={`status-${String(order.status).toLowerCase()}`}>{order.status}</td>
+                <td>{order.order_date}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
-      </div>
-
-      {/* Charts Section */}
-      <div className="dashboard-charts">
-        <h2>Sales Trend</h2>
-        <Line data={lineChartData} />
-
-        {/* <h2>Orders Trend</h2>
-        <Bar data={barChartData} /> */}
       </div>
     </div>
   );

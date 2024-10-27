@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import { setSearchQuery } from '../Store/searchSlice';  // Import setSearchQuery from Redux
 
 const NavBar = () => {
-  const { isAuthenticated, user } = useSelector((state) => state.auth); // Get authentication status and user data
+  const { isAuthenticated, user,isAdmin } = useSelector((state) => state.auth); // Get authentication status and user data
   const { totalQuantity } = useSelector((state) => state.cart); // Get cart data
   const dispatch = useDispatch();
   const [Toggle, setToggle] = useState(false);
@@ -121,7 +121,7 @@ const NavBar = () => {
                   )}
                 </Link>
                 <div className="account-text-part">
-                  <div className="account-text">{user?.first_name || 'My Account'}</div>
+                <div className="account-text">{isAdmin ? user?.first_name +` (Admin)`  || 'Admin' :user?.first_name || 'My Account'}</div>
                 </div>
 
                 <MdLogout
@@ -150,9 +150,11 @@ const NavBar = () => {
 
         <div className="nav-bottom">
           <ul>
+            {isAuthenticated && isAdmin && <li><NavLink to="/Dashboard">Dashboard</NavLink></li>}
             <li><NavLink to="/">Home</NavLink></li>
             {!isAuthenticated && <li><NavLink to="/Login">Login</NavLink></li>}
             {!isAuthenticated && <li><NavLink to="/Signup">Signup</NavLink></li>}
+         
             <li><NavLink to="/Products">Products</NavLink></li>
             <li><NavLink to="/Contact">Contact</NavLink></li>
             <li><NavLink to="/dsfdsf">Not Found</NavLink></li>
