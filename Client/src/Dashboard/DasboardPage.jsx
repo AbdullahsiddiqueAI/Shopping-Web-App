@@ -16,7 +16,7 @@ const DashboardPage = () => {
 
   // Establish socket connection and handle incoming data
   useEffect(() => {
-    const socket = new WebSocket(`${process.meta.env.VITE_BACKEND_WS_END_POINT}ws/DashboardStats/?token=${token}`);
+    const socket = new WebSocket(`${import.meta.env.VITE_BACKEND_WS_END_POINT}ws/DashboardStats/?token=${token}`);
 
     // Notify on WebSocket connection
     socket.onopen = () => {
