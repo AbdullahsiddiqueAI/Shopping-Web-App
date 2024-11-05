@@ -1,0 +1,68 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment only on pushes to the main branch
+
+env:
+  SERVER_IP: ${{ secrets.SERVER_IP }}
+  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up SSH key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -t rsa $SERVER_IP >> ~/.ssh/known_hosts
+
+    - name: SSH into EC2 and deploy
+      run: |
+        ssh -o StrictHostKeyChecking=no ubuntu@$SERVER_IP << 'EOF'
+          # Check if we can connect
+          echo "Connection successful!"
+          # Navigate to the backend directory
+          cd /home/ubuntu/FYP/backend || { echo "Backend directory not found"; exit 1; }
+          git stash
+          git pull 
+          git stash pop
+          # Set up virtual environment for Django
+          source venv/bin/activate || { echo "Virtual environment not found. Creating a new one."; python3 -m venv venv && source venv/bin/activate; }
+
+          # Install dependencies for Django
+          echo "Installing Django dependencies..."
+          pip install -r requirements.txt || { echo "Failed to install Django dependencies"; exit 1; }
+
+          # Run migrations
+          echo "Applying Django migrations..."
+          python manage.py makemigrations || { echo "Django migrations failed"; exit 1; }
+          python manage.py migrate || { echo "Django migration failed"; exit 1; }
+
+          # Navigate to the React frontend directory
+          cd /home/ubuntu/FYP/Client || { echo "Frontend directory not found"; exit 1; }
+
+          # Install Node dependencies
+          echo "Installing Node.js dependencies..."
+          npm install || { echo "Failed to install Node dependencies"; exit 1; }
+          
+          # Restart all PM2 processes
+          echo "Restarting PM2 processes..."
+          pm2 restart all || { echo "Failed to restart PM2 processes"; exit 1; }
+
+          # Restart Nginx if needed
+          echo "Restarting Nginx..."
+          sudo systemctl restart nginx || { echo "Failed to restart Nginx"; exit 1; }
+
+          echo "Deployment successful!"
+        EOF
+
+    - name: Clean up SSH key
+      run: |
+        rm -rf ~/.ssh
