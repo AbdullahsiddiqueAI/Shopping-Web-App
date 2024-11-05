@@ -9,7 +9,6 @@ import ProductList from '../Components/Home/ProductList'
 const Home = () => {
   return (
     <>
-    <h1>Git Working fine</h1>
     <Header/>
     <Product_cotegory/>
     {/* <ProductList/> */}
