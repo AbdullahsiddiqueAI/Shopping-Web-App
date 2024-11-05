@@ -3,13 +3,13 @@ module.exports = {
         {
             name: "Django Server",
             script: "manage.py",
-            args: "runserver",
-            interpreter: "python",
-            cwd: "./backend",
+            args: "runserver 0.0.0.0:8000",  // Make sure Django listens on all interfaces
+            interpreter: "python3",  // Use python3 interpreter
+            cwd: "./backend",  // Path to the backend (Django)
             env: {
               PYTHON_ENV: "production",
             },
-      },
+          },
       {
         name: "react-app",
         script: "npm",
