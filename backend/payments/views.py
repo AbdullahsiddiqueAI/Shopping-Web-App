@@ -41,15 +41,18 @@ class StripePaymentView(APIView):
                     description=f"Order {order.order_id}",
                     source=token,
                 )
-
+                print("charge",charge.keys())
                 # If charge succeeds, save payment information
                 user = UserCustomModel.objects.filter(pk=request.user.id).first()
                 payment_status = 'Completed' if charge.status == 'succeeded' else 'Failed'
                 
                 payment = Payment.objects.create(
+                    stripe_charge_id=charge.id,
                     user=user,
                     order=order,
+                    currency="usd",
                     amount=amount, 
+                    description=f"Order {order.order_id}",
                     status=payment_status,
                 )
 

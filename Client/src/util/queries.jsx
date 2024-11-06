@@ -326,20 +326,47 @@ try{
       throw new Error(error.response?.data?.error || 'Error fetching categories');
     }
   };
+  export const getOrderCancelHistory = async () => {
+    try {
+      const response = await instance.get('orders/cancel/');
+      return response.data.data; // Adjust based on your API response structure
+    } catch (error) {
+      console.log('Error fetching categories:', error);
+      throw new Error(error.response?.data?.error || 'Error fetching categories');
+    }
+  };
   
   
-      export const getAdminOrderHistory = async () => {
+  export const getAdminOrderHistory = async () => {
         try {
           const response = await instance.get('orders/admin/');
           return response.data.data; // Adjust based on your API response structure
         } catch (error) {
-          console.log('Error fetching categories:', error);
-          throw new Error(error.response?.data?.error || 'Error fetching categories');
+          console.log('Error fetching Order:', error);
+          throw new Error(error.response?.data?.error || 'Error fetching Order');
         }
       };
   export const updateOrderStatus = async (id,status) => {
     try {
       const response = await instance.patch(`orders/${id}/`,status);
+      return response.data.data; // Adjust based on your API response structure
+    } catch (error) {
+      console.log('Error fetching Order:', error);
+      throw new Error(error.response?.data?.error || 'Error fetching Order');
+    }
+  };
+  export const getAdminPaymentHistory = async () => {
+        try {
+          const response = await instance.get('payment/admin/');
+          return response.data.data; // Adjust based on your API response structure
+        } catch (error) {
+          console.log('Error fetching Payments:', error);
+          throw new Error(error.response?.data?.error || 'Error fetching Payments');
+        }
+      };
+  export const updatePaymentStatus = async (id,status) => {
+    try {
+      const response = await instance.patch(`payment/admin/${id}/`,status);
       return response.data.data; // Adjust based on your API response structure
     } catch (error) {
       console.log('Error fetching categories:', error);

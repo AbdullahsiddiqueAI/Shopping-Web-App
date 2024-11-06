@@ -2,7 +2,8 @@ from rest_framework import serializers
 from .models import *
 from core.models import UserCustomModel as User
 from core.serializer import UserSerializer
-
+from payments.models import Payment
+from django.db import transaction
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -59,14 +60,29 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = self.context['request'].user  # Get the current authenticated user
-        order_items = OrderItem.objects.filter(user_id=user.id,order__isnull=True)
-        print("order_items",order_items)
+        order_items = OrderItem.objects.filter(user_id=user.id, order__isnull=True)
+        print("order_items", order_items)
+
         if not order_items:
             raise serializers.ValidationError("OrderItems is Empty")
-        order = Order.objects.create(user=user, **validated_data)
-        for order_item in order_items:
-             order_item.order = order
-             order_item.save()
+
+        with transaction.atomic():  # Ensure all updates happen in a single transaction
+            order = Order.objects.create(user=user, **validated_data)
+            for order_item in order_items:
+                # Check if there is enough stock
+                if order_item.product.stock < order_item.quantity:
+                    raise serializers.ValidationError(
+                        f"Insufficient stock for product {order_item.product.name}"
+                    )
+                
+                # Decrement the product stock
+                order_item.product.stock -= order_item.quantity
+                order_item.product.save()
+
+                # Link the order item to the new order
+                order_item.order = order
+                order_item.save()
+        
         return order
 
     # def update(self, instance, validated_data):
@@ -109,12 +125,12 @@ class ContactSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-# class PaymentSerializer(serializers.ModelSerializer):
-#     order = OrderSerializer(read_only=True)  # Order is read-only
-
-#     class Meta:
-#         model = Payment
-#         fields = ['payment_id', 'order', 'payment_date', 'amount', 'status', 'created_at', 'updated_at']
+class PaymentSerializer(serializers.ModelSerializer):
+    # order = OrderSerializer(read_only=True)  # Order is read-only
+    user=UserSerializer(read_only=True)
+    class Meta:
+        model = Payment
+        fields = '__all__'
 
 #     def create(self, validated_data):
 #         order_data = self.initial_data.get('order')

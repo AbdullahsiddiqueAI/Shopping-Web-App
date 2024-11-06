@@ -9,6 +9,7 @@ import json
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from rest_framework.pagination import PageNumberPagination
 from django.db.models import Q
+from payments.models import Payment
 from rest_framework.decorators import api_view
 
 # Category API Views
@@ -72,13 +73,6 @@ class CustomPagination(PageNumberPagination):
 # Product API Views
 class ProductListCreateAPIView(APIView):
     pagination_class = CustomPagination
-    def get_permissions(self):
-        # Check if the request method is POST
-        if self.request.method == 'POST':
-            # Apply the desired permission class for POST requests
-            return [IsAdminUser()]
-        # No permissions are required for GET requests
-        return []
     def get_permissions(self):
         # Check if the request method is POST
         if self.request.method == 'POST':
@@ -247,6 +241,10 @@ class OrderDetailAPIView(APIView):
 
 class OrderCancelAPIView(APIView):
     permission_classes=[IsAuthenticated]
+    def get(self, request):
+        orders = Order.objects.filter(user_id=request.user.id,status='Canceled').order_by('-order_date')
+        serializer = OrderSerializer(orders, many=True)
+        return Response({"success": True, "data": serializer.data, "status": 200})
     def post(self, request, pk):
         order = Order.objects.filter(pk=pk,user_id=request.user.id).first()
         if not order:  # Check if the order exists
@@ -354,43 +352,37 @@ def submit_contact_form(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 # # Payment API Views
-# class PaymentListCreateAPIView(APIView):
-#     def get(self, request):
-#         payments = Payment.objects.all()
-#         serializer = PaymentSerializer(payments, many=True)
-#         return Response(serializer.data)
+class PaymentListCreateAPIView(APIView):
+    def get(self, request):
+        payments = Payment.objects.all()
+        serializer = PaymentSerializer(payments, many=True)
+        return Response({"success": True, "data": serializer.data, "status": 200},status=status.HTTP_200_OK)
 
-#     def post(self, request):
-#         serializer = PaymentSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+ 
+class PaymentDetailAPIView(APIView):
+    def get(self, request, pk):
+        try:
+            payment = Payment.objects.get(pk=pk)
+        except Payment.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = PaymentSerializer(payment)
+        return Response({"success": True, "data": serializer.data, "status": 200},status=status.HTTP_200_OK)
 
-# class PaymentDetailAPIView(APIView):
-#     def get(self, request, pk):
-#         try:
-#             payment = Payment.objects.get(pk=pk)
-#         except Payment.DoesNotExist:
-#             return Response(status=status.HTTP_404_NOT_FOUND)
-#         serializer = PaymentSerializer(payment)
-#         return Response(serializer.data)
+    def patch(self, request, pk):
+        try:
+            payment = Payment.objects.get(pk=pk)
+        except Payment.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = PaymentSerializer(payment, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"success": True, "data": serializer.data, "status": 200},status=status.HTTP_200_OK)
+        return Response({"success":False,"error":serializer.errors,"status":400}, status=status.HTTP_400_BAD_REQUEST)
 
-#     def patch(self, request, pk):
-#         try:
-#             payment = Payment.objects.get(pk=pk)
-#         except Payment.DoesNotExist:
-#             return Response(status=status.HTTP_404_NOT_FOUND)
-#         serializer = PaymentSerializer(payment, data=request.data, partial=True)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-#     def delete(self, request, pk):
-#         try:
-#             payment = Payment.objects.get(pk=pk)
-#         except Payment.DoesNotExist:
-#             return Response(status=status.HTTP_404_NOT_FOUND)
-#         payment.delete()
-#         return Response(status=status.HTTP_204_NO_CONTENT)
+    def delete(self, request, pk):
+        try:
+            payment = Payment.objects.get(pk=pk)
+        except Payment.DoesNotExist:
+            return Response({"success":False,"error":serializer.errors,"status":400}, status=status.HTTP_400_BAD_REQUEST)
+        payment.delete()
+        return Response(status=status.HTTP_200_OK)
