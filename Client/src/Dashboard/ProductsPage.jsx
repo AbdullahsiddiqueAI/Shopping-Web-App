@@ -476,7 +476,7 @@ const ProductsPage = () => {
             </div>
           )}
 
-          <button type="submit" className="btn">
+          <button type="submit" className="btn" disabled={createProductMutation.isLoading || updateProductMutation.isLoading}>
             {isEditing ? "Update Product" : "Add Product"}
           </button>
         </form>
