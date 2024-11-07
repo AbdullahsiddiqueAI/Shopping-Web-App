@@ -1058,6 +1058,13 @@ p {
   .selected-category{
     font-size: small !important;
   }
+  .drawer-overlay.open{
+    width: 0%  !important;
+    height: 0% !important;
+  }
+  .slides img {
+    height: initial !important;
+}
   /* .productsPage_product-list, .productsPage_product-list>*{
     font-size: small !important;
   } */

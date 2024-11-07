@@ -10,6 +10,7 @@ import { loginInUser } from '../Store/authSlice'; // Import the loginUser action
 import { signupUser } from '../util/queries'; // API function to handle signup
 import { toast } from 'react-toastify'; // Import react-toastify
 import { FaSpinner } from 'react-icons/fa'; // Import loader icon from react-icons
+import SmallLoader from '../Components/Common/SmallLoader';
 
 const Signup = () => {
   const [FormData, SetFormData] = useState({
@@ -30,7 +31,7 @@ const Signup = () => {
   const dispatch = useDispatch(); // Redux dispatch
 
   // Handle form submission using mutation
-  const { mutate, data, isLoading, error: Error, isError, isSuccess } = useMutation({
+  const { mutate, data, isLoading:loading, error: Error, isError, isSuccess } = useMutation({
     mutationFn: signupUser,
     onSuccess: (response) => {
       toast.success('Signup successful!');
@@ -151,13 +152,25 @@ const Signup = () => {
             <input type="text" name="Address" onChange={FormDataHandler} placeholder='Address' required />
 
             {/* Submit button with loader and disabled during API call */}
-            <button type="submit" disabled={isLoading} className="signup-button">
-              {isLoading ? (
-                <>
-                  <FaSpinner className="spinner" /> Signing up...
-                </>
+            <button
+              type="submit"
+              disabled={loading}
+              // style={{ backgroundColor: loading ? "initial" : "#3c3c3c" }}
+              className="login-button"
+            >
+              {loading ? (
+                <div
+                  style={{
+                    display: "grid",
+                    placeItems: "center",
+                    width: "100%",
+                    height: "100%",
+                  }}
+                >
+                  <SmallLoader />
+                </div>
               ) : (
-                "Signup"
+                "signup"
               )}
             </button>
           </form>

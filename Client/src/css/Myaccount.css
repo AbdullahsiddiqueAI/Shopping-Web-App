@@ -99,7 +99,7 @@
                 
                 display: flex;
                 gap: 1rem;
-                align-self: flex-end;
+                align-self: center;
                 input[type="reset"]{
                     padding: 0.5rem 1rem;
                     background-color: transparent;

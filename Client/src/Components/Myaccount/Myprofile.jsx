@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import { userDataUpdate } from '../../util/queries';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SmallLoader from '../Common/SmallLoader';
 
 const MyProfile = () => {
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ const MyProfile = () => {
   const user = useSelector((state) => state.auth.user);
   const storedUser = JSON.parse(localStorage.getItem('user')) || {};
   const userInfo = user || storedUser;
-
+  const [loading,setLoading]=useState(false);
   // State to handle form data
   const [formData, setFormData] = useState({
     firstName: userInfo.first_name || '',
@@ -38,6 +39,7 @@ const MyProfile = () => {
       dispatch(updateUserInfo({ user: data }));
       localStorage.setItem('user', JSON.stringify(data));
       toast.success('Profile updated successfully!');
+      setLoading(false)
     },
     onError: (error) => {
       console.log(JSON.stringify(error))
@@ -61,10 +63,11 @@ const MyProfile = () => {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    setLoading(true)  
     // Password validation
     if (formData.password && formData.password !== formData.confirmPassword) {
       toast.error("New password and confirm password don't match.");
+      setLoading(false)  
       return;
     }
 
@@ -208,7 +211,29 @@ const MyProfile = () => {
 
         <div className="Myprofile-btn-main">
           <input type='reset' value="Cancel" onClick={() => setFormData(userInfo)} />
-          <input type="submit" value="Submit" />
+         
+          {loading ? (
+                <div
+                  style={{
+                    display: "grid",
+                    placeItems: "center",
+                    width: "100%",
+                    height: "100%",
+                    marginRight: "7rem",
+                    padding: "0.5rem 2rem",
+                    backgroundColor: "white",
+                    fontWeight: "500",
+                    cursor: "pointer",
+                    border:"1px solid #232323",
+                  }}
+                  disabled={loading}
+                >
+                  <SmallLoader />
+                </div>
+                
+              ) : (
+                <input type="submit" value="Submit" />
+              )}
         </div>
       </form>
     </div>
