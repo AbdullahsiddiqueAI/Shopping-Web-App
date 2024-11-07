@@ -109,10 +109,6 @@ function Products() {
           <div className="productPage_main_content">
             <div className="productPage_filter">
               <div className="category-filter-container">
-                <AiOutlineFilter
-                  className="filter-icon"
-                  onClick={toggleCategoryDropdown}
-                />
                 {showCategoryDropdown && (
                   <div className="category-dropdown">
                     {categories.map((category) => (
@@ -126,6 +122,10 @@ function Products() {
                     ))}
                   </div>
                 )}
+                <AiOutlineFilter
+                  className="filter-icon"
+                  onClick={toggleCategoryDropdown}
+                />
                 <span className="selected-category">
                   {categories.find((cat) => cat.id === selectedCategory)?.name}
                 </span>
