@@ -1052,7 +1052,15 @@ p {
       width: 100% !important;
     }
   }
-
+  .productPage_filter, .productPage_filter >*{
+    font-size: small !important;
+  }
+  .selected-category{
+    font-size: small !important;
+  }
+  /* .productsPage_product-list, .productsPage_product-list>*{
+    font-size: small !important;
+  } */
 }
 
 @media (max-width: 640px) {

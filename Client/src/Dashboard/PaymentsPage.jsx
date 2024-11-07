@@ -124,8 +124,8 @@ const PaymentsPage = () => {
         <tbody>
           {sortedPayments?.map((payment) => (
             <tr key={payment.id}>
-              <td>{"#" +String(payment.order).slice(0,5) || 'N/A'}</td>
               <td>{payment.stripe_charge_id || 'N/A'}</td>
+              <td>{"#" +String(payment.order).slice(0,5) || 'N/A'}</td>
               <td>{new Date(payment.created_at).toLocaleDateString()}</td>
               <td>{`${payment.currency || 'USD'} ${payment.amount}`}</td>
               <td className={`status-${String(payment.status).toLowerCase()}`}>{payment.status}</td>
