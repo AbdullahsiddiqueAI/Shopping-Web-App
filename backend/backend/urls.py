@@ -21,7 +21,7 @@ from django.contrib import admin
 from .seeder import *
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("api/admin/", admin.site.urls),
     # path('seed-data/', SeedDataAPIView.as_view(), name='seed-data'),
     path("api/",include('core.urls')),
     path("api/",include('shoppingApp.urls')),
