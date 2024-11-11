@@ -58,7 +58,7 @@ class SignUpView(APIView):
         except Exception as e:
             # Handle other unexpected exceptions
             return Response({
-                'error': 'An unexpected error occurred: ' + str(e),
+                'error': list(e)[0],  
                 'status': 500
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 class LoginView(APIView):
