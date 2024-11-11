@@ -61,7 +61,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 CSRF_TRUSTED_ORIGINS = [
     'http://shoppingapp.dfwcz.com',
-    "https://shoppingapp.dfwcz.com"
+    'https://shoppingapp.dfwcz.com',
    'http://54.144.249.124/'
 ]
 CORS_ALLOW_ALL_ORIGINS = True
