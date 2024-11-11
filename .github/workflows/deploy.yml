@@ -42,7 +42,7 @@ jobs:
 
           # Run migrations
           echo "Applying Django migrations..."
-          python manage.py makemigrations || { echo "Django migrations failed"; exit 1; }
+         
           python manage.py migrate || { echo "Django migration failed"; exit 1; }
 
           # Navigate to the React frontend directory
