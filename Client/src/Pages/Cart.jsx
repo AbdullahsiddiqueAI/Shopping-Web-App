@@ -81,6 +81,17 @@ const Cart = ({nav=true,footer=true}) => {
 
   if (isLoading) return <div>Loading cart data...</div>;
   if (error) return <div>Error loading cart: {error.message}</div>;
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 786);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 786);
+    };
+
+    window.addEventListener('resize', handleResize);
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <>
@@ -106,7 +117,7 @@ const Cart = ({nav=true,footer=true}) => {
                 <tr key={item.id}>
                   <td className="cart-product-info">
                     <img src={`${import.meta.env.VITE_BACKEND_END_POINT_image}${item.productPic}`} alt={item.name} className="cart-product-image" />
-                    <span>{item.name}</span>
+                    <span title={item.name}>{!isSmallScreen && item.name} {isSmallScreen && String(item.name).slice(0,20)} { isSmallScreen && String(item.name).length>20 ? '...':''}</span>
                   </td>
                   <td>${item.price}</td>
                   <td>
