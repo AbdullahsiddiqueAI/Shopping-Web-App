@@ -1,0 +1,1 @@
+ssh -i FYP_Keys.pem ubuntu@54.144.249.124

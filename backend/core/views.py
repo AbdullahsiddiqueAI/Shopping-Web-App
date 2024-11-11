@@ -8,7 +8,8 @@ from .models import UserCustomModel
 from rest_framework.permissions import AllowAny,IsAuthenticated
 import json
 import requests
-from rest_framework.exceptions import ErrorDetail
+from rest_framework.exceptions import *
+# from rest_framework.exceptions import ErrorDetail
 
 
 def get_tokens_for_user(user):
@@ -20,17 +21,19 @@ def get_tokens_for_user(user):
 
 
 # Create your views here.
+
 class SignUpView(APIView):
     permission_classes = [AllowAny]
     serializer_class = UserSerializer
-
 
     def post(self, request):
         provider = str(request.data.get('accountType')).lower()
         password = request.data.get('password', None)
         if not password:
-            return Response({"success": False, "error":"password required","status":404},status=status.HTTP_400_BAD_REQUEST) 
+            return Response({"success": False, "error": "password required", "status": 404}, status=status.HTTP_400_BAD_REQUEST) 
+        
         serializer = UserSerializer(data=request.data)
+        
         try:
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -39,19 +42,25 @@ class SignUpView(APIView):
                 "tokens": get_tokens_for_user(serializer.instance),
                 "status": 201
             }, status=status.HTTP_201_CREATED)
+        
+        except ValidationError as e:
+            # Handle ValidationError from DRF, which contains `detail`
+            error_message = (
+                e.detail.get('email', [""])[0].strip()
+                if isinstance(e.detail, dict) and 'email' in e.detail
+                else str(e.detail)
+            )
+            return Response({
+                'error': error_message,
+                'status': 400
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
         except Exception as e:
-             error_message = (
-        e.detail.get('email', [{}])[0].strip()
-        if isinstance(e.detail, dict) and 'email' in e.detail
-        else str(e)
-    )
-
-    # Return the response with the formatted error message
-        return Response({
-        'error': error_message,
-        'status': 400
-    }, status=status.HTTP_400_BAD_REQUEST)
-
+            # Handle other unexpected exceptions
+            return Response({
+                'error': 'An unexpected error occurred: ' + str(e),
+                'status': 500
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 class LoginView(APIView):
     permission_classes = [AllowAny]
 
