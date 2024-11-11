@@ -341,6 +341,7 @@ nav {
   padding-bottom: 3rem;
   padding-right: 2rem;
   padding-left: 2rem;
+  font-size: 1rem !important;
 
   .Footer-container {
     display: flex;
@@ -366,28 +367,37 @@ nav {
             background: url("img/Footer-icon/facebook.png");
             background-size: 2rem 2rem;
             background-position: center;
+            background-color: #0866FF;
             width: 2rem;
             height: 2rem;
+            border-color: #3c3c3c !important;
+            border-width: 1px;
             display: inline-block;
             border-radius: 50%;
             cursor: pointer;
           }
-
+          
           .Footer-icon-2 {
+            border-width: 5px;
             background: url("img/Footer-icon/Linkedin.png");
             background-size: 2rem 2rem;
+            
             background-position: center;
+            background-color: #0A66C2;
+            border-color: #3c3c3c !important;
             width: 2rem;
             height: 2rem;
             display: inline-block;
             border-radius: 50%;
             cursor: pointer;
           }
-
+          
           .Footer-icon-3 {
-            background: url("img/Footer-icon/Linkedin.png");
+            background: url("img/Footer-icon/Github-icon.png");
             background-size: 2rem 2rem;
             background-position: center;
+            background-color: White;
+            border-color: #3c3c3c !important;
             width: 2rem;
             height: 2rem;
             display: inline-block;
@@ -1176,6 +1186,16 @@ p {
   } */
 }
 @media (max-width: 444px) {
+  .Footer-top{
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    place-items: center !important;
+    font-size: 1rem !important;
+    &>*{
+      place-items: center !important;
+    }
+
+  }
   /***************** Footer *******************/
   .para-text {
     font-size: 0.7rem !important;
@@ -1261,6 +1281,11 @@ p {
 }
 
 @media (max-width: 345px) {
+  .Footer-top{
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+
+  }
   /***************** Payement Page *******************/
   .card-details{
     top: 79px !important;

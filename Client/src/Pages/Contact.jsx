@@ -60,15 +60,15 @@ const Contact = () => {
               <FaPhoneAlt className="contact-icon" />
               <h3>Call To Us</h3>
               <p>We are available 24/7, 7 days a week.</p>
-              <p>Phone: +88016111122222</p>
+              <p>Phone: +92324-4046381</p>
             </div>
             <hr />
             <div className="contact-info-item">
               <FaEnvelope className="contact-icon" />
               <h3>Write To Us</h3>
               <p>Fill out our form and we will contact you within 24 hours.</p>
-              <p>Emails: customer@exclusive.com</p>
-              <p>Emails: support@exclusive.com</p>
+              <p>Emails: ShoppingApp@exclusive.com</p>
+              <p>Emails: ShoppingApp@exclusive.com</p>
             </div>
           </div>
 
