@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux'; // Importing useSelector to access auth state
 import NavBar from '../Components/NavBar';
 import { Link, Outlet } from 'react-router-dom';
@@ -8,6 +8,9 @@ import Footer from '../Components/Footer';
 const MyAccount = () => {
     // Fetch user data from Redux store or fallback to localStorage
     const user = useSelector((state) => state.auth.user); // Accessing user info from auth state
+    useEffect(() => {
+        document.title = "Account | Profile"; // Change this title as needed
+      }, [])
 
     // Fallback to localStorage if the Redux store doesn't have the data
     const storedUser = JSON.parse(localStorage.getItem('user')) || {};

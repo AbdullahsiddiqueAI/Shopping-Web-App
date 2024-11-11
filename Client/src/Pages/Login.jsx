@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "../Components/NavBar";
 import "../css/Login.css";
 import { useDispatch } from "react-redux";
@@ -15,7 +15,9 @@ const Login = () => {
     Email: "",
     Password: "",
   });
-
+  useEffect(() => {
+    document.title = "Login"; // Change this title as needed
+  }, [])
 
   const [loading, setLoading] = useState(false); // Manage loading state manually
 

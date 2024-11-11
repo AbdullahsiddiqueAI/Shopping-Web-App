@@ -18,7 +18,9 @@ const Cart = ({nav=true,footer=true}) => {
   const {isAuthenticated} = useSelector((state) => state.auth);
   const totalPrice = useSelector((state) => state.cart.totalPrice);
   const [couponCode, setCouponCode] = useState("");
-
+  useEffect(() => {
+    document.title = "Cart"; // Change this title as needed
+  }, [])
   // React Query mutation for deleting cart items
   const { mutate: deleteItem } = useMutation({
     mutationFn: (id)=>deleteCartItem(id),

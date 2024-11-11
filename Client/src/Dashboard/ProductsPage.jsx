@@ -34,7 +34,9 @@ const ProductsPage = () => {
   const [hasMore, setHasMore] = useState(true); // Check if more products are available
   const [selectedCategory, setSelectedCategory] = useState("all"); // Store the selected category
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false); // Toggle for category dropdown
-
+  useEffect(() => {
+    document.title = "Dashboard | Product"; // Change this title as needed
+  }, [])
   // Fetch products from the API with pagination
   const {
     data: productsData,

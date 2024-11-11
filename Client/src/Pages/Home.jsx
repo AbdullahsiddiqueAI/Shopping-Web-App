@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header from '../Components/Home/Header'
 import '../css/Home.css'
 import Website_info from '../Components/Website_info'
@@ -17,6 +17,9 @@ const Home = () => {
     queryFn: getFeaturedProduct,
     keepPreviousData: true, 
   });
+  useEffect(() => {
+    document.title = "Home"; // Change this title as needed
+  }, [])
 
   return (
     <>

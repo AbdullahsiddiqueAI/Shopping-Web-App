@@ -27,6 +27,10 @@ function Products() {
   const [categories, setCategories] = useState([
     { id: "all", name: "All Categories" },
   ]);
+  useEffect(() => {
+
+    document.title = "Products"; 
+  }, [])
 
   const searchQuery = useSelector((state) => state.search.searchQuery);
 

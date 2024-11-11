@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../css/Contact.css'; // Assuming the CSS is stored here
 import { FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
 import NavBar from '../Components/NavBar';
@@ -15,6 +15,9 @@ const Contact = () => {
     message: ''
   });
   const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    document.title = "Contact"; // Change this title as needed
+  }, [])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

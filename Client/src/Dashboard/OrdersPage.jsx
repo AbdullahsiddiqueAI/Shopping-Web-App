@@ -22,6 +22,9 @@ const OrdersPage = () => {
     queryKey: ['adminOrdersHistory'],
     queryFn: getAdminOrderHistory,
   });
+  useEffect(() => {
+    document.title = "Dashboard | Order"; // Change this title as needed
+  }, [])
 
   // Mutation for canceling an order
   const { mutate: cancelOrder } = useMutation({

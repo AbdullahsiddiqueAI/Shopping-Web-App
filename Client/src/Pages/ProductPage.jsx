@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../css/ProductPage.css'; // Include the corresponding CSS
 import NavBar from '../Components/NavBar';
 import Footer from '../Components/Footer';
@@ -17,10 +17,17 @@ const ProductPage = () => {
   const [quantity, setQuantity] = useState(1); 
   const dispatch = useDispatch(); 
   const queryClient = useQueryClient(); 
+  useEffect(() => {
 
-
+    document.title = "Product | "; // Change this title as needed
+  }, [])
+  
+  
   const { data: product, isLoading: productLoading, error: productError } = useQuery({
     queryKey: ['product', id], 
+    onSuccess:()=>{
+      document.title += String(product?.name)
+    },
     queryFn: () => getProduct(id), 
   });
   const { data:RelatedProduct, isLoading, error, isFetching, isSuccess } = useQuery({
@@ -38,7 +45,10 @@ const ProductPage = () => {
     queryFn: getProducts,
     keepPreviousData: true, 
   });
-  console.log("RelatedProduct",RelatedProduct)
+  // console.log("RelatedProduct",RelatedProduct)
+  if(!productLoading){
+    document.title += String(product?.name)
+  }
 
   const mutation = useMutation({
     mutationFn: addCartItem,

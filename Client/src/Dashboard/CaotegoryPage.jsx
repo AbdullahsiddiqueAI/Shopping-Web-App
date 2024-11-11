@@ -20,7 +20,9 @@ const CategoryPage = () => {
   const [currentCategory, setCurrentCategory] = useState(null);
   const [newCategory, setNewCategory] = useState({ name: '', description: '', Categoryicon: null });
   const [categories, setCategories] = useState([]);
-
+  useEffect(() => {
+    document.title = "Dashboard | Category"; // Change this title as needed
+  }, [])
   // Fetch categories from the API
   const { data: categoriesData, isLoading, error } = useQuery({
     queryKey: ['categories'],

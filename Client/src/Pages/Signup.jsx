@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NavBar from '../Components/NavBar';
 import '../css/Signup.css';
 import { Link } from 'react-router-dom';
@@ -25,6 +25,10 @@ const Signup = () => {
     EmailError: "",
     PasswordError: ""
   });
+  useEffect(() => {
+
+    document.title = "Sign UP"; // Change this title as needed
+  }, [])
 
   const [PreviewImage, SetPreviewImage] = useState(null);
   const dispatch = useDispatch();

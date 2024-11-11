@@ -5,7 +5,9 @@ import { useSelector } from 'react-redux'; // Import useSelector to access Redux
 const PayementPage = () => {
   const cartItems = useSelector((state) => state.cart.items); // Get cart items from Redux store
   const totalPrice = useSelector((state) => state.cart.totalPrice); // Get total price from Redux store
-
+  useEffect(() => {
+    document.title = "Payemet"; // Change this title as needed
+  }, [])
   // Calculate the total number of items
   const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
 

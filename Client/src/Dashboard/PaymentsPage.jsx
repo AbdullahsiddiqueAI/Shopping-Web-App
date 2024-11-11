@@ -13,7 +13,9 @@ const PaymentsPage = () => {
   const [filterStatus, setFilterStatus] = useState('All');
   const [sortOption, setSortOption] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-
+  useEffect(() => {
+    document.title = "Dashboard | Payment"; // Change this title as needed
+  }, [])
   // Fetch payment data with loading and error handling
   const { data, isLoading,  isSuccess,isError } = useQuery({
     queryKey: ['paymentHistory'],
