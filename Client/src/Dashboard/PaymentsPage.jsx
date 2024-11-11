@@ -131,7 +131,7 @@ const PaymentsPage = () => {
               <td>{new Date(payment.created_at).toLocaleDateString()}</td>
               <td>{`${payment.currency || 'USD'} ${payment.amount}`}</td>
               <td className={`status-${String(payment.status).toLowerCase()}`}>{payment.status}</td>
-              <td>{payment.user.first_name} {payment.user.last_name} ({payment.user.email})</td>
+              <td>{payment.user.first_name} {payment.user.last_name} ({String(payment.user.email).slice(0,20)})</td>
               <td>
                 <FaEye className="view-icon" onClick={() => openModal(payment)} />
               </td>
