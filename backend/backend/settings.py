@@ -185,9 +185,9 @@ SIMPLE_JWT = {
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'staticfiles'),
+    # os.path.join(BASE_DIR, 'staticfiles'),
 ]
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Media files (Uploaded by users)
 MEDIA_URL = 'api/media/'
