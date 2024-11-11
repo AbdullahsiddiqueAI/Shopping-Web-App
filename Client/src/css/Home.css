@@ -364,12 +364,12 @@ nav {
           gap: 1rem;
 
           .Footer-icon-1 {
-            background: url("img/Footer-icon/facebook.png");
+            /* background: url("img/Footer-icon/facebook.png"); */
             background-size: 2rem 2rem;
             background-position: center;
-            background-color: #0866FF;
-            width: 2rem;
-            height: 2rem;
+            /* background-color: #0866FF; */
+            width: 1.8rem;
+            height: 1.8rem;
             border-color: #3c3c3c !important;
             border-width: 1px;
             display: inline-block;
@@ -378,17 +378,18 @@ nav {
           }
           
           .Footer-icon-2 {
-            border-width: 5px;
-            background: url("img/Footer-icon/Linkedin.png");
+            /* border-width: 5px; */
+            /* background: url("img/Footer-icon/Linkedin.png") ; */
             background-size: 2rem 2rem;
             
             background-position: center;
-            background-color: #0A66C2;
-            border-color: #3c3c3c !important;
-            width: 2rem;
-            height: 2rem;
+            /* background-color: white; */
+            /* border-color: #3c3c3c !important; */
+            width: 1.8rem;
+            height: 1.8rem;
             display: inline-block;
-            border-radius: 50%;
+            /* color: #0866FF; */
+            /* border-radius: 50%; */
             cursor: pointer;
           }
           

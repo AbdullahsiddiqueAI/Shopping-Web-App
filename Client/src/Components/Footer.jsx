@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-
+import { CiFacebook } from "react-icons/ci";
+import { FaFacebook, FaLinkedin } from 'react-icons/fa';
 const Footer = () => {
   return (
     <div className="Footer-main">
@@ -22,8 +23,9 @@ const Footer = () => {
                 <div className="Footer-top-part">
                 <div className="head-text" style={{textAlign:'center'}}>Social Media Links</div>
                 <div className="Footer-icon">
-                <a className="Footer-icon-1" href='https://www.facebook.com/abdullah.siddiqi.752/' target='_blank'></a>
-                <a className="Footer-icon-2" href='https://www.linkedin.com/in/abdullah-siddique-83ab69302/' target='_blank'></a>
+               
+                <a  href='https://www.facebook.com/abdullah.siddiqi.752/' target='_blank'> <FaFacebook className="Footer-icon-1" /></a>
+                <a  href='https://www.linkedin.com/in/abdullah-siddique-83ab69302/' target='_blank'><FaLinkedin className="Footer-icon-2" /></a>
                 <a className="Footer-icon-3" href='https://github.com/AbdullahsiddiqueAI' target='_blank'></a>
                 {/* <a className="Footer-icon-3" ></a> */}
                 </div>
