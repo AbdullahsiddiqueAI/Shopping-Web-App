@@ -35,7 +35,7 @@ class UserSerializer(ModelSerializer):
                 raise ValidationError("Password must contain at least one lowercase letter.")
             if not re.search(r'[0-9]', password):
                 raise ValidationError("Password must contain at least one digit.")
-            if not re.search(r'[!@#$%^&*()_+{}|:"<>?]', password):
+            if not re.search(r'[!@#$%^&*.()_+{}|:"<>?]', password):
                 raise ValidationError("Password must contain at least one special character.")
         return validated_data
 

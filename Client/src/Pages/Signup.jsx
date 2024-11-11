@@ -40,7 +40,7 @@ const Signup = () => {
     },
     onError: (error) => {
       console.error("Error during signup:", error);
-      toast.error(`Signup failed: ${error.response?.data?.error || 'Something went wrong'}`);
+      toast.error(`Signup failed: ${error  || 'Something went wrong'}`);
       // Show error toast
     },
   });
@@ -63,7 +63,7 @@ const Signup = () => {
     if (!/\d/.test(password)) {
       return "Password must contain at least one number.";
     }
-    if (!/[@$!%*?&]/.test(password)) {
+    if (!/[@$!%*.?&]/.test(password)) {
       return "Password must contain at least one special character.";
     }
     return "";

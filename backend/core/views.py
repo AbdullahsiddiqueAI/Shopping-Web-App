@@ -8,7 +8,7 @@ from .models import UserCustomModel
 from rest_framework.permissions import AllowAny,IsAuthenticated
 import json
 import requests
-
+from rest_framework.exceptions import ErrorDetail
 
 
 def get_tokens_for_user(user):
@@ -40,11 +40,18 @@ class SignUpView(APIView):
                 "status": 201
             }, status=status.HTTP_201_CREATED)
         except Exception as e:
-            # print()
-            return Response({
-                'error': str(list(e)[0]),
-                'status': 400
-            }, status=status.HTTP_400_BAD_REQUEST)
+             error_message = (
+        e.detail.get('email', [{}])[0].strip()
+        if isinstance(e.detail, dict) and 'email' in e.detail
+        else str(e)
+    )
+
+    # Return the response with the formatted error message
+        return Response({
+        'error': error_message,
+        'status': 400
+    }, status=status.HTTP_400_BAD_REQUEST)
+
 class LoginView(APIView):
     permission_classes = [AllowAny]
 
