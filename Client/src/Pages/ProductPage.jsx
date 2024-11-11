@@ -5,11 +5,12 @@ import Footer from '../Components/Footer';
 import Rating from '../Components/Common/Rating';
 import { Link, useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'; // Import React Query
-import { getProduct, addCartItem } from '../util/queries'; // Import the API functions
+import { getProduct, addCartItem, getProducts } from '../util/queries'; // Import the API functions
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../Store/cartSlice'; // Redux action for adding to cart
 import { toast } from 'react-toastify';
 import Loader from '../Components/Common/Loader';
+import ProductListItem from '../Components/Products/ProductListItem';
 
 const ProductPage = () => {
   const { id } = useParams(); 
@@ -17,24 +18,38 @@ const ProductPage = () => {
   const dispatch = useDispatch(); 
   const queryClient = useQueryClient(); 
 
-  // Fetch the main product details using React Query
-  const { data: product, isLoading: productLoading, error: productError } = useQuery({
-    queryKey: ['product', id], // Use product ID as part of the query key
-    queryFn: () => getProduct(id), // Fetch the product by ID
-  });
 
-  // React Query mutation for adding product to cart
+  const { data: product, isLoading: productLoading, error: productError } = useQuery({
+    queryKey: ['product', id], 
+    queryFn: () => getProduct(id), 
+  });
+  const { data:RelatedProduct, isLoading, error, isFetching, isSuccess } = useQuery({
+    queryKey: [
+      "products_RelatedProduct",
+      {
+       
+        page_size: 3,
+      
+        enabled: !!product,
+        category: product?.category?.category_id,
+
+      },
+    ],
+    queryFn: getProducts,
+    keepPreviousData: true, 
+  });
+  console.log("RelatedProduct",RelatedProduct)
+
   const mutation = useMutation({
     mutationFn: addCartItem,
     onSuccess: (data) => {
-      // Once the product is successfully added to the backend cart,
-      // update the Redux store with the product information
+      
       dispatch(
         addToCart({
           id: product.product_id,
           name: product.name,
           price: product.price,
-          quantity: quantity, // Use the selected quantity
+          quantity: quantity, 
         })
       );
       toast.success(`${quantity} ${product.name}(s) added to cart!`);
@@ -46,7 +61,7 @@ const ProductPage = () => {
     },
   });
 
-  // Function to handle adding product to the cart
+
   const handleAddToCart = () => {
     mutation.mutate({
       product: product.product_id,
@@ -55,19 +70,15 @@ const ProductPage = () => {
     });
   };
 
-  // Handle loading and error states
-  // if (productLoading) return <div>Loading...</div>;
+ 
   if (productError) return <div>Error loading product: {productError.message}</div>;
 
-  // Fallback if product not found
-  // if (!product) return <div>Product not found</div>;
-
-  // Function to handle quantity increase
+  
   const handleIncrease = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
   };
 
-  // Function to handle quantity decrease
+  
   const handleDecrease = () => {
     if (quantity > 1) {
       setQuantity((prevQuantity) => prevQuantity - 1);
@@ -90,7 +101,7 @@ const ProductPage = () => {
         {!productLoading && 
         <div className="main-product-container">
           <div className="main-product-images">
-            {/* Display product image or fallback to a default image */}
+          
             <img
               src={product?.productPic ? `${import.meta.env.VITE_BACKEND_END_POINT_image}${product?.productPic}` : 'default-image.jpg'}
               alt={product?.name}
@@ -137,8 +148,14 @@ const ProductPage = () => {
         <div className="main-product-related-items">
           <h1>Related Items</h1>
           <div className="main-product-related-products">
-            {/* Dynamically display related products */}
-            {/* Related products logic would go here */}
+         {
+          isLoading ? <Loader/> :
+          RelatedProduct?.results?.data.filter((elem)=>elem?.product_id != product?.product_id).length==0?<h1 className='Product-not-Found' style={{height:'initial',width:'initial',fontSize:'initial'}}>NO product Found</h1>:
+          RelatedProduct?.results?.data.filter((elem)=>elem?.product_id != product?.product_id).map((elem,index)=>{
+              // console.log()
+            return(<ProductListItem product={elem} key={index}/>)
+          })
+         } 
           </div>
         </div>
       </div>

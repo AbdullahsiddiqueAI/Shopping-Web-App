@@ -9,12 +9,12 @@ import { getCategory, getProducts } from "../util/queries";
 import { useLocation } from "react-router";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { useSearchParams } from "react-router-dom"; // Import useSearchParams
+import { useSearchParams } from "react-router-dom";
 import Loader from "../Components/Common/Loader";
 import SmallLoader from "../Components/Common/SmallLoader";
 
 function Products() {
-  const [searchParams] = useSearchParams(); // Get the query params
+  const [searchParams] = useSearchParams();
   const location = useLocation(); 
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
@@ -34,7 +34,7 @@ function Products() {
     setProducts([]); 
     setPage(1); 
   }, [searchQuery, sortBy, selectedCategory, pageSize]);
-
+console.log("selectedCategory",selectedCategory)
   const { data, isLoading, error, isFetching, isSuccess } = useQuery({
     queryKey: [
       "products",

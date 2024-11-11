@@ -10,34 +10,32 @@ import SmallLoader from '../Common/SmallLoader';
 
 const ProductListItem = ({ product }) => {
   const dispatch = useDispatch();
-  const queryClient = useQueryClient(); // To manually invalidate queries
-  const [loading, setLoading] = useState(false); // State to manage loading manually
+  const queryClient = useQueryClient(); 
+  const [loading, setLoading] = useState(false); 
 
-  // React Query mutation for adding product to cart
+  
   const mutation = useMutation({
     mutationFn: addCartItem,
     onSuccess: (data) => {
-      // Once the product is successfully added to the backend cart,
-      // update the Redux store
+      
       dispatch(addToCart({
         id: product.product_id,
         name: product.name,
         price: product.price,
-        quantity: 1, // Adding 1 unit to the cart
+        quantity: 1,
       }));
       toast.success(`${product.name}(s) added to cart!`);
-      queryClient.invalidateQueries('cartData'); // Invalidate the cart data to refetch
-      setLoading(false); // Reset the loading state
+      queryClient.invalidateQueries('cartData'); 
+      setLoading(false); 
     },
     onError: (error) => {
       toast.error("Error adding to cart. Please try again.");
-      setLoading(false); // Reset the loading state in case of error
-    }
-  });
+      setLoading(false); 
+  }});
 
-  // Handle Add to Cart button click
+ 
   const handleAddToCart = () => {
-    setLoading(true); // Set loading state to true when the process starts
+    setLoading(true); 
     mutation.mutate({ product: product.product_id, quantity: 1, price: product.price });
   };
 
@@ -45,17 +43,17 @@ const ProductListItem = ({ product }) => {
     <div className="Product_list-items">
       <Link to={`/ProductPage/${product.product_id}`}>
         <div className="Product_list-items-img">
-          {/* Display product image or fallback to a default image */}
+        
           <img 
             src={`${import.meta.env.VITE_BACKEND_END_POINT_image}${product.productPic}` || 'default-image.jpg'} 
             alt={product.name} 
           />
         </div>
-        <div className="Product_list-items-text">{product.name}</div>
+        <div className="Product_list-items-text" title={String(product.name)}>{String(product.name).slice(0, 25)}{String(product.name).length > 25 ? "..." : ''}</div>
         <div>
           <div className="Product_list-items-text-price">${product.price}</div>
-          <div>{String(product.description).slice(0, 25)}{String(product.description).length > 25 ? "..." : ''}</div>
-          {/* Assuming you have a Rating component that accepts rating and review count */}
+          <div title={String(product.description)}>{String(product.description).slice(0, 25)}{String(product.description).length > 25 ? "..." : ''}</div>
+          
           <Rating value={product?.rating || 4.0} count={product?.reviewCount || 64} />
         </div>
       </Link>
