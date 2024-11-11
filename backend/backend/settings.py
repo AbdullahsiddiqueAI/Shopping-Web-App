@@ -55,11 +55,13 @@ INSTALLED_APPS = [
 CORS_ALLOWED_ORIGINS = [
     # "http://localhost:3000",
     # "http://localhost:5173",
-    "http://*"# Vite dev server
+    "http://*"# Vite dev server,
+    "https://*"# Vite dev server,
    
 ]
 CSRF_TRUSTED_ORIGINS = [
     'http://shoppingapp.dfwcz.com',
+    "https://shoppingapp.dfwcz.com"
    'http://54.144.249.124/'
 ]
 CORS_ALLOW_ALL_ORIGINS = True
