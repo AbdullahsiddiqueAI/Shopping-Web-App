@@ -97,6 +97,17 @@ export const getProduct = async (id) => {
       // throw new Error(JSON.stringify(error.response.data.error));
     }
   };
+export const getFeaturedProduct = async () => {
+    try {
+       
+      const response = await instance.get(`products/FeaturedProduct`);
+      return response.data.data;
+    } catch (error) {
+      console.log("error",error);
+      throw new Error(error.response.data.error);
+      // throw new Error(JSON.stringify(error.response.data.error));
+    }
+  };
 
 
   export const createProduct = async ({formData}) => {

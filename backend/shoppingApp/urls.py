@@ -6,6 +6,7 @@ urlpatterns = [
     path('categories/<uuid:pk>/', CategoryDetailAPIView.as_view(), name='category-detail'),
 
     path('products/', ProductListCreateAPIView.as_view(), name='product-list-create'),
+    path('products/FeaturedProduct', FeaturedProduct.as_view(), name='FeaturedProduct'),
     path('products/<uuid:pk>/', ProductDetailAPIView.as_view(), name='product-detail'),
 
     path('orders/', OrderListCreateAPIView.as_view(), name='order-list-create'),

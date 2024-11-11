@@ -22,6 +22,7 @@ class Product(models.Model):
     product_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     productPic=models.ImageField(null=True, blank=True,upload_to='products')
     name = models.CharField(max_length=255) 
+    is_featured = models.BooleanField(default=False) 
     description = models.TextField(null=True,blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.PositiveIntegerField()

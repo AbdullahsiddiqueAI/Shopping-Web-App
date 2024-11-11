@@ -386,3 +386,12 @@ class PaymentDetailAPIView(APIView):
             return Response({"success":False,"error":serializer.errors,"status":400}, status=status.HTTP_400_BAD_REQUEST)
         payment.delete()
         return Response(status=status.HTTP_200_OK)
+class FeaturedProduct(APIView):
+    def get_permissions(self):
+        if self.request.method =='POST':
+            return [IsAuthenticated()]
+        return []
+    def get(self, request):
+       featured_products = Product.objects.filter(is_featured=True)
+       serializer = ProductSerializer(featured_products, many=True)
+       return Response({"success":True, "data": serializer.data, "status": 200},status=status.HTTP_200_OK)   

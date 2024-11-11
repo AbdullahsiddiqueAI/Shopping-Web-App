@@ -15,7 +15,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['product_id', "productPic", 'name', 'description', 'price', 'category', 'stock', 'created_at', 'updated_at']
+        fields = ['product_id', "productPic", 'name', 'description', 'price', 'category', 'stock', 'created_at', 'updated_at','is_featured']
 
     # To handle the category input on POST/PUT requests
     def create(self, validated_data):

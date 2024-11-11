@@ -154,10 +154,12 @@ const ProductsPage = () => {
 
   
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewProduct({ ...newProduct, [name]: value });
+    const { name, type, checked, value } = e.target;
+    setNewProduct((prevProduct) => ({
+      ...prevProduct,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
-
   
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -439,8 +441,19 @@ const ProductsPage = () => {
               value={newProduct.price}
               onChange={handleChange}
               required
-            />
+              />
           </label>
+          <label >
+  Is featured:
+  <input
+    type="checkbox"
+    name="is_featured"
+    checked={newProduct.is_featured} // use checked for checkbox state
+    onChange={handleChange}
+    // required
+    style={{width:'10%'}}
+  />
+</label>
 
           <label>
             Stock:

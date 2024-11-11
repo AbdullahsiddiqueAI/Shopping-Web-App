@@ -34,7 +34,7 @@ function Products() {
     setProducts([]); 
     setPage(1); 
   }, [searchQuery, sortBy, selectedCategory, pageSize]);
-console.log("selectedCategory",selectedCategory)
+// console.log("selectedCategory",selectedCategory)
   const { data, isLoading, error, isFetching, isSuccess } = useQuery({
     queryKey: [
       "products",
