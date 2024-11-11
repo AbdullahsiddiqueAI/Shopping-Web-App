@@ -58,6 +58,10 @@ CORS_ALLOWED_ORIGINS = [
     "http://*"# Vite dev server
    
 ]
+CSRF_TRUSTED_ORIGINS = [
+    'http://shoppingapp.dfwcz.com',
+   'http://54.144.249.124/'
+]
 CORS_ALLOW_ALL_ORIGINS = True
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
