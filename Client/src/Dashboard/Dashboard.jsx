@@ -1,20 +1,26 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboardNav from '../Components/Dashboard/DashboardNav'
 import "../css/Dashboard/DasboardHome.css"
 import DashboardLeftNav from '../Components/Dashboard/DashboardLeftNav'
 import { Outlet } from 'react-router'
+import DashboardNavLeftResponsive from '../Components/Dashboard/DashboardNavLeftResponsive'
 
 const Dashboard = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   useEffect(() => {
     document.title = "Dashboard"; // Change this title as needed
   }, [])
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen); // Toggle the menu open/close state
+  };
   return (
     <div className='Dashboard-container'>
      <div className="Dashboard-nav">
-      <DashboardNav/>
+      <DashboardNav toggleMenu={toggleMenu}/>
      </div>
      <div className="dashboard-content">
-        <div className="dasboard-leftnav"> <DashboardLeftNav/> </div>
+        <div className={`res-dasboard-leftnav ${isMenuOpen ? 'open' : 'Displaynone'}`}> <DashboardNavLeftResponsive isMenuOpen={isMenuOpen} toggleMenu={toggleMenu}/></div>
+        <div className={`dasboard-leftnav `}> <DashboardLeftNav/> </div>
         <div className="dashboard-maincontent">
         <Outlet />
         </div>
