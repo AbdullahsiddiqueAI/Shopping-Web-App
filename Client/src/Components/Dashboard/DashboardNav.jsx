@@ -12,7 +12,10 @@ const DashboardNav = ({toggleMenu}) => {
         <div className="res-hamburger" onClick={toggleMenu} style={{marginLeft:'10px'}}>
         <FaBars className="res-hamburger-icon" />
       </div>
-      <Link to="/" className="website-img"></Link>
+      
+
+      <Link to="/" className="website-img" ></Link>
+    
       <button className="DashboardNav-GotoShop-btn" onClick={()=>navigate('/')}>Go to Shop
         <span>
         <FaArrowRight/>

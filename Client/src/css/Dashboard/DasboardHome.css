@@ -37,12 +37,7 @@ display: flex;
     height: 7rem;
     background-position: 50% 50%;
     line-height: 20px;
-    margin-left: 20px !important;
-
-    /* img{
-            
-              height: 6rem;
-          } */
+    
   }
 .DashboardNav-container{
     display: flex;
@@ -204,13 +199,33 @@ display: flex;
 }
 
 /* Mobile specific styles */
+
 @media (max-width: 900px) {
+  
+  .dashboard-stats {
+    /* flex-direction: column; */
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  .stats-card{
+    width: 50% !important;
+  }
+  .website-img{
+    margin: auto !important;
+    /* margin-right: 5rem!important; */
+
+  }
+  .DashboardNav-GotoShop-btn {
+    margin-right: 1rem !important;
+  }
     .res-hamburger {
         display: block; /* Show hamburger on smaller screens */
     }
-    .dashboard-maincontent{
+    /* .dashboard-maincontent{
       padding: 0px !important;
-    }
+    } */
 
 
     /* Show the menu when the "open" class is added */
@@ -227,4 +242,18 @@ display: flex;
       overflow: scroll;}
     
 
+}
+
+
+@media (max-width: 500px) {
+
+  .stats-card {
+      width: 70% !important;
+  }
+  .website-img {
+    margin-left: 3rem !important;
+  }
+  .DashboardNav-GotoShop-btn {
+    font-size: 0.6rem !important;
+  }
 }
