@@ -92,6 +92,11 @@ const NavBar = () => {
                 style={{ backgroundColor: 'white', boxShadow: 'none', border: 'none' }}
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}  // Update local state
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSearchSubmit();
+                  }
+                }}
               />
               <div type="submit" className="search-icon" onClick={handleSearchSubmit}></div>
             {/* </form> */}
