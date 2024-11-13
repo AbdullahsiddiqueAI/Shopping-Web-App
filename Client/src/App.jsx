@@ -88,7 +88,7 @@ function App() {
 
   return (
     <>
-    <h1>Checking CI/CD Working</h1>
+    {/* <h1>Checking CI/CD Working</h1> */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/cart" element={<PrivateRoute component={Cart} />} />
