@@ -3,6 +3,7 @@ import Rating from '../Common/Rating';
 import imageUrl from '../../css/img/Product_images/Canon-750-D-overview.jpg'
 // import imageUrl2 from '../../css/img/Slider/2.jpg'
 import ProductListItem from '../Products/ProductListItem';
+import { Link } from 'react-router-dom';
 function ProductList({products}) {
 //   const products =[ 
 //     {
@@ -41,9 +42,10 @@ function ProductList({products}) {
         <div className="Product_cotegory-text">
           Featured Products
         </div>
-        <div className="Product_list-button-see-all">
-        See All
-      </div>
+        {/* <div className=""> */}
+        <Link to='/Products' className='Product_list-button-see-all'>See All</Link>
+
+      {/* </div> */}
       </div>
       <div className="Product_list-content">
       {/* {isLoading && <Loader/>} */}

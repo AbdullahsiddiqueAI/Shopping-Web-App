@@ -678,6 +678,7 @@ nav {
       /* height: ; */
       border-radius: 6px;
       height: 3.5rem;
+      line-height: -5px;
     }
     .Product_list-button-see-all:hover {
       background-color: var(--btn-hover);
