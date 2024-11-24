@@ -1,23 +1,23 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux'; // Importing useSelector to access auth state
+import { useSelector } from 'react-redux'; 
 import NavBar from '../Components/NavBar';
 import { Link, Outlet } from 'react-router-dom';
 import '../css/Myaccount.css';
 import Footer from '../Components/Footer';
 
 const MyAccount = () => {
-    // Fetch user data from Redux store or fallback to localStorage
-    const user = useSelector((state) => state.auth.user); // Accessing user info from auth state
+    
+    const user = useSelector((state) => state.auth.user); 
     useEffect(() => {
-        document.title = "Account | Profile"; // Change this title as needed
+        document.title = "Account | Profile"; 
       }, [])
 
-    // Fallback to localStorage if the Redux store doesn't have the data
+    
     const storedUser = JSON.parse(localStorage.getItem('user')) || {};
 
-    const userInfo = user || storedUser; // Use Redux user if available, else fallback to localStorage
+    const userInfo = user || storedUser; 
 
-    // Construct user's full name
+    
     const fullName = `${userInfo.first_name || ''} ${userInfo.last_name || ''}`.trim() || "User";
 
     return (

@@ -66,59 +66,60 @@ class CategoryDetailAPIView(APIView):
 
 
 class CustomPagination(PageNumberPagination):
-    page_size = 10  # Default items per page if not provided by the client
-    page_size_query_param = 'page_size'  # Allow client to specify the page size via query param
-    max_page_size = 100  # Set a maximum limit to avoid performance issues
+    page_size = 10  
+    page_size_query_param = 'page_size'  
+    max_page_size = 100  
 
 # Product API Views
 class ProductListCreateAPIView(APIView):
     pagination_class = CustomPagination
     def get_permissions(self):
-        # Check if the request method is POST
+        
         if self.request.method == 'POST':
-            # Apply the desired permission class for POST requests
+            
             return [IsAuthenticated()]
-        # No permissions are required for GET requests
+        
         return []
     def get(self, request):
-        # Get query parameters for sorting, search, and category filtering
+        
+        
         sort_by = request.query_params.get('sort_by', None)
         search_query = request.query_params.get('search', None)
         category_id = request.query_params.get('category', None)
         if str(category_id) == 'all':
             category_id = None
         
-        # Fetch all products initially
+    
         products = Product.objects.all()
 
-        # Filter by category if provided
+       
         if category_id:
             products = products.filter(category__category_id=category_id)
 
-        # Apply search functionality (search by product name or description)
+        
         if search_query:
             products = products.filter(
                 Q(name__icontains=search_query) | Q(description__icontains=search_query)
             )
 
-        # Apply sorting
+        
         if sort_by == 'high-to-low':
-            products = products.order_by('-price')  # Sort price descending
+            products = products.order_by('-price')  
         elif sort_by == 'low-to-high':
-            products = products.order_by('price')  # Sort price ascending
+            products = products.order_by('price')  
         elif sort_by == 'newest':
-            products = products.order_by('-created_at')  # Sort by newest
+            products = products.order_by('-created_at')  
         elif sort_by == 'oldest':
-            products = products.order_by('created_at')  # Sort by oldest
+            products = products.order_by('created_at')  
 
-        # Paginate the products based on client-provided page_size
+        
         paginator = self.pagination_class()
         paginated_products = paginator.paginate_queryset(products, request)
 
-        # Serialize the products
+        
         serializer = ProductSerializer(paginated_products, many=True)
 
-        # Return paginated response
+
         return paginator.get_paginated_response({
             "success": True,
             "data": serializer.data,
@@ -135,7 +136,7 @@ class ProductListCreateAPIView(APIView):
         except Category.DoesNotExist:
             return Response({"success": False, "error": "Invalid category ID", "status": 400}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Ensure that the request data includes the category object
+   
         data = request.data.copy()
         data["category"] = CategorySerializer(category).data
 
@@ -149,11 +150,11 @@ class ProductListCreateAPIView(APIView):
 class ProductDetailAPIView(APIView):
 
     def get_permissions(self):
-        # Check if the request method is POST
+        
         if self.request.method == 'PATCH' or self.request.method == 'DELETE':
-            # Apply the desired permission class for POST requests
+            
             return [IsAdminUser()]
-        # No permissions are required for GET requests
+        
         return []
     def get(self, request, pk):
         try:
@@ -169,6 +170,7 @@ class ProductDetailAPIView(APIView):
         except Product.DoesNotExist:
             return Response({"success":False,"error":"Not Found","status":404},status=status.HTTP_404_NOT_FOUND)
         serializer = ProductSerializer(product, data=request.data, partial=True)
+        
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -184,7 +186,7 @@ class ProductDetailAPIView(APIView):
             "product_id":pk
             },"status":204},status=status.HTTP_200_OK)
 
-# Order API Views
+
 class OrderListCreateAPIView(APIView):
     permission_classes=[IsAuthenticated]
     def get(self, request):
@@ -198,18 +200,18 @@ class OrderListCreateAPIView(APIView):
             if serializer.is_valid(): 
                 serializer.save()
                 return Response({"success": True, "data": serializer.data, "status": 201}, status=status.HTTP_201_CREATED)
-            print("herer")
+       
         except Exception as e:
             return Response({"success": False, "error": str(e), "status": 400}, status=status.HTTP_400_BAD_REQUEST)
 
 class OrderDetailAPIView(APIView):
     # permission_classes=[IsAuthenticated]
     def get_permissions(self):
-        # Check if the request method is POST
+
         if self.request.method == 'PATCH' or self.request.method == 'DELETE':
-            # Apply the desired permission class for POST requests
+           
             return [IsAdminUser()]
-        # No permissions are required for GET requests
+       
         return [IsAuthenticated()]
     def get(self, request, pk):
         try:
@@ -221,7 +223,7 @@ class OrderDetailAPIView(APIView):
 
     def patch(self, request, pk):
         order = Order.objects.filter(pk=pk).first()
-        if not order:  # Check if the order exists
+        if not order:  
             return Response({"success":False,"error":"Not Found","status":404},status=status.HTTP_404_NOT_FOUND)
         serializer = OrderSerializer(order, data=request.data, partial=True)
         if serializer.is_valid():
@@ -230,10 +232,10 @@ class OrderDetailAPIView(APIView):
         return Response({"success": False, "error": serializer.errors, "status": 400}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-      
+        
         
         order = Order.objects.filter(pk=pk).first()
-        if not order:  # Check if the order exists
+        if not order: 
             return Response({"success":False,"error":"Not Found","status":404},status=status.HTTP_404_NOT_FOUND)
         order.delete()
         return Response({"success":True,"data":"Order Deleted Successfully","status":204},status=status.HTTP_204_NO_CONTENT)
@@ -247,7 +249,7 @@ class OrderCancelAPIView(APIView):
         return Response({"success": True, "data": serializer.data, "status": 200})
     def post(self, request, pk):
         order = Order.objects.filter(pk=pk,user_id=request.user.id).first()
-        if not order:  # Check if the order exists
+        if not order:  
             return Response({"success":False,"error":"Not Found","status":404},status=status.HTTP_404_NOT_FOUND)
         if order.status == "Canceled":
             return Response({"success":False,"error":"Order is already canceled","status":400},status=status.HTTP_400_BAD_REQUEST)
@@ -272,7 +274,7 @@ class AdminOrderGetAPIView(APIView):
 
 
 
-# OrderItem API Views
+
 class OrderItemListCreateAPIView(APIView):
     permission_classes=[IsAuthenticated]
     def get(self, request):
@@ -285,11 +287,11 @@ class OrderItemListCreateAPIView(APIView):
         quantity = request.data.get('quantity')
         print("quantity: ",quantity)  
 
-        # Filter for an existing OrderItem with the same user and product
+        
         order_item = OrderItem.objects.filter(user_id=request.user.id,product_id=product_id,order__isnull=True).first()
 
         if order_item:
-            # If the order item exists, increment the quantity
+           
             if quantity:
                 order_item.quantity+=int(quantity)
             else:
@@ -299,17 +301,17 @@ class OrderItemListCreateAPIView(APIView):
             
             order_item.save()
 
-            # Serialize the updated order item
+      
             order_item_serializer = OrderItemSerializer(order_item)
             return Response({"success": True, "data": order_item_serializer.data, "status": 200}, status=status.HTTP_201_CREATED)
 
-        # If no such order item exists, create a new one
+       
         serializer = OrderItemSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response({"success": True, "data": serializer.data, "status": 201}, status=status.HTTP_201_CREATED)
 
-        # If the serializer is not valid, return the errors
+        
         return Response({"success":False,"error":serializer.errors,"status":400}, status=status.HTTP_400_BAD_REQUEST)
 
 class OrderItemDetailAPIView(APIView):
@@ -322,20 +324,10 @@ class OrderItemDetailAPIView(APIView):
         serializer = OrderItemSerializer(order_item)
         return Response(serializer.data)
 
-    # def patch(self, request, pk):
-    #     try:
-    #         order_item = OrderItem.objects.get(pk=pk)
-    #     except OrderItem.DoesNotExist:
-    #         return Response({"success":False,"error":"Not Found","status":404},status=status.HTTP_404_NOT_FOUND)
-    #     serializer = OrderItemSerializer(order_item, data=request.data, partial=True)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data)
-    #     return Response({"success":False,"error":serializer.errors,"status":400}, status=status.HTTP_400_BAD_REQUEST)
-
+   
     def delete(self, request, pk):
         try:
-            # Look for the OrderItem with the given product_id and user_id, and where order_id is NULL
+            
             order_item = OrderItem.objects.get(product_id=pk, user_id=request.user.id, order_id__isnull=True)
         except OrderItem.DoesNotExist:
             return Response({"success": False, "error": "Not Found", "status": 404}, status=status.HTTP_404_NOT_FOUND)

@@ -19,7 +19,7 @@ const ProductPage = () => {
   const queryClient = useQueryClient(); 
   useEffect(() => {
 
-    document.title = "Product | "; // Change this title as needed
+    document.title = "Product | "; 
   }, [])
   
   
@@ -63,7 +63,7 @@ const ProductPage = () => {
         })
       );
       toast.success(`${quantity} ${product.name}(s) added to cart!`);
-      // Invalidate the cart data to refetch
+     
       queryClient.invalidateQueries('cartData');
     },
     onError: (error) => {

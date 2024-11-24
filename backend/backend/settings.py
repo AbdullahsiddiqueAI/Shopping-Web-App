@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', 'your_default_secret_key')
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-d2^l)vewri$uwb3z!dfyl)@ozmm7zw4-fy!&u9hr#k$ciw8k(%')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG')
@@ -207,3 +207,19 @@ CHANNEL_LAYERS = {
     }
 }
 ASGI_APPLICATION = 'backend.asgi.application'
+# Email settings (adjust as per your email provider)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'Abdullahsiddiqi9990@gmail.com'
+EMAIL_HOST_PASSWORD = 'kvvb mrxf jkam vmwi'
+
+# Frontend URL
+FRONTEND_URL = os.getenv('FRONTEND_URL')  # Change to your actual frontend URL
+DEFAULT_FROM_EMAIL = 'Abdullahsiddiqi9990@gmail.com'
+
+
+
+FERNET_KEY ="eBzCeIWy-Ba01wp20i7vR9IiWJ990ILkceV_CNk3rtg="
+

@@ -8,13 +8,13 @@ class DashboardStatsConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.user = self.scope.get('user')
 
-        # If user is not authenticated, reject the connection
+        
         if self.user is None:
             print("Not Authenticated")
             await self.close()
             return
 
-        # Accept the connection
+        
         await self.accept()
         self.group_name = "dashboard_group"
         await self.channel_layer.group_add(self.group_name, self.channel_name)

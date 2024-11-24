@@ -9,9 +9,14 @@ from rest_framework.permissions import AllowAny,IsAuthenticated
 import json
 import requests
 from rest_framework.exceptions import *
-# from rest_framework.exceptions import ErrorDetail
+from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
+from django.conf import settings
+from django.core.mail import send_mail
+from cryptography.fernet import Fernet
+signer = TimestampSigner()  
+key = settings.FERNET_KEY.encode()
 
-
+cipher = Fernet(key)  
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
     return {
@@ -82,8 +87,108 @@ class LoginView(APIView):
             "status": "200"
         }, status=status.HTTP_200_OK)
 
+class ForgotPasswordView(APIView):
+    permission_classes = [AllowAny]
 
+    def post(self, request):
+        email = request.data.get("email", "").lower()
 
+        if not email:
+            return Response({"success": False, "error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = UserCustomModel.objects.filter(email=email).first()
+
+        if not user:
+            return Response({"success": False, "error": "User with this email does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Generate a signed token with a 30-minute expiration
+        try:
+            token = signer.sign(email)  # Token for expiration
+            encrypted_email = cipher.encrypt(email.encode()).decode()  # Encrypt the email
+        except Exception as e:
+            return Response({"success": False, "error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        reset_url = f"{settings.FRONTEND_URL}/ResetPassword?token={token}&email={encrypted_email}"
+        # Send the reset email
+        try:
+            print("reset url",reset_url)
+            send_mail(
+                subject="Password Reset Request",
+                message=f"Click the link below to reset your password. This link will expire in 30 minutes:\n\n{reset_url}",
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[email],
+                fail_silently=False,
+            )
+        except Exception as e:
+            return Response({"success": False, "error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response({"success": True, "message": "Password reset email sent"}, status=status.HTTP_200_OK)
+
+class ResetPasswordView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        token = request.data.get("token", None)
+        encrypted_email = request.data.get("email", None)
+        new_password = request.data.get("password", None)
+
+        if not (token and encrypted_email and new_password):
+            return Response({"success": False, "error": "Token, email, and new password are required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Verify token expiration
+            email = signer.unsign(token, max_age=1800)
+            
+            # Decrypt email
+            decrypted_email = cipher.decrypt(encrypted_email.encode()).decode()
+
+            # Ensure email matches
+            if email != decrypted_email:
+                return Response({"success": False, "error": "Invalid email or token"}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Find user by email
+            user = UserCustomModel.objects.filter(email=decrypted_email).first()
+            if not user:
+                return Response({"success": False, "error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+            # Set the new password
+            user.set_password(new_password)
+            user.save()
+
+        except SignatureExpired:
+            return Response({"success": False, "error": "The reset link has expired"}, status=status.HTTP_400_BAD_REQUEST)
+        except (BadSignature, Exception) as e:
+            return Response({"success": False, "error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"success": True, "message": "Password reset successfully"}, status=status.HTTP_200_OK)
+
+class ValidateResetLinkView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        token = request.query_params.get("token", None)
+        encrypted_email = request.query_params.get("email", None)
+
+        if not (token and encrypted_email):
+            return Response({"success": False, "error": "Token and email are required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Verify token expiration
+            email = signer.unsign(token, max_age=1800)  # 1800 seconds = 30 minutes
+            
+            # Decrypt email
+            decrypted_email = cipher.decrypt(encrypted_email.encode()).decode()
+
+            # Ensure email matches
+            if email != decrypted_email:
+                return Response({"success": False, "error": "Invalid email or token"}, status=status.HTTP_400_BAD_REQUEST)
+
+        except SignatureExpired:
+            return Response({"success": False, "error": "The reset link has expired"}, status=status.HTTP_400_BAD_REQUEST)
+        except (BadSignature, Exception) as e:
+            return Response({"success": False, "error": "Invalid token or email"}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"success": True, "message": "Link is valid. Proceed to reset your password."}, status=status.HTTP_200_OK)
 
 class UserView(APIView):
     permission_classes = [IsAuthenticated]

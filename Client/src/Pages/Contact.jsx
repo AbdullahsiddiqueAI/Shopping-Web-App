@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import '../css/Contact.css'; // Assuming the CSS is stored here
+import '../css/Contact.css'; 
 import { FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
 import NavBar from '../Components/NavBar';
 import Footer from '../Components/Footer';
 import { Link } from 'react-router-dom';
-import axios from 'axios'; // Import axios
-import { toast } from 'react-toastify'; // Import react-toastify for toast messages
-
+import axios from 'axios'; 
+import { toast } from 'react-toastify'; 
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -16,7 +15,7 @@ const Contact = () => {
   });
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    document.title = "Contact"; // Change this title as needed
+    document.title = "Contact"; 
   }, [])
 
   const handleInputChange = (e) => {
@@ -40,11 +39,11 @@ const Contact = () => {
         phone: '',
         message: ''
       });
-      // Show success toast notification
+      
       toast.success('Your message has been sent successfully!');
     } catch (error) {
       setLoading(false);
-      // Show error toast notification
+      
       toast.error('There was an error sending your message. Please try again.');
     }
   };

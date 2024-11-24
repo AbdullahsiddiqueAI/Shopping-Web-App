@@ -27,7 +27,7 @@ const Signup = () => {
   });
   useEffect(() => {
 
-    document.title = "Sign UP"; // Change this title as needed
+    document.title = "Sign UP"; 
   }, [])
 
   const [PreviewImage, SetPreviewImage] = useState(null);

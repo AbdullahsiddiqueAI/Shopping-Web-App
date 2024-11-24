@@ -22,7 +22,7 @@ function Products() {
   const [products, setProducts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || "all"); // Set the category from query param
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || "all"); 
 
   const [categories, setCategories] = useState([
     { id: "all", name: "All Categories" },

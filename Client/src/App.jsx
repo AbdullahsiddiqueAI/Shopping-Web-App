@@ -33,6 +33,8 @@ import PaymentsPage from './Dashboard/PaymentsPage';
 import CategoryPage from './Dashboard/CaotegoryPage';
 import { loginInUser } from './Store/authSlice';
 import AuthAdmin from './Components/AdminRoute';
+import ForgotPassword from './Pages/ForgotPassword';
+import ResetPassword from './Pages/ResetPassword';
 
 function App() {
   const dispatch = useDispatch(); 
@@ -96,6 +98,8 @@ function App() {
         <Route path="/ProductPage/:id" element={<ProductPage />} />
         <Route path="/Signup" element={<AuthRoute component={Signup} />} />
         <Route path="/Login" element={<AuthRoute component={Login} />} />
+        <Route path="/ForgotPassword" element={<AuthRoute component={ForgotPassword} />} />
+        <Route path="/ResetPassword" element={<AuthRoute component={ResetPassword} />} />
         <Route path="/Products" element={<Products />} />
         
         {/* <Route path="/Products/:search" element={<Products />} /> */}

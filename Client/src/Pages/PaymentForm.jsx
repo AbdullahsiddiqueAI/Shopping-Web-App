@@ -6,10 +6,10 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import { useQueryClient } from '@tanstack/react-query';
-import '../css/PaymentForm.css'; // Import the CSS file
-import cardImage from '../css/img/card.png'; // Import the image
+import '../css/PaymentForm.css'; 
+import cardImage from '../css/img/card.png'; 
 
-// Load Stripe publishable key from environment variables
+
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 
 const CheckoutForm = () => {
@@ -22,19 +22,19 @@ const CheckoutForm = () => {
     const [success, setSuccess] = useState(false);
     const { totalPrice } = useSelector((state) => state.cart);
 
-    // State to hold card details for display on card image
+ 
     const [cardDetails, setCardDetails] = useState({
-        cardNumber: '**** **** **** ****', // Masked card number placeholder
+        cardNumber: '**** **** **** ****', 
         expiry: 'MM/YY',
         cvc: '***'
     });
 
-    // Helper function to mask card numbers
+   
     const maskCardNumber = (number) => {
         return number.replace(/\d(?=\d{4})/g, "*");
     };
 
-    // Handle changes in the CardNumberElement
+   
     const handleCardNumberChange = (event) => {
         console.log(event)
         if (event.error) {
@@ -44,7 +44,7 @@ const CheckoutForm = () => {
         }
 
         if (event.complete) {
-            // Show a masked card number when the card number input is complete
+           
             setCardDetails((prevState) => ({
                 ...prevState,
                 cardNumber: maskCardNumber('4242 4242 4242 4242') // Simulated, since real card numbers can't be accessed
@@ -58,7 +58,7 @@ const CheckoutForm = () => {
         }
     };
 
-    // Handle changes in the CardExpiryElement
+   
     const handleExpiryChange = (event) => {
         if (event.error) {
             setErrorMessage(event.error.message);
@@ -69,7 +69,7 @@ const CheckoutForm = () => {
         if (event.complete) {
             setCardDetails((prevState) => ({
                 ...prevState,
-                expiry: '12/25' // Simulate expiry date, no real value is available
+                expiry: '12/25'
             }));
         } else {
             setCardDetails((prevState) => ({
@@ -79,7 +79,7 @@ const CheckoutForm = () => {
         }
     };
 
-    // Handle changes in the CardCvcElement
+   
     const handleCvcChange = (event) => {
         if (event.error) {
             setErrorMessage(event.error.message);
@@ -91,7 +91,7 @@ const CheckoutForm = () => {
         if (event.complete) {
             setCardDetails((prevState) => ({
                 ...prevState,
-                cvc: '123' // Simulate CVC
+                cvc: '123'
             }));
         } else {
             setCardDetails((prevState) => ({

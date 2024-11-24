@@ -1,32 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import '../css/Cart.css'; // Assuming this is your CSS file
-import { AiFillDelete } from 'react-icons/ai'; // Importing the delete icon
+import '../css/Cart.css'; 
+import { AiFillDelete } from 'react-icons/ai'; 
 import NavBar from '../Components/NavBar';
 import Footer from '../Components/Footer';
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux'; // Redux hooks
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'; // Import React Query hook
-import { deleteCartItem, getCartData } from '../util/queries'; // Import the API function to fetch cart data
-import { setCartData, updateCart, removeFromCart } from '../Store/cartSlice'; // Redux actions
+import { useSelector, useDispatch } from 'react-redux'; 
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'; 
+import { deleteCartItem, getCartData } from '../util/queries'; 
+import { setCartData, updateCart, removeFromCart } from '../Store/cartSlice'; 
 import { toast } from 'react-toastify';
 import { openDrawer } from '../Store/drawerSlice';
 
 const Cart = ({nav=true,footer=true}) => {
   const dispatch = useDispatch();
-  const queryClient = useQueryClient(); // To manually invalidate queries
+  const queryClient = useQueryClient(); 
   const cartItems = useSelector((state) => state.cart.items);
   const {isAuthenticated} = useSelector((state) => state.auth);
   const totalPrice = useSelector((state) => state.cart.totalPrice);
   const [couponCode, setCouponCode] = useState("");
   useEffect(() => {
-    document.title = "Cart"; // Change this title as needed
+    document.title = "Cart"; 
   }, [])
-  // React Query mutation for deleting cart items
+ 
   const { mutate: deleteItem } = useMutation({
     mutationFn: (id)=>deleteCartItem(id),
     onSuccess: () => {
       toast.success('Item removed from cart successfully.');
-      // Invalidate the cart data to refetch the updated cart data
+     
       queryClient.invalidateQueries('cartData');
     },
     onError: (error) => {
@@ -34,7 +34,7 @@ const Cart = ({nav=true,footer=true}) => {
     },
   });
 
-  // Use React Query to fetch cart data from the API
+  
   const { data: cartData, isLoading, error, isSuccess } = useQuery({
     queryKey: ['cartData'],
     queryFn: getCartData,
@@ -44,7 +44,7 @@ const Cart = ({nav=true,footer=true}) => {
     },
   });
 
-  // Update Redux store when cart data is successfully fetched
+ 
   useEffect(() => {
     if (isSuccess && cartData) {
       const formattedCartData = cartData.map((item) => ({
@@ -52,24 +52,24 @@ const Cart = ({nav=true,footer=true}) => {
         name: item.product.name,
         price: item.product.price,
         productPic: item.product.productPic,
-        quantity: item.quantity, // Assuming 'quantity' comes from the API
+        quantity: item.quantity, 
         totalPrice: item.product.price * item.quantity,
       }));
 
-      // Dispatch the formatted cart data to the Redux store
+      
       dispatch(setCartData(formattedCartData));
     }
   }, [isSuccess, cartData, dispatch]);
 
   const handleQuantityChange = (id, newQuantity, price) => {
     dispatch(updateCart({ id, newQuantity, price }));
-    // Optionally, sync the updated cart to the backend here with an API call
+    
   };
 
   const handleRemoveItem = (id) => {
-    // Optimistically remove the item from Redux store
+    
     dispatch(removeFromCart({ id }));
-    // Call the mutation to delete the item from the backend
+ 
     deleteItem(id);
   };
 
@@ -89,7 +89,7 @@ const Cart = ({nav=true,footer=true}) => {
     };
 
     window.addEventListener('resize', handleResize);
-    // Clean up the event listener on component unmount
+    
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 

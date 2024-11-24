@@ -18,7 +18,7 @@ const Home = () => {
     keepPreviousData: true, 
   });
   useEffect(() => {
-    document.title = "Home"; // Change this title as needed
+    document.title = "Home"; 
   }, [])
 
   return (

@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import PaymentForm from './PaymentForm';
-import { useSelector } from 'react-redux'; // Import useSelector to access Redux store
+import { useSelector } from 'react-redux'; 
 
 const PayementPage = () => {
-  const cartItems = useSelector((state) => state.cart.items); // Get cart items from Redux store
-  const totalPrice = useSelector((state) => state.cart.totalPrice); // Get total price from Redux store
+  const cartItems = useSelector((state) => state.cart.items); 
+  const totalPrice = useSelector((state) => state.cart.totalPrice); 
   useEffect(() => {
-    document.title = "Payemet"; // Change this title as needed
+    document.title = "Payemet"; 
   }, [])
-  // Calculate the total number of items
+ 
   const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   return (
@@ -35,7 +35,7 @@ const PayementPage = () => {
         </div>
       </div>
       <div className="payementPage-right">
-        {/* Payment form goes on the right */}
+       
         <PaymentForm />
       </div>
     </div>

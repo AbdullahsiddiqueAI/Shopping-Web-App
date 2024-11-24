@@ -42,7 +42,7 @@ async def get_dashboard_stats():
     return {
         'total_sales': total_sales,
         'total_orders': total_orders,
-        'new_users': new_users,  # Uncomment if needed
+        'new_users': new_users,  
         'total_products': total_products,
         'recent_orders': recent_orders,
     }

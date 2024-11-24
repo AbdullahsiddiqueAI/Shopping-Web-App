@@ -8,9 +8,9 @@ import { toast } from 'react-toastify';
 import '../css/Dashboard/CategoryPage.css'
 
 import { FaPlus } from "react-icons/fa";
+Modal.setAppElement("#root")
 
-
-Modal.setAppElement('#root'); // Required for accessibility
+// Modal.setAppElement('#root'); // Required for accessibility
 
 const CategoryPage = () => {
   const queryClient = useQueryClient();
@@ -21,9 +21,9 @@ const CategoryPage = () => {
   const [newCategory, setNewCategory] = useState({ name: '', description: '', Categoryicon: null });
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    document.title = "Dashboard | Category"; // Change this title as needed
+    document.title = "Dashboard | Category"; 
   }, [])
-  // Fetch categories from the API
+  
   const { data: categoriesData, isLoading, error } = useQuery({
     queryKey: ['categories'],
     queryFn: getCategory,
@@ -35,7 +35,7 @@ const CategoryPage = () => {
     }
   }, [categoriesData]);
 
-  // Mutation for adding a new category
+  
   const createCategoryMutation = useMutation({
     mutationFn: createCategory,
     onSuccess: () => {
@@ -48,7 +48,7 @@ const CategoryPage = () => {
     }
   });
 
-  // Mutation for updating a category
+  
   const updateCategoryMutation = useMutation({
     mutationFn: updateCategory,
     onSuccess: () => {
@@ -61,7 +61,7 @@ const CategoryPage = () => {
     }
   });
 
-  // Mutation for deleting a category
+ 
   const deleteCategoryMutation = useMutation({
     mutationFn: deleteCategory,
     onSuccess: (deletedCategoryId) => {
@@ -76,7 +76,7 @@ const CategoryPage = () => {
     }
   });
 
-  // Open the modal for adding or editing
+  
   const openModal = (category = null) => {
     setIsEditing(!!category);
     setCurrentCategory(category);
@@ -84,19 +84,19 @@ const CategoryPage = () => {
     setModalIsOpen(true);
   };
 
-  // Close the modal
+  
   const closeModal = () => {
     setModalIsOpen(false);
     setCurrentCategory(null);
   };
 
-  // Handle input changes
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewCategory({ ...newCategory, [name]: value });
   };
 
-  // Handle image upload
+  
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -104,8 +104,7 @@ const CategoryPage = () => {
     }
   };
 
-  // Add or Edit Category
-// Add or Edit Category
+  
 const handleSubmit = (e) => {
   e.preventDefault();
 
@@ -137,7 +136,6 @@ const handleSubmit = (e) => {
 };
 
 
-  // Delete category
   const handleDelete = (id) => {
     deleteCategoryMutation.mutate(id);
   };
@@ -150,7 +148,7 @@ const handleSubmit = (e) => {
       <h1>Categories</h1>
       <button className="btn" onClick={() => openModal()}>Add Category <FaPlus className='FaPlus-icon'/></button>
 
-      {/* Categories List */}
+      
       <div className="categories-list">
         <table>
           <thead>

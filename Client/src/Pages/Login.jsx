@@ -4,9 +4,9 @@ import "../css/Login.css";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { loginInUser } from "../Store/authSlice";
-import { loginUser } from "../util/queries"; // API function to handle login
+import { loginUser } from "../util/queries"; 
 import Footer from "../Components/Footer";
-import { FaSpinner } from "react-icons/fa"; // Import loader icon from react-icons
+import { FaSpinner } from "react-icons/fa"; 
 import { Link } from "react-router-dom";
 import SmallLoader from "../Components/Common/SmallLoader";
 
@@ -16,12 +16,12 @@ const Login = () => {
     Password: "",
   });
   useEffect(() => {
-    document.title = "Login"; // Change this title as needed
+    document.title = "Login"; 
   }, [])
 
-  const [loading, setLoading] = useState(false); // Manage loading state manually
+  const [loading, setLoading] = useState(false);
 
-  const dispatch = useDispatch(); // Redux dispatch
+  const dispatch = useDispatch(); 
 
  
 
@@ -39,7 +39,7 @@ const Login = () => {
    
     
 
-    setLoading(true); // Start loading
+    setLoading(true); 
 
     try {
       const response = await loginUser(FormData);
@@ -48,7 +48,7 @@ const Login = () => {
     } catch (error) {
       toast.error(`Login failed: ${error.message}`);
     } finally {
-      setLoading(false); // Stop loading after login process completes
+      setLoading(false);
     }
   };
 
@@ -72,7 +72,6 @@ const Login = () => {
               placeholder="Email"
               required
             />
-          
             <input
               type="password"
               name="Password"
@@ -80,13 +79,16 @@ const Login = () => {
               placeholder="Password"
               required
             />
-         
+           <div style={{marginTop:'-10px'}}>
+            
+                <Link to="/ForgotPassword">Forget password?</Link>.
+            </div>
 
-            {/* Submit button with loader and disabled during API call */}
+           
             <button
               type="submit"
               disabled={loading}
-              // style={{ backgroundColor: loading ? "initial" : "#3c3c3c" }}
+              
               className="login-button"
             >
               {loading ? (

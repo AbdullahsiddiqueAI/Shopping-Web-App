@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import '../css/NotFound.css'; // Assuming your CSS is in this file
+import '../css/NotFound.css'; 
 import NavBar from '../Components/NavBar';
 import Footer from '../Components/Footer';
 
 const NotFound = () => {
   useEffect(() => {
-    document.title = "Not Found"; // Change this title as needed
+    document.title = "Not Found"; 
   }, [])
   return (
     <>

@@ -3,9 +3,9 @@ module.exports = {
         {
             name: "Django-Server",
             script: "manage.py",
-            args: "runserver 0.0.0.0:8000",  // Make sure Django listens on all interfaces
-            interpreter: "python3",  // Use python3 interpreter
-            cwd: "/home/ubuntu/FYP/backend",  // Path to the backend (Django)
+            args: "runserver 0.0.0.0:8000",  
+            interpreter: "python3",  
+            cwd: "/home/ubuntu/FYP/backend",  
             env: {
               PYTHON_ENV: "production",
             },

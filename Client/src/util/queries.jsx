@@ -141,7 +141,7 @@ export const getFeaturedProduct = async () => {
   }
   };
   
-  // Edit product
+
   export const updateProduct = async ({formData,product_id}) => {
     try {
     // const formData = new FormData();
@@ -174,7 +174,7 @@ export const getFeaturedProduct = async () => {
   }
   };
   
-  // Delete product
+
   export const deleteProduct = async (id) => {
 try{
     const { data } = await instance.delete(`products/${id}/`);
@@ -206,7 +206,7 @@ try{
   //   }
   // };
   
-  // Delete Cart Item
+  
   export const deleteCartItem = async (id) => {
     try {
       console.log("id",id)
@@ -269,7 +269,7 @@ try{
   export const getCategory = async () => {
     try {
       const response = await instance.get('categories/');
-      return response.data.data; // Adjust based on your API response structure
+      return response.data.data; 
     } catch (error) {
       console.log('Error fetching categories:', error);
       throw new Error(error.response?.data?.error || 'Error fetching categories');
@@ -311,7 +311,7 @@ try{
     try {
       const response = await instance.delete(`categories/${categoryId}/`);
       console.log("response.data",response.data)
-      return response.data; // Adjust based on your API response structure
+      return response.data; 
     } catch (error) {
       console.log('Error deleting category:', error);
       throw new Error(error.response?.data?.error || 'Error deleting category');
@@ -322,7 +322,7 @@ try{
   export const getOrderHistory = async () => {
     try {
       const response = await instance.get('orders/');
-      return response.data.data; // Adjust based on your API response structure
+      return response.data.data;
     } catch (error) {
       console.log('Error fetching categories:', error);
       throw new Error(error.response?.data?.error || 'Error fetching categories');
@@ -331,7 +331,7 @@ try{
   export const orderCancel = async (id) => {
     try {
       const response = await instance.post(`orders/cancel/${id}/`);
-      return response.data.data; // Adjust based on your API response structure
+      return response.data.data; 
     } catch (error) {
       console.log('Error fetching categories:', error);
       throw new Error(error.response?.data?.error || 'Error fetching categories');
@@ -340,7 +340,7 @@ try{
   export const getOrderCancelHistory = async () => {
     try {
       const response = await instance.get('orders/cancel/');
-      return response.data.data; // Adjust based on your API response structure
+      return response.data.data; 
     } catch (error) {
       console.log('Error fetching categories:', error);
       throw new Error(error.response?.data?.error || 'Error fetching categories');
@@ -351,7 +351,7 @@ try{
   export const getAdminOrderHistory = async () => {
         try {
           const response = await instance.get('orders/admin/');
-          return response.data.data; // Adjust based on your API response structure
+          return response.data.data; 
         } catch (error) {
           console.log('Error fetching Order:', error);
           throw new Error(error.response?.data?.error || 'Error fetching Order');
@@ -360,7 +360,7 @@ try{
   export const updateOrderStatus = async (id,status) => {
     try {
       const response = await instance.patch(`orders/${id}/`,status);
-      return response.data.data; // Adjust based on your API response structure
+      return response.data.data; 
     } catch (error) {
       console.log('Error fetching Order:', error);
       throw new Error(error.response?.data?.error || 'Error fetching Order');
@@ -369,7 +369,7 @@ try{
   export const getAdminPaymentHistory = async () => {
         try {
           const response = await instance.get('payment/admin/');
-          return response.data.data; // Adjust based on your API response structure
+          return response.data.data; 
         } catch (error) {
           console.log('Error fetching Payments:', error);
           throw new Error(error.response?.data?.error || 'Error fetching Payments');
@@ -378,9 +378,44 @@ try{
   export const updatePaymentStatus = async (id,status) => {
     try {
       const response = await instance.patch(`payment/admin/${id}/`,status);
-      return response.data.data; // Adjust based on your API response structure
+      return response.data.data; 
     } catch (error) {
       console.log('Error fetching categories:', error);
       throw new Error(error.response?.data?.error || 'Error fetching categories');
+    }
+  };
+
+  export const sendForgotPasswordEmail = async (data) => {
+    try {
+      const response = await instance.post("forgot-password/", data); 
+      return response.data; 
+    } catch (error) {
+
+      throw new Error(error.response?.data?.error || "Server error");
+
+    }
+  };
+  export const resetPassword  = async ({ token, password,email }) => {
+    try {
+      const response = await instance.post("reset-password/", {
+        token,
+        password,
+        email
+      }); 
+      return response.data; 
+    } catch (error) {
+
+      throw new Error(error.response?.data?.error || "Server error");
+
+    }
+  };
+  export const validateResetLink = async ({ token, email }) => {
+    try {
+      const response = await instance.get(`validate-reset-link/?email=${email}&token=${token}`); 
+      return response.data; 
+    } catch (error) {
+
+      throw new Error(error.response?.data?.error || "Server error");
+
     }
   };

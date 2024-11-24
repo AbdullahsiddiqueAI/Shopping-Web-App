@@ -26,18 +26,18 @@ const ProductsPage = () => {
   const [currentProduct, setCurrentProduct] = useState(null);
   const [newProduct, setNewProduct] = useState({ name: '', category: '', price: '', stock: '', description: '', productPic: null });
 
-  const [previewImage, setPreviewImage] = useState(null); // Preview image before uploading
+  const [previewImage, setPreviewImage] = useState(null); 
 
-  const [page, setPage] = useState(1); // Track the current page
-  const [pageSize, setPageSize] = useState(5); // Track the number of items per page
-  const [products, setProducts] = useState([]); // Store the products for the current page
-  const [hasMore, setHasMore] = useState(true); // Check if more products are available
-  const [selectedCategory, setSelectedCategory] = useState("all"); // Store the selected category
-  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false); // Toggle for category dropdown
+  const [page, setPage] = useState(1); 
+  const [pageSize, setPageSize] = useState(5); 
+  const [products, setProducts] = useState([]); 
+  const [hasMore, setHasMore] = useState(true); 
+  const [selectedCategory, setSelectedCategory] = useState("all"); 
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false); 
   useEffect(() => {
-    document.title = "Dashboard | Product"; // Change this title as needed
+    document.title = "Dashboard | Product"; 
   }, [])
-  // Fetch products from the API with pagination
+  
   const {
     data: productsData,
     isLoading: isLoadingProducts,
@@ -49,10 +49,10 @@ const ProductsPage = () => {
       { page, page_size: pageSize, category: selectedCategory,sort_by: 'newest', },
     ],
     queryFn: getProducts,
-    keepPreviousData: true, // Keep old data while fetching new data
+    keepPreviousData: true, 
   });
 
-  // Fetch categories for the dropdown
+
   const {
     data: categories,
     isLoading: isCategoriesLoading,
@@ -62,25 +62,25 @@ const ProductsPage = () => {
     queryFn: getCategory,
   });
 
-  // Handle products loading and pagination
+  
   useEffect(() => {
     if (productsData && productsData.results?.data) {
       if (page === 1) {
-        // Replace products when loading a new category or on initial load
+        
         setProducts(productsData.results.data);
       } else {
-        // Concatenate products when clicking "See More"
+        
         setProducts((prevProducts) => [
           ...prevProducts,
           ...productsData.results.data,
         ]);
       }
-      // Check if more products are available
+      
       setHasMore(!!productsData.next);
     }
   }, [productsData, page]);
 
-  // Mutation for adding a new product
+  
   const createProductMutation = useMutation({
     mutationFn: createProduct,
     onSuccess: () => {
@@ -200,7 +200,7 @@ const ProductsPage = () => {
     setPage((prevPage) => prevPage + 1); 
   };
 
-  // Add or Edit Product
+  
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -210,7 +210,7 @@ const ProductsPage = () => {
  
     for (const key in newProduct) {
       if (isEditing) {
-        // Add only the fields that have changed
+       
         if (newProduct[key] !== currentProduct[key]) {
           if (key == "category") {
             formData.append(key, newProduct[key].category_id);
@@ -219,7 +219,7 @@ const ProductsPage = () => {
           }
         }
       } else {
-        // For new product creation, add all fields
+       
         if (key == "category") {
           formData.append(key, newProduct[key].category_id);
         } else {
@@ -256,12 +256,12 @@ const ProductsPage = () => {
         closeModal(); // Close the modal if no changes were made
       }
     } else {
-      // Creating a new product with FormData
+      
       createProductMutation.mutate({ formData });
     }
   };
 
-  // Delete product
+
   const handleDelete = (id) => {
     deleteProductMutation.mutate(id);
   };
@@ -317,7 +317,7 @@ const ProductsPage = () => {
         </div>
       {/* </div> */}
 
-      {/* Products List */}
+     
       {(!isLoadingProducts && products.length==0) && (
                 <div className="Product-not-Found" style={{width: "100%",height:"100%"}}>
                   Product Not Found
