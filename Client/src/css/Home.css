@@ -828,6 +828,12 @@ p {
   background-color: var(--btn-hover);
 }
 
+@media (max-width: 1334px) {
+  
+.main-product-images img {
+  object-fit: contain !important;
+}
+}
 @media (max-width: 1250px) {
   .slides img{
     height: 30rem !important;
