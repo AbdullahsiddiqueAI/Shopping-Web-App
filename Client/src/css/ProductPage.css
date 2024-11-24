@@ -44,7 +44,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background-color: lightgray; This color shows up before the image loads */
+    
   }
   
   .main-product-images img {
