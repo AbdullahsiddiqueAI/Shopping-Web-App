@@ -28,7 +28,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-d2^l)vewri$uwb3z!dfyl)@ozmm7zw4-fy!&u9hr#k$ciw8k(%')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG')
+DEBUG = os.getenv('DEBUG', 'True').lower() in ['true', '1', 'yes']
+
 
 # ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
 ALLOWED_HOSTS = ["*"]
@@ -100,25 +101,29 @@ ASGI_APPLICATION = 'backend.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-if not DEBUG:
+if DEBUG:
+    print("Using SQLite for development", DEBUG)
     DATABASES = {
-
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
 else:
+    print("Using MySQL for production", DEBUG)
     DATABASES = {
-    'default': {
-            'ENGINE': 'django.db.backends.mysql', 
-            'NAME': 'shoppingWebApp',         
-            'USER': 'root',          
-            'PASSWORD': 'root',  
-            'HOST': 'localhost',                   
-            'PORT': '3306'                        
+        "default": {
+            "ENGINE": "django.db.backends.mysql",
+            "NAME": 'shoppingWebApp',
+            "USER": 'root',
+            "PASSWORD": 'root',
+            "HOST": 'localhost',
+            "PORT": '3306',
         }
     }
+
+
+
 
 
 
