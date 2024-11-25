@@ -29,6 +29,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-d2^l)vewri$uwb3z!dfyl)@ozm
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True').lower() in ['true', '1', 'yes']
+DEBUG_for_db = os.getenv('DEBUGDB', 'True').lower() in ['true', '1', 'yes']
 
 
 # ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
@@ -101,8 +102,8 @@ ASGI_APPLICATION = 'backend.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-if DEBUG:
-    print("Using SQLite for development", DEBUG)
+if DEBUG_for_db:
+    print("Using SQLite for development", DEBUG_for_db)
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -110,7 +111,7 @@ if DEBUG:
         }
     }
 else:
-    print("Using MySQL for production", DEBUG)
+    print("Using MySQL for production", DEBUG_for_db)
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.mysql",
