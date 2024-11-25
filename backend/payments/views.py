@@ -15,6 +15,8 @@ from rest_framework.permissions import IsAuthenticated
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
+
+# transaction.set_rollback()
 class StripePaymentView(APIView):
     """
     View to handle both Order creation and Stripe payment in one atomic transaction.
