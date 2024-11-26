@@ -14,25 +14,26 @@ const DashboardPage = () => {
   const [totalProducts, setTotalProducts] = useState(0);
   const [recentOrders, setRecentOrders] = useState([]);
 
-  // Establish socket connection and handle incoming data
+  
   useEffect(() => {
     const socket = new WebSocket(`${import.meta.env.VITE_BACKEND_WS_END_POINT}ws/DashboardStats/?token=${token}`);
 
-    // Notify on WebSocket connection
+   
     socket.onopen = () => {
       toast.dismiss()
       toast.success('Connected to server!');
     };
 
-    // Notify on WebSocket disconnection
+   
     socket.onclose = () => {
-      // toast.error('Disconnected from server.');
+  
     };
 
-    // Handle incoming data and notify on data update
+    
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      setTotalSales(data.total_sales);
+      console.log("received",data)
+      setTotalSales(String(data.total_sales));
       setTotalOrders(data.total_orders);
       setNewUsers(data.new_users);
       setTotalProducts(data.total_products);

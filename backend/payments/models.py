@@ -17,6 +17,10 @@ class Payment(models.Model):
     order = models.OneToOneField(Order, related_name='payment', on_delete=models.CASCADE)
     status = models.CharField(max_length=50,choices=PAYMENT_STATUS_CHOICES,default='Pending')
     created_at = models.DateTimeField(auto_now_add=True)
+    @classmethod
+    def total_sales(cls):
+        return str(cls.objects.exclude(status='cancel').aggregate(total=Sum('amount'))['total'] or 0.00)
+
 
     def __str__(self):
         return f"Payment {self.id} - {self.amount} {self.currency}"

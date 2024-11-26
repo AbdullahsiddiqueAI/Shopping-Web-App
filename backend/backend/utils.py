@@ -1,5 +1,6 @@
 from core.models import *
 from shoppingApp.models import *
+from payments.models import *
 from channels.db import database_sync_to_async
 
 

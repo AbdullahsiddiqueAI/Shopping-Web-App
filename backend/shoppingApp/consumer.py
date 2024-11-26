@@ -3,6 +3,7 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from backend.utils import get_dashboard_stats
 import json
+from time import sleep
 
 class DashboardStatsConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -24,9 +25,12 @@ class DashboardStatsConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_discard(self.group_name, self.channel_name)
 
     async def send_dashboard_stats(self):
+        
+        
         stats = await get_dashboard_stats()
         await self.send(text_data=json.dumps(stats))
 
     async def update_stats(self, event):
+        sleep(1)
         # Optionally, handle the event data if needed
         await self.send_dashboard_stats()

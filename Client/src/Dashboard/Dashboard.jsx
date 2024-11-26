@@ -8,10 +8,10 @@ import DashboardNavLeftResponsive from '../Components/Dashboard/DashboardNavLeft
 const Dashboard = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   useEffect(() => {
-    document.title = "Dashboard"; // Change this title as needed
+    document.title = "Dashboard"; 
   }, [])
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen); // Toggle the menu open/close state
+    setIsMenuOpen(!isMenuOpen); 
   };
   return (
     <div className='Dashboard-container'>

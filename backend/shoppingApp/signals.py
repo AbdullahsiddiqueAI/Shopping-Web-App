@@ -8,7 +8,7 @@ from asgiref.sync import async_to_sync
 from core.models import UserCustomModel
 from payments.models import Payment
 
-# @receiver(post_save, sender=Order)
+@receiver(post_save, sender=Order)
 @receiver(post_delete, sender=Order)
 @receiver(post_save, sender=Product)
 @receiver(post_delete, sender=Product)
